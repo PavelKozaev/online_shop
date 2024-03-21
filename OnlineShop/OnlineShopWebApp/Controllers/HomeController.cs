@@ -7,11 +7,11 @@ namespace OnlineShopWebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ProducrRepository productRepository;
+        private readonly ProductRepository productRepository;
 
         public HomeController()
         {            
-            productRepository = new ProducrRepository();
+            productRepository = new ProductRepository();
         }
 
         public IActionResult Index()
