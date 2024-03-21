@@ -1,21 +1,23 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShopWebApp.Models;
+using OnlineShopWebApp.Repositories;
 
 namespace OnlineShopWebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ProducrRepository productRepository;
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
+        public HomeController()
+        {            
+            productRepository = new ProducrRepository();
         }
 
         public IActionResult Index()
         {
-            return View();
+            var products = productRepository.GetAllProducts();
+            return View(products);
         }
 
         public IActionResult Privacy()
