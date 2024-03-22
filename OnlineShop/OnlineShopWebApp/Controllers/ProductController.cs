@@ -12,7 +12,7 @@ namespace OnlineShopWebApp.Controllers
             this.productRepository = productRepository;
         }
 
-        public IActionResult Index(int id)
+        public IActionResult Index(Guid id)
         {   
             var product = productRepository.GetById(id);
 

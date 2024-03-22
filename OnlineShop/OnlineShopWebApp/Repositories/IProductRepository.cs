@@ -5,6 +5,6 @@ namespace OnlineShopWebApp.Repositories
     public interface IProductRepository
     {
         IEnumerable<Product> GetAll();
-        Product GetById(int id);
+        Product GetById(Guid id);
     }
 }

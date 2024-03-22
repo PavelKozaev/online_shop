@@ -1,8 +1,8 @@
 ﻿namespace OnlineShopWebApp.Models
 {
-    public class Product(int id, string name, decimal cost, string description = "")
+    public class Product(string name, decimal cost, string description = "")
     {
-        public int Id { get; } = id;
+        public Guid Id { get; } = Guid.NewGuid();
         public string Name { get; } = name;
         public decimal Cost { get; } = cost;
         public string Description { get; } = description;
