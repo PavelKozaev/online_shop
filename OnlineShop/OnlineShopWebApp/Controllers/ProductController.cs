@@ -13,8 +13,13 @@ namespace OnlineShopWebApp.Controllers
         }
 
         public IActionResult Index(Guid id)
-        {   
-            var product = productRepository.GetById(id);
+        {
+            if (id == Guid.Empty)
+            {
+                return BadRequest("Неверный идентификатор продукта");
+            }
+
+            var product = productRepository.TryGetById(id);
 
             if (product == null)
             {
