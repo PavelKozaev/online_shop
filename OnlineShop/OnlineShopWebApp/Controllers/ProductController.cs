@@ -5,29 +5,23 @@ namespace OnlineShopWebApp.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly IProductRepository _productRepository;
+        private readonly IProductRepository productRepository;
 
         public ProductController(IProductRepository productRepository)
         {
-            _productRepository = productRepository;
+            this.productRepository = productRepository;
         }
 
-        public IActionResult Index(Guid id)
-        {
-            if (id == Guid.Empty)
-            {
-                return BadRequest("Invalid product identifier");
-            }
-
-            var product = _productRepository.GetProductById(id);
+        public IActionResult Index(int id)
+        {   
+            var product = productRepository.GetById(id);
 
             if (product == null)
             {
-                return NotFound("Product not found");
+                return NotFound("Продукт не найден");
             }
 
             return View(product);
         }
-
     }
 }
