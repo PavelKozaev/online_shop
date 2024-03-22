@@ -16,7 +16,7 @@ namespace OnlineShopWebApp.Controllers
 
         public IActionResult Index()
         {
-            var products = productRepository.GetAllById();
+            var products = productRepository.GetAll();
 
             if (products == null)
             {

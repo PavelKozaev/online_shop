@@ -22,7 +22,7 @@ namespace OnlineShopWebApp.Repositories
 
             ];
 
-        public IEnumerable<Product> GetAllById() => products;
+        public IEnumerable<Product> GetAll() => products;
 
         public Product GetById(int id) => products.SingleOrDefault(p => p.Id == id); 
     }
