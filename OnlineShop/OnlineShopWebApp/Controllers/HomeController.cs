@@ -7,16 +7,22 @@ namespace OnlineShopWebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ProductRepository productRepository;
+        private readonly IProductRepository productRepository;
 
-        public HomeController()
-        {            
-            productRepository = new ProductRepository();
+        public HomeController(IProductRepository productRepository)
+        {
+            this.productRepository = productRepository;
         }
 
         public IActionResult Index()
         {
-            var products = productRepository.GetAllProducts();
+            var products = productRepository.GetAll();
+
+            if (products == null)
+            {
+                return NotFound("Продукты не найден");
+            }
+
             return View(products);
         }
 
