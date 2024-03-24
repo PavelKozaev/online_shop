@@ -36,8 +36,14 @@ body {
     overflow: visible;
 }
 
+
+
+
 /* Подключение шрифта через Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap');
+
+
+
 
 /* Стилизация базовых элементов страницы */
 
@@ -68,6 +74,10 @@ body {
     /* Легкая анимация для наведения */
     transition: transform 0.5s ease-in-out;
     transform: scale(1.03);
+}
+
+.col-md-4 {
+    margin-bottom: 20px;
 }
 
 .product-details img {
