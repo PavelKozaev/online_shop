@@ -18,5 +18,63 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    font-family: 'Merriweather', serif;
+    color: #333;
+    background-color: #f4f4f4;
+}
+
+/* —тили дл€ описани€ книг */
+.description {
+    height: 4.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.description-full {
+    height: auto;
+    overflow: visible;
+}
+
+/* ѕодключение шрифта через Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap');
+
+/* —тилизаци€ базовых элементов страницы */
+
+/* —тилизаци€ карточек */
+.card {
+    background-color: #ffffff;
+    border-color: #ddd;
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #dadfe1; /* “онка€ лини€ вокруг карточки */
+}
+
+.card-title {
+    color: #444;
+    font-weight: bold;
+}
+
+.card-header {
+    border-bottom: 1px solid #dadfe1; /* “онка€ горизонтальна€ лини€ под заголовком */
+    padding-bottom: .5rem; /* Ќебольшое пространство под заголовком до остального содержимого */
+    margin-bottom: .5rem; /* ќтступ от линии до содержимого карточки */
+}
+
+.card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+    /* Ћегка€ анимаци€ дл€ наведени€ */
+    transition: transform 0.5s ease-in-out;
+    transform: scale(1.03);
+}
+
+.product-details img {
+    max-width: 100%; /* максимальна€ ширина изображени€ равна ширине родительского элемента */
+    max-height: 400px; /* максимальна€ высота изображени€, к примеру, 400 пикселей */
+    width: auto; /* ширина изображени€ автоматически подстроитс€, чтобы сохранить пропорции */
+    height: auto; /* высота изображени€ автоматически подстроитс€, чтобы сохранить пропорции */
+    display: inline; /* изображение будет отображатьс€ как строчный элемент */
+    margin: 0 auto; /* вертикальные отступы будут автоматически, чтобы выровн€ть изображение по центру */
 }

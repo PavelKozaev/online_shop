@@ -20,7 +20,7 @@ namespace OnlineShopWebApp.Controllers
 
             if (products == null)
             {
-                return NotFound("Продукты не найден");
+                return NotFound("Книги не найдены");
             }
 
             return View(products);

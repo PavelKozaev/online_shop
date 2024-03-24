@@ -16,14 +16,14 @@ namespace OnlineShopWebApp.Controllers
         {
             if (id == Guid.Empty)
             {
-                return BadRequest("Неверный идентификатор продукта");
+                return BadRequest("Неверный идентификатор книги");
             }
 
             var product = productRepository.TryGetById(id);
 
             if (product == null)
             {
-                return NotFound("Продукт не найден");
+                return NotFound("Книга не найдена");
             }
 
             return View(product);
