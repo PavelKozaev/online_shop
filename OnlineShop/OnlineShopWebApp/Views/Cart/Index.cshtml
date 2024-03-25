@@ -1,3 +1,41 @@
 ﻿@model Cart
 
-<a>Cart</a>
+@if (Model != null && Model.Items.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Изображение</th>
+                <th>Название</th>
+                <th>Автор</th>
+                <th>Цена, руб.</th>
+                <th>Количество</th>
+                <th>Стоимость, руб.</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td><img src="@item.Product.ImageUrl" alt="@item.Product.Name" /></td>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Product.Author</td>
+                    <td>@item.Product.Cost</td>
+                    <td>@item.Amount</td>
+                    <td>@item.Cost</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="total-amount">
+        <h3>Общая сумма: <span class="total-sum">@Model.Cost</span> руб.</h3>
+    </div>
+    <div class="action">
+        <a href="/Home/Index" class="btn btn-outline-primary">Продолжить покупки</a>
+        <a href="#" class="btn btn-outline-success">Оформить заказ</a>
+    </div>
+}
+else
+{
+    <p class="alert-info">В корзине нет товаров.</p>
+}

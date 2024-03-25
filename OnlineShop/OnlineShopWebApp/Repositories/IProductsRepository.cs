@@ -2,7 +2,7 @@
 
 namespace OnlineShopWebApp.Repositories
 {
-    public interface IProductRepository
+    public interface IProductsRepository
     {
         IEnumerable<Product> GetAll();
         Product TryGetById(Guid id);

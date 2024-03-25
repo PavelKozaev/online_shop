@@ -26,7 +26,7 @@
                                     <button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.href='@Url.Action("Index", "Product", new { id = product.Id })';">
                                         Подробнее
                                     </button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.href='@Url.Action("Index", "Cart")';">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.href='@Url.Action("Add", "Cart", new { productId = @product.Id })';">
                                         В корзину
                                     </button>                                    
                                 </div>

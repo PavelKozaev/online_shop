@@ -7,8 +7,8 @@
     <p>Описание: @Model.Description</p>
     <!-- Дополнительная информация о продукте -->
     <!-- Кнопка для возврата на главную страницу -->
-    <a href="/" class="btn btn-primary">Продолжить покупки</a>
+    <a href="/Home/Index" class="btn btn-outline-primary">Продолжить покупки</a>
 
     <!-- Кнопка для добавления в корзину (пока без функционала) -->
-    <a href="/Cart/Index" class="btn btn-success">Добавить в корзину</a>
+    <a href="/Cart/Add?productId=@Model.Id" class="btn btn-outline-success">Добавить в корзину</a>
 </div>

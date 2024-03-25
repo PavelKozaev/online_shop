@@ -7,16 +7,16 @@ namespace OnlineShopWebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IProductRepository productRepository;
+        private readonly IProductsRepository productsRepository;
 
-        public HomeController(IProductRepository productRepository)
+        public HomeController(IProductsRepository productsRepository)
         {
-            this.productRepository = productRepository;
+            this.productsRepository = productsRepository;
         }
 
         public IActionResult Index()
         {
-            var products = productRepository.GetAll();
+            var products = productsRepository.GetAll();
 
             if (products == null)
             {
@@ -24,11 +24,6 @@ namespace OnlineShopWebApp.Controllers
             }
 
             return View(products);
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

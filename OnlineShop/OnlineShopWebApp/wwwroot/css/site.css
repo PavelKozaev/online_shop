@@ -21,7 +21,7 @@ body {
     margin-bottom: 60px;
     font-family: 'Merriweather', serif;
     color: #333;
-    background-color: #f4f4f4;
+    background-color: #ffffff;
 }
 
 /* Стили для описания книг */
@@ -47,14 +47,24 @@ body {
 
 /* Стилизация базовых элементов страницы */
 
+.nav-item {
+    padding: 10px;
+}
+
 /* Стилизация карточек */
+.container {
+    background: rgba(255, 255, 255, 0); /* Белый фон с неполной прозрачностью */
+    padding: 20px;
+    border-radius: 15px; /* Слегка закруглённые углы */
+}
+
 .card {
     background-color: #ffffff;
     border-color: #ddd;
     border-radius: 4px;
     padding: 1rem;
     margin-bottom: 1rem;
-    border: 1px solid #dadfe1; /* Тонкая линия вокруг карточки */
+    border: 1px solid #dadfe1; /* Тонкая линия вокруг карточки */    
 }
 
 .card-title {
@@ -80,6 +90,10 @@ body {
     margin-bottom: 20px;
 }
 
+.product-details {
+    padding: 10px;
+}
+
 .product-details img {
     max-width: 100%; /* максимальная ширина изображения равна ширине родительского элемента */
     max-height: 400px; /* максимальная высота изображения, к примеру, 400 пикселей */
@@ -90,7 +104,44 @@ body {
 }
 
 .cost {
-    color: #444;
+    color: #855E42;
     font-size: 20px;
     font-weight: bold;
+}
+
+.total-amount {
+    padding: 5px;
+    margin-top: 15px; /* немного отступа от таблицы */
+    margin-bottom: 15px;
+    text-align: left; /* текст суммы будет по центру */    
+    color: #855E42;
+}
+
+.total-sum {
+    font-weight: bold; /* жирный текст для суммы */
+    font-size: 1.2em; /* размер шрифта */
+}
+
+.table img {
+    height: 150px; /* Ширина картинки */
+    width: auto; /* Высота изменится пропорционально ширине */
+    display: block; /* Убираем выравнивание по базовой линии текста */
+    margin: auto;
+}
+
+/* Если хотим установить ширину столбца с изображением */
+.table th:first-child,
+.table td:first-child {
+    width: 110px; /* Ширина столбца с отступами */
+    text-align: center; /* Выравнивание по центру */    
+}
+
+.table th, /* заголовки таблицы */
+.table td:not(:first-child) { /* все ячейки таблицы кроме первого столбца с изображениями */
+    text-align: center;
+    vertical-align: middle; /* также выровняем контент по вертикали */
+}
+
+.action {    
+    padding: 10px;
 }

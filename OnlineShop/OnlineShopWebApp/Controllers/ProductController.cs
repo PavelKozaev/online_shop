@@ -5,11 +5,11 @@ namespace OnlineShopWebApp.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly IProductRepository productRepository;
+        private readonly IProductsRepository productsRepository;
 
-        public ProductController(IProductRepository productRepository)
+        public ProductController(IProductsRepository productRepository)
         {
-            this.productRepository = productRepository;
+            this.productsRepository = productRepository;
         }
 
         public IActionResult Index(Guid id)
@@ -19,7 +19,7 @@ namespace OnlineShopWebApp.Controllers
                 return BadRequest("Неверный идентификатор книги");
             }
 
-            var product = productRepository.TryGetById(id);
+            var product = productsRepository.TryGetById(id);
 
             if (product == null)
             {
