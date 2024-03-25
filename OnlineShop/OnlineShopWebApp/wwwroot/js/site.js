@@ -12,6 +12,6 @@ function toggleDescription(button) {
         button.textContent = 'Свернуть';
     } else {
         description.classList.replace('description-full', 'description');
-        button.textContent = 'Подробнее...';
+        button.textContent = 'Читать дальше';
     }
 }

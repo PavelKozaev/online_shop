@@ -19,14 +19,18 @@
                             @product.Description
                         </div>
                         <!-- Кнопка для показа полного описания -->
-                        <button onclick="toggleDescription(this)" class="btn btn-link">Подробнее...</button>
+                        <button onclick="toggleDescription(this)" class="btn btn-link">Читать дальше</button>
                         <div class="mt-auto">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Посмотреть</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">В корзину</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.href='@Url.Action("Index", "Product", new { id = product.Id })';">
+                                        Подробнее
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.href='@Url.Action("Index", "Cart")';">
+                                        В корзину
+                                    </button>                                    
                                 </div>
-                                <small class="text-muted">@product.Cost руб.</small>
+                                <p class="cost">@product.Cost руб.</p>
                             </div>
                         </div>
                     </div>
