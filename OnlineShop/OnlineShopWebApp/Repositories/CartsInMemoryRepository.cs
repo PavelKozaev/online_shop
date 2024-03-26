@@ -2,7 +2,7 @@
 
 namespace OnlineShopWebApp.Repositories
 {
-    public class CartsRepository : ICartsRepository
+    public class CartsInMemoryRepository : ICartsRepository
     {
         private readonly List<Cart> carts = [];
 

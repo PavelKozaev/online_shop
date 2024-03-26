@@ -2,7 +2,7 @@
 
 namespace OnlineShopWebApp.Repositories
 {
-    public class ProductsRepository : IProductsRepository
+    public class ProductsInMemoryRepository : IProductsRepository
     {
         private readonly List<Product> products = [
 
