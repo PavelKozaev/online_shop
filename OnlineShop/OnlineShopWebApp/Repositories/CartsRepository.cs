@@ -2,16 +2,16 @@
 
 namespace OnlineShopWebApp.Repositories
 {
-    public static class CartsRepository
-    {      
-        private static readonly List<Cart> carts = [];
+    public class CartsRepository : ICartsRepository
+    {
+        private readonly List<Cart> carts = [];
 
-        public static Cart TryGetByUserId(string userId)
+        public Cart TryGetByUserId(string userId)
         {
             return carts.FirstOrDefault(c => c.UserId == userId);
         }
 
-        public static void Add(Product product ,string userId)
+        public void Add(Product product, string userId)
         {
             var existingCart = TryGetByUserId(userId);
 
@@ -32,7 +32,7 @@ namespace OnlineShopWebApp.Repositories
                     ]
                 };
 
-                carts.Add (newCart);
+                carts.Add(newCart);
             }
             else
             {
