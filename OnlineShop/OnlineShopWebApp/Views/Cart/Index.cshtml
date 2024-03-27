@@ -11,6 +11,7 @@
                 <th>Цена, руб.</th>
                 <th>Количество</th>
                 <th>Стоимость, руб.</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -23,6 +24,10 @@
                     <td>@item.Product.Cost</td>
                     <td>@item.Amount</td>
                     <td>@item.Cost</td>
+                    <td>
+                        <a href="/Cart/DecreaseAmount?productId=@item.Product.Id" class="btn btn-success" role="button">-</a>
+                        <a href="/Cart/Add?productId=@item.Product.Id" class="btn btn-success" role="button">+</a>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -31,11 +36,21 @@
         <h3>Общая сумма: <span class="total-sum">@Model.Cost</span> руб.</h3>
     </div>
     <div class="action">
-        <a href="/Home/Index" class="btn btn-outline-primary">Продолжить покупки</a>
-        <a href="#" class="btn btn-outline-success">Оформить заказ</a>
+        <a href="/Home/Index" class="btn btn-outline-primary role=" button"">Продолжить покупки</a>
+        <a href="#" class="btn btn-outline-success" role="button">Оформить заказ</a>
+        <a href="/Cart/Clear" class="btn btn-outline-danger" role="button">Очистить корзину</a>
     </div>
 }
-else
+@* else
 {
     <p class="alert-info">В корзине нет товаров.</p>
+} *@
+else
+{
+<div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">Ваша корзина пуста.</h4>
+    <p>Вы еще не добавили товары в корзину. Пройдите по каталогу и выберите что-нибудь по своему вкусу!</p>
+    <hr>
+    <a class="btn btn-primary" href="/Home/Index">Перейти в каталог</a>
+</div>
 }
