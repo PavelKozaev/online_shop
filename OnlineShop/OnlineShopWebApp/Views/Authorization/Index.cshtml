@@ -1,0 +1,24 @@
+﻿@model Authorization
+
+<form method="post">
+
+    <h5>Вход</h5>
+
+    <div class="form-group">
+        <label>Логин</label>
+        <input type="text" name="Login" class="form-control" placeholder="Логин">
+    </div>
+    <div class="form-group">
+        <label>Пароль</label>
+        <input type="text" name="Password" class="form-control" placeholder="Пароль">
+    </div>
+
+    <input type="checkbox" name="IsRememberMe" value="true" /> <label> Запомнить меня? </label>
+
+    <br />
+
+    <button class="btn btn-success" type="submit" asp-controller="Authorization" asp-action="Enter">
+        Войти
+    </button>
+    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+</form>
