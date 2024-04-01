@@ -13,7 +13,7 @@ namespace OnlineShopWebApp.Controllers
             this.productsRepository = productRepository;
         }
 
-        [HttpGet]
+
         public IActionResult Index(Guid id)
         {
             if (id == Guid.Empty)
@@ -31,24 +31,24 @@ namespace OnlineShopWebApp.Controllers
             return View(product);
         }
 
-        [HttpPost]
+
         public IActionResult Add()
         {
-            return View();
+            return RedirectToAction("GetProducts", "Administrator");
         }
 
 
-        [HttpPut]
         public IActionResult Edit()
-        {
-            return View();
+        {            
+            return RedirectToAction("GetProducts", "Administrator");
         }
 
 
-        [HttpDelete]
-        public IActionResult Delete()
+        public IActionResult Delete(Guid id)
         {
-            return View();
+            productsRepository.Delete(id);
+            
+            return RedirectToAction("GetProducts", "Administrator");
         }
     }
 }

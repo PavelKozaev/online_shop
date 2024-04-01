@@ -19,18 +19,19 @@ namespace OnlineShopWebApp.Repositories
 
         public Product TryGetById(Guid id) => products.SingleOrDefault(p => p.Id == id);
 
-        public void Add(Product product)
+        public void Add()
         {
-            products.Add(product);
+            
         }
 
-        public void Edit(Product product)
+        public void Edit()
         {
-            products.Add(product);
+
         }
 
-        public void Delete(Product product)
+        public void Delete(Guid id)
         {
+            var product = TryGetById(id);
             products.Remove(product);
         }
     }
