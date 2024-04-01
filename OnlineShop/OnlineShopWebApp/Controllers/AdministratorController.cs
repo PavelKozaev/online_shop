@@ -1,9 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineShopWebApp.Repositories;
 
 namespace OnlineShopWebApp.Controllers
 {
     public class AdministratorController : Controller
     {
+        private readonly IProductsRepository productsRepository;
+        public AdministratorController(IProductsRepository productsRepository)
+        {
+            this.productsRepository = productsRepository;
+        }
         public IActionResult Index()
         {
             return View();
@@ -26,7 +32,14 @@ namespace OnlineShopWebApp.Controllers
 
         public IActionResult GetProducts()
         {
-            return View();
+            var products = productsRepository.GetAll();
+
+            if (products == null)
+            {
+                return NotFound("Книги не найдены");
+            }
+
+            return View(products);
         }
     }
 }

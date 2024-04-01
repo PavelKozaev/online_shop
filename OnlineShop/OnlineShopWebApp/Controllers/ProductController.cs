@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineShopWebApp.Models;
 using OnlineShopWebApp.Repositories;
 
 namespace OnlineShopWebApp.Controllers
@@ -12,6 +13,7 @@ namespace OnlineShopWebApp.Controllers
             this.productsRepository = productRepository;
         }
 
+        [HttpGet]
         public IActionResult Index(Guid id)
         {
             if (id == Guid.Empty)
@@ -27,6 +29,26 @@ namespace OnlineShopWebApp.Controllers
             }
 
             return View(product);
+        }
+
+        [HttpPost]
+        public IActionResult Add()
+        {
+            return View();
+        }
+
+
+        [HttpPut]
+        public IActionResult Edit()
+        {
+            return View();
+        }
+
+
+        [HttpDelete]
+        public IActionResult Delete()
+        {
+            return View();
         }
     }
 }

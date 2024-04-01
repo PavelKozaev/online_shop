@@ -6,5 +6,8 @@ namespace OnlineShopWebApp.Repositories
     {
         IEnumerable<Product> GetAll();
         Product TryGetById(Guid id);
+        void Add(Product product);
+        void Edit(Product product);
+        void Delete(Product product);
     }
 }
