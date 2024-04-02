@@ -9,6 +9,18 @@
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
+                        <form asp-controller="Home" asp-action="Search" method="get" class="form-inline my-2 my-lg-0">
+                            <div class="input-group">
+                                <input type="text" name="name" class="form-control" placeholder="Введите название книги" aria-label="Search">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-success" type="submit">
+                                        <a>Поиск</a>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </li>
+                    <li class="nav-item">
                         <a class="btn btn-primary" asp-area="" asp-controller="Home" asp-action="Index">Главная</a>
                     </li>
                     <li class="nav-item">

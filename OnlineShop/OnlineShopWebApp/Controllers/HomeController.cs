@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShopWebApp.Models;
-using OnlineShopWebApp.Repositories;
+using OnlineShopWebApp.Repositories.Interfaces;
 
 namespace OnlineShopWebApp.Controllers
 {
@@ -24,6 +24,18 @@ namespace OnlineShopWebApp.Controllers
             }
 
             return View(products);
+        }
+
+        [HttpGet]
+        public IActionResult Search(string name)
+        {
+            if (name != null)
+            {
+                var products = productsRepository.GetAll();
+                var findProducts = products.Where(product => product.Name.ToLower().Contains(name.ToLower())).ToList();
+                return View(findProducts);
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
