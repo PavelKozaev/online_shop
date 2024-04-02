@@ -9,7 +9,7 @@
     <div class="col-9">
         <h3 class="text-center">Список продуктов</h3>
         <br />
-        <a class="btn btn-outline-success" asp-controller="product" asp-action="add">Добавить новый продукт</a>
+        <a class="btn btn-outline-success" asp-controller="Administrator" asp-action="Create">Добавить новый продукт</a>
         <div class="row">
             <div class="col">
                 <table class="table">
@@ -32,8 +32,8 @@
                                 <td class="col-2"><p>@product.Author</p></td>
                                 <td class="col-2"><p class="cost">@product.Cost руб</p></td>
                                 <td class="col-3 text-end">
-                                    <a class="btn btn-outline-success" asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id">Редактировать</a>
-                                    <a class="btn btn-outline-success" asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id">Удалить</a>
+                                    <a class="btn btn-outline-success" asp-controller="Administrator" asp-action="Update" asp-route-id="@product.Id">Редактировать</a>
+                                    <a class="btn btn-outline-success" asp-controller="Administrator" asp-action="Delete" asp-route-id="@product.Id">Удалить</a>
                                 </td>
                             </tr>
                             i += 1;

@@ -30,25 +30,5 @@ namespace OnlineShopWebApp.Controllers
 
             return View(product);
         }
-
-
-        public IActionResult Add()
-        {
-            return RedirectToAction("GetProducts", "Administrator");
-        }
-
-
-        public IActionResult Edit()
-        {            
-            return RedirectToAction("GetProducts", "Administrator");
-        }
-
-
-        public IActionResult Delete(Guid id)
-        {
-            productsRepository.Delete(id);
-            
-            return RedirectToAction("GetProducts", "Administrator");
-        }
     }
 }

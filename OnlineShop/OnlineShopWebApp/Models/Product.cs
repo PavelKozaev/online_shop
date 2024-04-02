@@ -1,14 +1,24 @@
 ﻿namespace OnlineShopWebApp.Models
 {
-    public class Product(string name, string author, decimal cost, string description, string imageUrl)
+    public class Product
     {
-        public Guid Id { get; } = Guid.NewGuid();
-        public string Name { get; } = name;
-        public string Author { get; } = author;
-        public decimal Cost { get; } = cost;
-        public string Description { get; } = description;
-        public string ImageUrl { get; } = imageUrl;
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Author { get; set; }
+        public decimal Cost { get; set; }
+        public string Description { get; set; }
+        public string ImageUrl { get; set; }
 
-        public override string ToString() => $"{Id}\n{Name}\n{Author}\n{Cost}";
+        public Product() => Id = Guid.NewGuid();
+
+        public Product(string name, string author, decimal cost, string description, string imageUrl)
+        {
+            Id = Guid.NewGuid();
+            Name = name;
+            Author = author;
+            Cost = cost;
+            Description = description;
+            ImageUrl = imageUrl;
+        }        
     }
 }
