@@ -25,13 +25,11 @@
 
     <button class="btn btn-success" type="submit" asp-controller="Authorization" asp-action="Enter">
         Войти
-    </button>
-    <button class="btn btn-primary" type="button" onclick="location.href='@Url.Action("Index", "Registration")'">
-        Регистрация нового пользователя
-    </button>
+    </button>    
+    <a class="btn btn-primary" role="button" asp-controller="Registration" asp-action="Index">Регистрация нового пользователя</a>
 </form>
 
-@section Scripts{
+@section Scripts {
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 }

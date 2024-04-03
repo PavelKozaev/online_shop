@@ -1,23 +1,31 @@
-﻿<form method="post"> 
+﻿@model Order
+
+<form method="post"> 
     <div class="col-6 card shadow-lg">
 
         <div class="form-group" style="margin:10px">
-            <label for="exampleFormControlInput1">ФИО</label>
-            <input type="text" class="form-control" name="name" placeholder="Иванов Иван Иванович">
-        </div>
-        <div class="form-group" style="margin:10px">
-            <label for="exampleFormControlInput2">Email</label>
-            <input type="text" class="form-control" name="mail" placeholder="name@example.com">
-        </div>
-        <div class="form-group" style="margin:10px">
-            <label for="exampleFormControlInput3">Телефон</label>
-            <input type="text" class="form-control" name="phone" placeholder="+7 (999) 999 99 99">
-        </div>
-        <div class="form-group" style="margin:10px">
-            <label for="exampleFormControlInput4">Адрес</label>
-            <input type="text" class="form-control" name="address" placeholder="г. Москва, ул. Малая Бронная, д. 1">
+            <label asp-for="Name">ФИО</label>
+            <input asp-for="Name" class="form-control" placeholder="Иван">
+            <span asp-validation-for="Name" class="text-danger"></span>
         </div>
 
+        <div class="form-group" style="margin:10px">
+            <label asp-for="EMail">E-mail</label>
+            <input asp-for="EMail" class="form-control" placeholder="name@example.com">
+            <span asp-validation-for="EMail" class="text-danger"></span>
+        </div>
+
+        <div class="form-group" style="margin:10px">
+            <label asp-for="Phone">Телефон</label>
+            <input asp-for="Phone" class="form-control" placeholder="+7 (999) 999 99 99">
+            <span asp-validation-for="Phone" class="text-danger"></span>
+        </div>
+
+        <div class="form-group" style="margin:10px">
+            <label asp-for="Address">Адрес</label>
+            <input asp-for="Address" class="form-control" placeholder="г. Москва, ул. Малая Бронная, д. 1">
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
     </div>
 
     <div class="action">
@@ -25,3 +33,8 @@
         <button class="btn btn-success" type="submit" asp-controller="Order" asp-action="Buy">Оформить заказ</button>        
     </div>
 </form>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
