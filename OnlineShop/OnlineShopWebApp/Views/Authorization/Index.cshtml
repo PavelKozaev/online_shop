@@ -5,22 +5,33 @@
     <h5>Вход</h5>
 
     <div class="form-group">
-        <label>Логин</label>
-        <input type="text" name="Login" class="form-control" placeholder="Логин">
-    </div>
-    <div class="form-group">
-        <label>Пароль</label>
-        <input type="password" name="Password" class="form-control" placeholder="Пароль">
+        <label asp-for="Login">Логин</label>
+        <input asp-for="Login" class="form-control" placeholder="Логин">
+        <span asp-validation-for="Login" class="text-danger"></span>
     </div>
 
-    <input type="checkbox" name="IsRememberMe" value="true" /> <label> Запомнить меня? </label>
+    <div class="form-group">
+        <label asp-for="Password">Пароль</label>
+        <input asp-for="Password" class="form-control" placeholder="Пароль">
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div class="form-group form-check">
+        <input asp-for="IsRememberMe" class="form-check-input" />
+        <label asp-for="IsRememberMe" class="form-check-label">Запомнить меня?</label>
+    </div>
 
     <br />
 
     <button class="btn btn-success" type="submit" asp-controller="Authorization" asp-action="Enter">
         Войти
     </button>
-    <button class="btn btn-primary" type="submit" asp-controller="Registration" asp-action="Index">
+    <button class="btn btn-primary" type="button" onclick="location.href='@Url.Action("Index", "Registration")'">
         Регистрация нового пользователя
     </button>
 </form>
+
+@section Scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

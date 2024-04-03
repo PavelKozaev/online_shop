@@ -32,8 +32,8 @@
                                 <td class="col-2"><p>@product.Author</p></td>
                                 <td class="col-2"><p class="cost">@product.Cost руб</p></td>
                                 <td class="col-3 text-end">
-                                    <a class="btn btn-outline-success" asp-controller="Administrator" asp-action="Update" asp-route-id="@product.Id">Редактировать</a>
-                                    <a class="btn btn-outline-success" asp-controller="Administrator" asp-action="Delete" asp-route-id="@product.Id">Удалить</a>
+                                    <a class="btn btn-outline-primary" asp-controller="Administrator" asp-action="Update" asp-route-id="@product.Id">Редактировать</a>
+                                    <a class="btn btn-outline-danger" asp-controller="Administrator" asp-action="Delete" asp-route-id="@product.Id">Удалить</a>
                                 </td>
                             </tr>
                             i += 1;
