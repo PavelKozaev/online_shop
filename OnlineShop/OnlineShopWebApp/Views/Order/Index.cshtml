@@ -1,5 +1,7 @@
 ﻿@model Order
 
+<div class="text-danger font-weight-bold" asp-validation-summary="ModelOnly"></div>
+
 <form method="post"> 
     <div class="col-6 card shadow-lg">
 
@@ -33,8 +35,3 @@
         <button class="btn btn-success" type="submit" asp-controller="Order" asp-action="Buy">Оформить заказ</button>        
     </div>
 </form>
-
-@section Scripts {
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-}

@@ -17,7 +17,7 @@
             <!-- Колонка для карточки книги -->
             <div class="col-md-3">
                 <div class="card h-100">
-                    <a asp-controller="Product" asp-action="Index" asp-route-id="@product.Id"><img class="card-img-top" src="@product.ImageUrl" alt="@product.Name" /></a>
+                    <a asp-controller="Product" asp-action="Index" asp-route-id="@product.Id"><img class="card-img-top" src="@product.ImagePath" alt="@product.Name" /></a>
                     <div class="card-body d-flex flex-column">
                         <div class="card-header">
                             <h5 class="card-title">@product.Name</h5>

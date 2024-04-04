@@ -1,13 +1,15 @@
-﻿@model Registration
+﻿@model Register
 
 <form method="post">
 
     <h5>Регистрация</h5>
 
+    <div class="text-danger font-weight-bold" asp-validation-summary="ModelOnly"></div>
+
     <div class="form-group">
-        <label asp-for="Login">Логин</label>
-        <input asp-for="Login" class="form-control" placeholder="Логин">
-        <span asp-validation-for="Login" class="text-danger"></span>
+        <label asp-for="Email">Логин</label>
+        <input asp-for="Email" class="form-control" placeholder="Логин">
+        <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
     <div class="form-group">
@@ -24,10 +26,5 @@
 
     <br />
 
-    <button class="btn btn-primary" type="submit" asp-controller="Registration" asp-action="AddNewUser">Зарегистрироваться</button>
+    <button class="btn btn-primary" type="submit" asp-controller="Account" asp-action="Register">Зарегистрироваться</button>
 </form>
-
-@section Scripts {
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-}
