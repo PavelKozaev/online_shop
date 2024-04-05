@@ -22,16 +22,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var product in Model)
+                        @foreach (var order in Model)
                         {
                             <tr>
                                 <td> @i </td>
-                                <td class="col-2"><p>@product.Cost</p></td>
-                                <td class="col-2"><p>@EnumHelper.GetDisplayName(product.Status)</p></td>
-                                <td class="col-2"><p>@product.CreateDateTime.ToString("d")</p></td>
-                                <td class="col-2"><p>@product.CreateDateTime.ToString("t")</p></td>
+                                <td class="col-2"><p>@order.Cost</p></td>
+                                <td class="col-2"><p>@EnumHelper.GetDisplayName(order.Status)</p></td>
+                                <td class="col-2"><p>@order.CreateDateTime.ToString("d")</p></td>
+                                <td class="col-2"><p>@order.CreateDateTime.ToString("t")</p></td>
                                 <td>
-                                    <a href="/Administrator/OrderDetails?orderId=@product.Id">Подробнее</a>
+                                    <a href="/Administrator/OrderDetails?orderId=@order.Id">Подробнее</a>
                                 <td />                                
                             </tr>
                             i += 1;
