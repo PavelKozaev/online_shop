@@ -2,9 +2,14 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using OnlineShopWebApp.Repositories;
 using OnlineShopWebApp.Repositories.Interfaces;
+using Serilog;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, configuration) => configuration
+.ReadFrom.Configuration(context.Configuration)
+.Enrich.WithProperty("ApplicationName", "Online Shop"));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -46,6 +51,8 @@ app.UseAuthorization();
 
 var localizationOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value;
 app.UseRequestLocalization(localizationOptions);
+
+app.UseSerilogRequestLogging();
 
 app.MapControllerRoute(
     name: "default",
