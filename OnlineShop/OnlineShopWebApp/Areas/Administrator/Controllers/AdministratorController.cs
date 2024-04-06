@@ -2,8 +2,9 @@
 using OnlineShopWebApp.Models;
 using OnlineShopWebApp.Repositories.Interfaces;
 
-namespace OnlineShopWebApp.Controllers
+namespace OnlineShopWebApp.Areas.Administrator.Controllers
 {
+    [Area("Administrator")]
     public class AdministratorController : Controller
     {
         private readonly IProductsRepository productsRepository;
@@ -66,7 +67,7 @@ namespace OnlineShopWebApp.Controllers
             {
                 rolesRepository.Add(role);
                 return RedirectToAction("GetRoles");
-            }            
+            }
 
             return View(role);
         }
@@ -101,7 +102,7 @@ namespace OnlineShopWebApp.Controllers
             if (ModelState.IsValid)
             {
                 productsRepository.Add(product);
-                return RedirectToAction("GetProducts"); 
+                return RedirectToAction("GetProducts");
             }
             return View(product);
         }
@@ -115,7 +116,7 @@ namespace OnlineShopWebApp.Controllers
             }
             return View(product);
         }
-        
+
         [HttpPost]
         public IActionResult Update(Guid id, Product product)
         {
@@ -132,7 +133,7 @@ namespace OnlineShopWebApp.Controllers
                     return RedirectToAction("GetProducts");
                 }
                 catch
-                {                    
+                {
                 }
             }
             return View(product);

@@ -4,7 +4,7 @@ namespace OnlineShopWebApp.Models
 {
     public class Role
     {
-        [Required]
+        [Required(ErrorMessage = "Название роли обязательно к заполнению")]
         public string Name { get; set; }
     }
 }
