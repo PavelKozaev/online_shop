@@ -4,12 +4,12 @@
 }
 
 <div class="row">
-    @await Html.PartialAsync("Index")
+    @await Html.PartialAsync("MenuAdministrator")
 
     <div class="col-9">
         <h3 class="text-center">Список ролей</h3>
         <br />
-        <a class="btn btn-outline-success" asp-controller="Administrator" asp-action="AddRole">Добавить новую роль</a>
+        <a class="btn btn-outline-success" asp-controller="Role" asp-action="Add">Добавить новую роль</a>
         <div class="row">
             <div class="col">
                 <table class="table">
@@ -27,7 +27,7 @@
                                 <td> @i </td>
                                 <td class="col-2"><p>@role.Name</p></td>                                
                                 <td>
-                                    <a href="/Administrator/Administrator/RemoveRole?roleName=@role.Name">Удалить</a>
+                                    <a href="/Administrator/Role/Remove?roleName=@role.Name">Удалить</a>
                                 <td />
                             </tr>
                             i += 1;
