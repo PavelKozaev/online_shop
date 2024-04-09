@@ -22,7 +22,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             }
 
             return View(products);
-        }    
+        }
 
         public IActionResult Add()
         {
@@ -51,23 +51,15 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(Guid id, Product product)
-        {
-            if (id != product.Id)
-            {
-                return NotFound();
-            }
+        public IActionResult Edit(Product product)
+        {           
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    productsRepository.Edit(product);
-                    return RedirectToAction("Index");
-                }
-                catch
-                {
-                }
+
+                productsRepository.Edit(product);
+                return RedirectToAction("Index");
+
             }
             return View(product);
         }
@@ -83,7 +75,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             return View(product);
         }
 
-        [HttpPost, ActionName("RemoveConfirmed")]
+        [HttpPost]
         public IActionResult RemoveConfirmed(Guid id)
         {
             productsRepository.Remove(id);

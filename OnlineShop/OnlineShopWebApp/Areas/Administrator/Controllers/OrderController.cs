@@ -25,7 +25,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             return View(order);
         }
 
-        public IActionResult UpdateOrderStatus(Guid orderId, OrderStatus status)
+        public IActionResult UpdateStatus(Guid orderId, OrderStatus status)
         {
             ordersRepository.UpdateStatus(orderId, status);
             return RedirectToAction("Index");
