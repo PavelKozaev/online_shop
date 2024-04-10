@@ -18,6 +18,7 @@ builder.Services.AddSingleton<IProductsRepository, ProductsInMemoryRepository>()
 builder.Services.AddSingleton<ICartsRepository, CartsInMemoryRepository>();
 builder.Services.AddSingleton<IOrdersRepository, OrdersInMemoryRepository>();
 builder.Services.AddSingleton<IRolesRepository, RolesInMemoryRepository>();
+builder.Services.AddSingleton<IUsersRepository, UsersInMemoryRepository>();
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {

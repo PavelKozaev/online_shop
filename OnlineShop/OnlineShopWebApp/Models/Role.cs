@@ -6,5 +6,12 @@ namespace OnlineShopWebApp.Models
     {
         [Required(ErrorMessage = "Название роли обязательно к заполнению")]
         public string Name { get; set; }
+        public Role() { }
+
+        public Role(string name)
+        {
+            Name = name;
+        }
     }
+    
 }

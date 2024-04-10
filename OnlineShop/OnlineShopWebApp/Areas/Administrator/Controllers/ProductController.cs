@@ -24,6 +24,23 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             return View(products);
         }
 
+        public IActionResult Details(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                return BadRequest("Неверный идентификатор книги");
+            }
+
+            var product = productsRepository.TryGetById(id);
+
+            if (product == null)
+            {
+                return NotFound("Книга не найдена");
+            }
+
+            return View(product);
+        }
+
         public IActionResult Add()
         {
             return View();

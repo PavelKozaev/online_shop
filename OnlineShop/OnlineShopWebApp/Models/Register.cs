@@ -16,5 +16,16 @@ namespace OnlineShopWebApp.Models
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Пароль должен быть не менее 6 символов")]
         [Compare("Password", ErrorMessage = "Пароли не совпадают")]
         public string ConfirmPassword { get; set; }
+
+        [Required(ErrorMessage = "Введите ваше имя")]
+        public string FirstName { get; set; }
+
+        [Required(ErrorMessage = "Введите вашу фамилию")]
+        public string LastName { get; set; }
+
+        [Required(ErrorMessage = "Введите номер вашего телефона")]
+        [RegularExpression(@"^\d{11}$", ErrorMessage = "Номер телефона должен содержать 11 цифр")]
+        [Phone(ErrorMessage = "Некорректный номер телефона")]
+        public string Phone { get; set; }
     }
 }

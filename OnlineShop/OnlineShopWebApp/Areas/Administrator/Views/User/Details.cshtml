@@ -1,0 +1,16 @@
+﻿@model User
+
+<div class="row">
+    @await Html.PartialAsync("MenuAdministrator")
+    <div class="col-9">
+        <div class="user-details">
+            <h2 class="text-center">Пользователь @Model.Email</h2>
+
+            <h3>Имя: @Model.FirstName</h3>
+            <h3>Фамилия: @Model.LastName</h3>
+            <h3>Email: @Model.Email</h3>
+            <h3>Номер телефона: @Model.Phone</h3>
+            <h3>Роль: @Model.Role.Name</h3>
+        </div>
+    </div>    
+</div>

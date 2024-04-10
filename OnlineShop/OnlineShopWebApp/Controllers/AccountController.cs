@@ -1,10 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineShopWebApp.Models;
+using OnlineShopWebApp.Repositories.Interfaces;
 
 namespace OnlineShopWebApp.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly IUsersRepository usersRepository;
+
+        public AccountController(IUsersRepository usersRepository)
+        {
+            this.usersRepository = usersRepository;
+        }
+
         public IActionResult Login()
         {
             return View();
@@ -13,12 +21,26 @@ namespace OnlineShopWebApp.Controllers
         [HttpPost]
         public IActionResult Login(Login login) 
         {
-            if (ModelState.IsValid)
+            var userAccount = usersRepository.TryGetByEmail(login.Email);
+
+            if (userAccount == null)
             {
-                return RedirectToAction("Index", "Home");
+                ModelState.AddModelError("", "Пользователь с таким именем не найден. Проверьте имя или зарегистрируйтесь.");
+                return View(login);
             }
 
-            return RedirectToAction("Login");
+            if (userAccount.Password != login.Password)
+            {
+                ModelState.AddModelError("", "Неверный пароль");
+                return View(login);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(login);
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Register()
@@ -29,17 +51,27 @@ namespace OnlineShopWebApp.Controllers
         [HttpPost]
         public IActionResult Register(Register register)
         {
-            if(register.Email == register.Password)
+            var userAccount = usersRepository.TryGetByEmail(register.Email);
+            if (userAccount != null)
             {
-                ModelState.AddModelError("", "Логин и пароль не должны совпадать!");
+                ModelState.AddModelError("", "Пользователь с таким Email уже есть.");
+                return View(register);
             }
 
-            if (ModelState.IsValid)
+            if (register.Email == register.Password)
             {
-                return RedirectToAction("Index", "Home");
+                ModelState.AddModelError("", "Имя пользователя и пароль не должны совпадать");
+                return View(register);
             }
 
-            return RedirectToAction("Register");
+            if (!ModelState.IsValid)
+            {
+                return View(register);
+            }
+
+            usersRepository.Add(new User(register.Email, register.Password, register.FirstName, register.LastName, register.Phone));
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }
