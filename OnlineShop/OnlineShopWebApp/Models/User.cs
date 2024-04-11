@@ -1,4 +1,4 @@
-﻿using OnlineShopWebApp.Models;
+﻿using OnlineShopWebApp.Areas.Administrator.Models;
 
 public class User
 {

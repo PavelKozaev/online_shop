@@ -52,7 +52,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             if (ModelState.IsValid)
             {
                 productsRepository.Add(product);
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             return View(product);
         }
@@ -75,7 +75,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             {
 
                 productsRepository.Edit(product);
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
 
             }
             return View(product);
@@ -97,7 +97,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
         {
             productsRepository.Remove(id);
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
     }
 }

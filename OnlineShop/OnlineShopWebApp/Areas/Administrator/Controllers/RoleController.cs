@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OnlineShopWebApp.Models;
+using OnlineShopWebApp.Areas.Administrator.Models;
 using OnlineShopWebApp.Repositories.Interfaces;
 
 namespace OnlineShopWebApp.Areas.Administrator.Controllers
@@ -35,7 +35,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             if (ModelState.IsValid)
             {
                 rolesRepository.Add(role);
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
 
             return View(role);
@@ -44,7 +44,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
         public IActionResult Remove(string roleName)
         {
             rolesRepository.Remove(roleName);
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
     }
 }

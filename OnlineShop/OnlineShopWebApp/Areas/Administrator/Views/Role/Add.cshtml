@@ -1,4 +1,4 @@
-﻿@model OnlineShopWebApp.Models.Role
+﻿@model OnlineShopWebApp.Areas.Administrator.Models.Role
 
 @{
     ViewData["Title"] = "Создание роли";
@@ -8,7 +8,7 @@
 
 <div class="text-danger font-weight-bold" asp-validation-summary="All"></div>
 
-<form asp-action="Add" method="post">
+<form asp-area="Administrator" asp-action="Add" method="post">
     <div class="form-group">
         <label asp-for="Name" class="control-label"></label>
         <input asp-for="Name" class="form-control" />
