@@ -1,4 +1,7 @@
-﻿using OnlineShopWebApp.Repositories.Interfaces;
+﻿using OnlineShopWebApp.Areas.Administrator.Models;
+using OnlineShopWebApp.Models;
+using OnlineShopWebApp.Repositories.Interfaces;
+using System.Data;
 
 namespace OnlineShopWebApp.Repositories
 {
@@ -33,7 +36,8 @@ namespace OnlineShopWebApp.Repositories
 
         public void Edit(User user)
         {
-            throw new NotImplementedException();
+            var index = users.FindIndex(f => f.Id == user.Id);
+            users[index] = user;
         }
 
         public void Remove(Guid id)
@@ -42,5 +46,23 @@ namespace OnlineShopWebApp.Repositories
 
             users.Remove(user);
         }
-    }
+
+		public void ChangePassword(Guid id, string password)
+		{
+			var user = TryGetById(id);
+			if (user != null)
+			{
+				user.Password = password;
+			}
+		}
+
+		public void ChangeRole(Guid id, string role)
+        {
+            var user = TryGetById(id);
+            if (user != null)
+            {
+                user.Role.Name = role;
+            }
+        }
+	}
 }

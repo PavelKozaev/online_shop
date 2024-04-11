@@ -28,7 +28,7 @@
                         {
                             <tr>
                                 <td> @i </td>
-                                <td class="col-3"><a asp-controller="User" asp-action="Details" asp-route-id="@user.Id"><p>@user.Email</p></a></td>
+                                <td class="col-3"><a asp-area="Administrator" asp-controller="User" asp-action="Details" asp-route-id="@user.Id"><p>@user.Email</p></a></td>
                                 <td class="col-3"><p>@user.FirstName</p></td>
                                 <td class="col-3"><p>@user.LastName</p></td>
                                 <td class="col-3"><p>@user.Phone</p></td>

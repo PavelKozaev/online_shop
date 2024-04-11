@@ -5,7 +5,12 @@ namespace OnlineShopWebApp.Repositories
 {
     public class RolesInMemoryRepository : IRolesRepository
     {
-        private readonly List<Role> roles = [];
+        private readonly List<Role> roles = [
+            new Role("Customer"),
+            new Role("Employee"),
+            new Role("Manager"),
+            new Role("Administrator")
+        ];
         public void Add(Role role)
         {
             roles.Add(role);

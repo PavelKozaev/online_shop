@@ -27,13 +27,13 @@
                         {
                             <tr>
                                 <td> @i </td>
-                                <td class="col-3"><a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id"><p>@product.Name</p></a></td>
-                                <td class="col-2"><a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id"><img class="card-img-top" src="@product.ImagePath" alt="@product.Name" /></a></td>
+                                <td class="col-3"><a asp-area="Administrator" asp-controller="Product" asp-action="Details" asp-route-id="@product.Id"><p>@product.Name</p></a></td>
+                                <td class="col-2"><a asp-area="Administrator" asp-controller="Product" asp-action="Details" asp-route-id="@product.Id"><img class="card-img-top" src="@product.ImagePath" alt="@product.Name" /></a></td>
                                 <td class="col-2"><p>@product.Author</p></td>
                                 <td class="col-2"><p class="cost">@product.Cost руб</p></td>
                                 <td class="col-3 text-end">
-                                    <a class="btn btn-outline-primary" asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id">Редактировать</a>
-                                    <a class="btn btn-outline-danger" asp-controller="Product" asp-action="Remove" asp-route-id="@product.Id">Удалить</a>
+                                    <a class="btn btn-outline-primary" asp-area="Administrator" asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id">Редактировать</a>
+                                    <a class="btn btn-outline-danger" asp-area="Administrator" asp-controller="Product" asp-action="Remove" asp-route-id="@product.Id">Удалить</a>
                                 </td>
                             </tr>
                             i += 1;

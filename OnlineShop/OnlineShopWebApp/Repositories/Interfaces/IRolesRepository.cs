@@ -1,5 +1,4 @@
 ﻿using OnlineShopWebApp.Areas.Administrator.Models;
-using OnlineShopWebApp.Models;
 
 namespace OnlineShopWebApp.Repositories.Interfaces
 {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineShopWebApp.Models;
 using OnlineShopWebApp.Repositories.Interfaces;
 
 namespace OnlineShopWebApp.Areas.Administrator.Controllers
@@ -7,16 +8,22 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
     public class UserController : Controller
     {
         private readonly IUsersRepository usersRepository;
-        public UserController(IUsersRepository usersRepository)
+        private readonly IRolesRepository rolesRepository;
+
+        public UserController(IUsersRepository usersRepository, IRolesRepository rolesRepository)
         {
             this.usersRepository = usersRepository;
+            this.rolesRepository = rolesRepository;
         }
+
+
         public IActionResult Index()
         {
-            var products = usersRepository.GetAll();
+            var users = usersRepository.GetAll();
 
-            return View(products);
+            return View(users);
         }
+
 
         public IActionResult Details(Guid id)
         {
@@ -33,6 +40,102 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             }
 
             return View(user);
+        }
+
+        public IActionResult Add() 
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public IActionResult Add(Register register)
+        {
+            var userAccount = usersRepository.TryGetByEmail(register.Email);
+            if (userAccount != null)
+            {
+                ModelState.AddModelError("", "Пользователь с таким именем уже есть.");
+                return View(register);
+            }
+            if (register.Email == register.Password)
+            {
+                ModelState.AddModelError("", "Имя пользователя и пароль не должны совпадать");
+                return View(register);
+            }
+            if (!ModelState.IsValid)
+            {
+                return View(register);
+            }
+            usersRepository.Add(new User(register.Email, register.Password, register.FirstName, register.LastName, register.Phone));
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        public IActionResult Edit(Guid id)
+        {
+            var user = usersRepository.TryGetById(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+
+
+        [HttpPost]
+        public IActionResult Edit(User user)
+        {
+
+            if (ModelState.IsValid)
+            {
+
+                usersRepository.Edit(user);
+                return RedirectToAction(nameof(Index));
+
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        public IActionResult Remove(Guid userId)
+        {
+            usersRepository.Remove(userId);
+            return RedirectToAction(nameof(Index));
+        }
+
+
+		public IActionResult ChangePassword(Guid id)
+		{
+			var user = usersRepository.TryGetById(id);
+			ViewData["id"] = id;
+			ViewData["email"] = user.Email;
+			return View();
+		}
+
+		[HttpPost]
+		public IActionResult ChangePassword(Guid id, string password)
+		{
+			usersRepository.ChangePassword(id, password);
+			return RedirectToAction(nameof(Index));
+		}
+
+
+		public IActionResult ChangeRole(Guid id)
+        {
+            var user = usersRepository.TryGetById(id);
+            var roles = rolesRepository.GetAll();
+            ViewData["id"] = id;
+            ViewData["email"] = user.Email;
+            ViewData["role"] = user.Role.Name;
+            return View(roles);
+        }
+
+
+        [HttpPost]
+        public IActionResult ChangeRole(Guid id, string role)
+        {
+            usersRepository.ChangeRole(id, role);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

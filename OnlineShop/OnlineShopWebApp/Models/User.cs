@@ -15,7 +15,7 @@ public class User
     public User(string email, string password, string firstName, string lastName, string phone)
     {
         Id = Guid.NewGuid();
-        Role = new Role("User");
+        Role = new Role("Customer");
         Email = email;
         Password = password;
         FirstName = firstName;
