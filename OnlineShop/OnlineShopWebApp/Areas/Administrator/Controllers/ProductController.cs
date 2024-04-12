@@ -8,10 +8,14 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
     public class ProductController : Controller
     {
         private readonly IProductsRepository productsRepository;
+
+
         public ProductController(IProductsRepository productsRepository)
         {
             this.productsRepository = productsRepository;
         }
+
+
         public IActionResult Index()
         {
             var products = productsRepository.GetAll();
@@ -23,6 +27,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
 
             return View(products);
         }
+
 
         public IActionResult Details(Guid id)
         {
@@ -41,10 +46,12 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             return View(product);
         }
 
+
         public IActionResult Add()
         {
             return View();
         }
+
 
         [HttpPost]
         public IActionResult Add(Product product)
@@ -67,6 +74,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             return View(product);
         }
 
+
         [HttpPost]
         public IActionResult Edit(Product product)
         {           
@@ -80,20 +88,9 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             }
             return View(product);
         }
+        
 
         public IActionResult Remove(Guid id)
-        {
-            var product = productsRepository.TryGetById(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return View(product);
-        }
-
-        [HttpPost]
-        public IActionResult RemoveConfirmed(Guid id)
         {
             productsRepository.Remove(id);
 

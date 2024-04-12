@@ -15,11 +15,11 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>№</th>                            
+                            <th>№</th>
                             <th>Название</th>
                             <th>Изображение</th>
                             <th>Автор</th>
-                            <th>Цена, руб.</th>                            
+                            <th>Цена, руб.</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -33,7 +33,8 @@
                                 <td class="col-2"><p class="cost">@product.Cost руб</p></td>
                                 <td class="col-3 text-end">
                                     <a class="btn btn-outline-primary" asp-area="Administrator" asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id">Редактировать</a>
-                                    <a class="btn btn-outline-danger" asp-area="Administrator" asp-controller="Product" asp-action="Remove" asp-route-id="@product.Id">Удалить</a>
+                                    <!-- Кнопка-триггер модального окна -->
+                                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Удалить</button>                                    
                                 </td>
                             </tr>
                             i += 1;
@@ -44,3 +45,25 @@
         </div>
     </div>
 </div>
+
+@foreach (var product in Model)
+{
+    <!-- Модальное окно -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Удаление книги: @product.Name, автор @product.Author</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    Вы уверены, что хотите удалить эту книгу?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <a class="btn btn-primary" type="button" asp-area="Administrator" asp-controller="Product" asp-action="Remove" asp-route-id="@product.Id">Удалить</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -27,7 +27,8 @@
                                 <td> @i </td>
                                 <td class="col-2"><p>@role.Name</p></td>                                
                                 <td>
-                                    <a asp-area="Administrator" asp-controller="Role" asp-action="Remove" asp-route-roleName="@role.Name">Удалить</a>
+                                    <!-- Кнопка-триггер модального окна -->
+                                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Удалить</button>                                    
                                 <td />
                             </tr>
                             i += 1;
@@ -38,3 +39,26 @@
         </div>
     </div>
 </div>
+
+
+@foreach (var role in Model)
+{
+    <!-- Модальное окно -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Удаление роли: @role.Name</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    Вы уверены, что хотите удалить эту роль?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <a class="btn btn-primary" type="button" asp-area="Administrator" asp-controller="Role" asp-action="Remove" asp-route-roleName="@role.Name">Удалить</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
