@@ -34,7 +34,7 @@
                                 <td class="col-3 text-end">
                                     <a class="btn btn-outline-primary" asp-area="Administrator" asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id">Редактировать</a>
                                     <!-- Кнопка-триггер модального окна -->
-                                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Удалить</button>                                    
+                                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#product_@product.Id">Удалить</button>                                    
                                 </td>
                             </tr>
                             i += 1;
@@ -49,11 +49,11 @@
 @foreach (var product in Model)
 {
     <!-- Модальное окно -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="product_@product.Id" tabindex="-1" aria-labelledby="product_@product.Id" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Удаление книги: @product.Name, автор @product.Author</h1>
+                    <h1 class="modal-title fs-5" id="product_@product.Id">Удаление книги: @product.Name, автор @product.Author</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                 </div>
                 <div class="modal-body">

@@ -28,7 +28,7 @@
                                 <td class="col-2"><p>@role.Name</p></td>                                
                                 <td>
                                     <!-- Кнопка-триггер модального окна -->
-                                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Удалить</button>                                    
+                                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#@role.Name">Удалить</button>                                    
                                 <td />
                             </tr>
                             i += 1;
@@ -44,11 +44,11 @@
 @foreach (var role in Model)
 {
     <!-- Модальное окно -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="@role.Name" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Удаление роли: @role.Name</h1>
+                    <h1 class="modal-title fs-5" id="@role.Name">Удаление роли: @role.Name</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                 </div>
                 <div class="modal-body">

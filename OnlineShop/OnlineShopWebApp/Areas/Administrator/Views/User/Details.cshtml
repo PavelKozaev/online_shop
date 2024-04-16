@@ -41,18 +41,18 @@
                 <li><a class="dropdown-item" asp-area="Administrator" asp-controller="User" asp-action="ChangeRole" asp-route-id="@Model.Id">Права доступа</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <!-- Кнопка-триггер модального окна -->
-                <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Удалить пользователя</button></li>
+                <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#user">Удалить пользователя</button></li>
             </ul>
         </div>
     </div>
 </form>
 
 <!-- Модальное окно -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="user" tabindex="-1" aria-labelledby="user" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Удаление пользователя @Model.Email</h1>
+                <h1 class="modal-title fs-5" id="user">Удаление пользователя @Model.Email</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
             </div>
             <div class="modal-body">
