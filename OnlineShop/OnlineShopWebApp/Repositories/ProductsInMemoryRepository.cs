@@ -18,7 +18,7 @@ namespace OnlineShopWebApp.Repositories
 
         public IEnumerable<Product> GetAll() => products;
 
-        public Product TryGetById(Guid id) => products.SingleOrDefault(p => p.Id == id);
+        public Product TryGetById(Guid id) => products.FirstOrDefault(p => p.Id == id);
 
 
         public void Add(Product product)

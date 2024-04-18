@@ -1,7 +1,4 @@
-﻿using OnlineShopWebApp.Areas.Administrator.Models;
-using OnlineShopWebApp.Models;
-using OnlineShopWebApp.Repositories.Interfaces;
-using System.Data;
+﻿using OnlineShopWebApp.Repositories.Interfaces;
 
 namespace OnlineShopWebApp.Repositories
 {
