@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Product>
+@{
+    int i = 1;
+}
+
+<div class="row">
+    @await Html.PartialAsync("MenuAdministrator")
+
+    <div class="col-9">
+        <h3 class="text-center">Список продуктов</h3>
+        <br />
+        <a class="btn btn-outline-success" asp-area="Administrator" asp-controller="Products" asp-action="Create">Добавить новый продукт</a>
+        <div class="row">
+            <div class="col">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Название</th>
+                            <th>Изображение</th>
+                            <th>Автор</th>
+                            <th>Цена, руб.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var product in Model)
+                        {
+                            <tr>
+                                <td> @i </td>
+                                <td class="col-3"><a asp-area="Administrator" asp-controller="Products" asp-action="Details" asp-route-id="@product.Id"><p>@product.Name</p></a></td>
+                                <td class="col-2"><a asp-area="Administrator" asp-controller="Products" asp-action="Details" asp-route-id="@product.Id"><img class="card-img-top" src="@product.ImagePath" alt="@product.Name" /></a></td>
+                                <td class="col-2"><p>@product.Author</p></td>
+                                <td class="col-2"><p class="cost">@product.Cost руб</p></td>
+                                <td class="col-3 text-end">
+                                    <a class="btn btn-outline-primary" asp-area="Administrator" asp-controller="Products" asp-action="Edit" asp-route-id="@product.Id">Редактировать</a>
+                                    <!-- Кнопка-триггер модального окна -->
+                                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#product_@product.Id">Удалить</button>                                    
+                                </td>
+                            </tr>
+                            i += 1;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@foreach (var product in Model)
+{
+    <!-- Модальное окно -->
+    <div class="modal fade" id="product_@product.Id" tabindex="-1" aria-labelledby="product_@product.Id" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="product_@product.Id">Удаление книги: @product.Name, автор @product.Author</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    Вы уверены, что хотите удалить эту книгу?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <a class="btn btn-primary" type="button" asp-area="Administrator" asp-controller="Products" asp-action="Delete" asp-route-id="@product.Id">Удалить</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

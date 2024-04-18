@@ -1,0 +1,47 @@
+﻿@model Register
+
+<form method="post">
+
+    <h5>Регистрация</h5>
+
+    <div class="text-danger font-weight-bold" asp-validation-summary="ModelOnly"></div>
+
+    <div class="form-group">
+        <label asp-for="FirstName">Имя</label>
+        <input asp-for="FirstName" class="form-control" placeholder="Имя">
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="LastName">Фамилия</label>
+        <input asp-for="LastName" class="form-control" placeholder="Фамилия">
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Phone">Телефон</label>
+        <input asp-for="Phone" class="form-control" placeholder="Телефон">
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email">Логин</label>
+        <input asp-for="Email" class="form-control" placeholder="Логин">
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Password">Пароль</label>
+        <input asp-for="Password" class="form-control" placeholder="Пароль">
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ConfirmPassword">Повторите пароль</label>
+        <input asp-for="ConfirmPassword" class="form-control" placeholder="Повторите пароль">
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+
+    <br />
+
+    <button class="btn btn-primary" type="submit" asp-controller="Accounts" asp-action="Register">Зарегистрироваться</button>
+</form>

@@ -1,0 +1,67 @@
+﻿@model User
+
+<form method="post">
+    <div class="row">
+        @await Html.PartialAsync("MenuAdministrator")
+        <div class="col-1"></div>
+        <div class="col-9">
+            <h4>Пользователь @Model.Email</h4>
+            <br />
+            <table class="table">
+                <tr>
+                    <th>Password:</th>
+                    <td>@Model.Password</td>
+                </tr>
+                <tr>
+                    <th>Email:</th>
+                    <td>@Model.Email</td>
+                </tr>
+                <tr>
+                    <th>Имя:</th>
+                    <td>@Model.FirstName</td>
+                </tr>
+                <tr>
+                    <th>Фамилия:</th>
+                    <td>@Model.LastName</td>
+                </tr>
+                <tr>
+                    <th>Телефон:</th>
+                    <td>@Model.Phone</td>
+                </tr>
+                <tr>
+                    <th>Роль:</th>
+                    <td>@Model.Role.Name</td>
+                </tr>
+            </table>
+            <br />
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Действия</button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" asp-area="Administrator" asp-controller="Users" asp-action="ChangePassword" asp-route-id="@Model.Id">Смена пароля</a></li>
+                <li><a class="dropdown-item" asp-area="Administrator" asp-controller="Users" asp-action="Edit" asp-route-id="@Model.Id">Редактирование данных</a></li>
+                <li><a class="dropdown-item" asp-area="Administrator" asp-controller="Users" asp-action="ChangeRole" asp-route-id="@Model.Id">Права доступа</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <!-- Кнопка-триггер модального окна -->
+                <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#user">Удалить пользователя</button></li>
+            </ul>
+        </div>
+    </div>
+</form>
+
+<!-- Модальное окно -->
+<div class="modal fade" id="user" tabindex="-1" aria-labelledby="user" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="user">Удаление пользователя @Model.Email</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                Вы уверены, что хотите удалить этого пользователя?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <a class="btn btn-primary" type="button" asp-area="Administrator" asp-controller="Users" asp-action="Delete" asp-route-userId="@Model.Id">Удалить</a>
+            </div>
+        </div>
+    </div>
+</div>

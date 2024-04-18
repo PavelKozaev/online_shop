@@ -1,0 +1,21 @@
+﻿@model OnlineShopWebApp.Areas.Administrator.Models.Role
+
+@{
+    ViewData["Title"] = "Создание роли";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="text-danger font-weight-bold" asp-validation-summary="All"></div>
+
+<form asp-area="Administrator" asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    
+    <div class="form-group">
+        <input type="submit" value="Добавить" class="btn btn-success btn-group" />
+    </div>
+</form>
