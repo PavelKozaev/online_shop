@@ -19,15 +19,26 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             return View(orders);
         }        
 
-        public IActionResult Details(Guid orderId)
+        public IActionResult Details(Guid id)
         {
-            var order = ordersRepository.TryGetById(orderId);
+            if (id == Guid.Empty)
+            {
+                return NotFound();
+            }
+
+            var order = ordersRepository.TryGetById(id);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
             return View(order);
         }
 
-        public IActionResult UpdateStatus(Guid orderId, OrderStatus status)
+        public IActionResult UpdateStatus(Guid id, OrderStatus status)
         {
-            ordersRepository.UpdateStatus(orderId, status);
+            ordersRepository.UpdateStatus(id, status);
             return RedirectToAction(nameof(Index));
         }
     }

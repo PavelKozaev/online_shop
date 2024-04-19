@@ -9,16 +9,19 @@ namespace OnlineShopWebApp.Controllers
         private readonly ICartsRepository cartsRepository;
         private readonly IOrdersRepository ordersRepository;
 
+
         public OrdersController(ICartsRepository cartsRepository, IOrdersRepository ordersRepository)
         {
             this.cartsRepository = cartsRepository;
             this.ordersRepository = ordersRepository;
         }
 
+
         public IActionResult Index()
         {
             return View();
         }
+
 
         [HttpPost]
         public IActionResult Buy(UserDeliveryInfo user)
@@ -32,7 +35,9 @@ namespace OnlineShopWebApp.Controllers
             };
 
             ordersRepository.Add(order);
+
             cartsRepository.Clear(Constants.UserId);
+
             return View(order);
         }
     }

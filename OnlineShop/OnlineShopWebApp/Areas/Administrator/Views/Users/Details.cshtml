@@ -9,6 +9,10 @@
             <br />
             <table class="table">
                 <tr>
+                    <th>ID:</th>
+                    <td>@Model.Id</td>
+                </tr>
+                <tr>
                     <th>Password:</th>
                     <td>@Model.Password</td>
                 </tr>
@@ -60,7 +64,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                <a class="btn btn-primary" type="button" asp-area="Administrator" asp-controller="Users" asp-action="Delete" asp-route-userId="@Model.Id">Удалить</a>
+                <a class="btn btn-primary" type="button" asp-area="Administrator" asp-controller="Users" asp-action="Delete" asp-route-id="@Model.Id">Удалить</a>
             </div>
         </div>
     </div>

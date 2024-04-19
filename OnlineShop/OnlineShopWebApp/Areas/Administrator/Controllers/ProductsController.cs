@@ -22,7 +22,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
 
             if (products == null)
             {
-                return NotFound("Книги не найдены");
+                return NotFound();
             }
 
             return View(products);
@@ -33,14 +33,14 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
         {
             if (id == Guid.Empty)
             {
-                return BadRequest("Неверный идентификатор книги");
+                return NotFound();
             }
 
             var product = productsRepository.TryGetById(id);
 
             if (product == null)
             {
-                return NotFound("Книга не найдена");
+                return NotFound();
             }
 
             return View(product);
@@ -66,19 +66,25 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
 
         public IActionResult Edit(Guid id)
         {
+            if (id == Guid.Empty)
+            {
+                return NotFound();
+            }
+
             var product = productsRepository.TryGetById(id);
+
             if (product == null)
             {
                 return NotFound();
             }
+
             return View(product);
         }
 
 
         [HttpPost]
         public IActionResult Edit(Product product)
-        {           
-
+        {     
             if (ModelState.IsValid)
             {
 
@@ -86,12 +92,18 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
                 return RedirectToAction(nameof(Index));
 
             }
+
             return View(product);
         }
         
 
         public IActionResult Delete(Guid id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
             productsRepository.Remove(id);
 
             return RedirectToAction(nameof(Index));

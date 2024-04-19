@@ -13,10 +13,12 @@ namespace OnlineShopWebApp.Controllers
             this.usersRepository = usersRepository;
         }
 
+
         public IActionResult Login()
         {
             return View();
         }
+
 
         [HttpPost]
         public IActionResult Login(Login login) 
@@ -43,10 +45,12 @@ namespace OnlineShopWebApp.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+
         public IActionResult Register()
         {
             return View();
         }
+
 
         [HttpPost]
         public IActionResult Register(Register register)

@@ -9,10 +9,12 @@ namespace OnlineShopWebApp.Controllers
     {
         private readonly IProductsRepository productsRepository;
 
+
         public HomeController(IProductsRepository productsRepository)
         {
             this.productsRepository = productsRepository;
         }
+
 
         public IActionResult Index()
         {
@@ -20,11 +22,12 @@ namespace OnlineShopWebApp.Controllers
 
             if (products == null)
             {
-                return NotFound(" ниги не найдены");
+                return NotFound();
             }
 
             return View(products);
         }
+
 
         [HttpGet]
         public IActionResult Search(string name)
@@ -37,6 +40,7 @@ namespace OnlineShopWebApp.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

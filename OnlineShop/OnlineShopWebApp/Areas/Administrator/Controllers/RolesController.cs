@@ -13,16 +13,25 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
         {            
             this.rolesRepository = rolesRepository;
         }
+
         public IActionResult Index()
         {
             var roles = rolesRepository.GetAll();
+
+            if (roles == null)
+            {
+                return NotFound();
+            }
+
             return View(roles);
         }
+
 
         public IActionResult Create()
         {
             return View();
         }
+
 
         [HttpPost]
         public IActionResult Create(Role role)
@@ -43,7 +52,13 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
 
         public IActionResult Delete(string roleName)
         {
+            if (roleName == null)
+            {
+                return NotFound();
+            }
+
             rolesRepository.Remove(roleName);
+
             return RedirectToAction(nameof(Index));
         }
     }

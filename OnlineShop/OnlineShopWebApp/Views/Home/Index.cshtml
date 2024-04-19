@@ -26,7 +26,7 @@
                                     <button type="button" class="btn btn-secondary" onclick="location.href='@Url.Action("Index", "Products", new { id = product.Id })';">
                                         Подробнее
                                     </button>
-                                    <button type="button" class="btn btn-danger" onclick="location.href='@Url.Action("Create", "Carts", new { productId = @product.Id })';">
+                                    <button type="button" class="btn btn-danger" onclick="location.href='@Url.Action("Create", "Carts", new { id = @product.Id })';">
                                         В корзину
                                     </button>                                    
                                 </div>                                

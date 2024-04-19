@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OnlineShopWebApp.Models;
 using OnlineShopWebApp.Repositories.Interfaces;
 
 namespace OnlineShopWebApp.Controllers
@@ -7,6 +6,7 @@ namespace OnlineShopWebApp.Controllers
     public class ProductsController : Controller
     {
         private readonly IProductsRepository productsRepository;
+
 
         public ProductsController(IProductsRepository productRepository)
         {
@@ -18,14 +18,14 @@ namespace OnlineShopWebApp.Controllers
         {
             if (id == Guid.Empty)
             {
-                return BadRequest("Неверный идентификатор книги");
+                return NotFound();
             }
 
             var product = productsRepository.TryGetById(id);
 
             if (product == null)
             {
-                return NotFound("Книга не найдена");
+                return NotFound();
             }
 
             return View(product);

@@ -8,33 +8,54 @@ namespace OnlineShopWebApp.Controllers
         private readonly IProductsRepository productsRepository;
         private readonly ICartsRepository cartsRepository;
 
+
         public CartsController(IProductsRepository productsRepository, ICartsRepository cartsRepository)
         {
             this.productsRepository = productsRepository;
             this.cartsRepository = cartsRepository;
         }
 
+
         public IActionResult Index()
         {
             var cart = cartsRepository.TryGetByUserId(Constants.UserId);
+
             return View(cart);
         }
 
-        public IActionResult Create(Guid productId)
-        {            
-            var product = productsRepository.TryGetById(productId);
+
+        public IActionResult Create(Guid id)
+        {         
+            if (id == Guid.Empty)
+            {
+                return NotFound();
+            }
+
+            var product = productsRepository.TryGetById(id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
 
             cartsRepository.Add(product, Constants.UserId);
 
             return RedirectToAction("Index");
         }
 
-        public IActionResult DecreaseAmount(Guid productId)
-        {            
-            cartsRepository.DecreaseAmount(productId, Constants.UserId);
+
+        public IActionResult DecreaseAmount(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                return NotFound();
+            }
+
+            cartsRepository.DecreaseAmount(id, Constants.UserId);
 
             return RedirectToAction("Index");
         }
+
 
         public IActionResult Clear() 
         {
