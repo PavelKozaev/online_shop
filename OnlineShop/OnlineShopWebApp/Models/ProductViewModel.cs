@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OnlineShopWebApp.Models
 {
-    public class Product
+    public class ProductViewModel
     {
         public Guid Id { get; set; }
         [Required(ErrorMessage = "Название продукта обязательно к заполнению")]
@@ -33,17 +33,5 @@ namespace OnlineShopWebApp.Models
         [Required(ErrorMessage = "Необходимо указать путь к изображению")]
         [Display(Name = "Путь к изображению")]
         public string ImagePath { get; set; }
-
-        public Product() => Id = Guid.NewGuid();
-
-        public Product(string name, string author, decimal cost, string description, string imagePath)
-        {
-            Id = Guid.NewGuid();
-            Name = name;
-            Author = author;
-            Cost = cost;
-            Description = description;
-            ImagePath = imagePath;
-        }        
     }
 }

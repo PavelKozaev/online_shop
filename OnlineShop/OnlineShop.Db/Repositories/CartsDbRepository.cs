@@ -1,15 +1,19 @@
-﻿using OnlineShopWebApp.Models;
-using OnlineShopWebApp.Repositories.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using OnlineShop.Db.Models;
+using OnlineShop.Db.Repositories.Interfaces;
 
-namespace OnlineShopWebApp.Repositories
+namespace OnlineShop.Db.Repositories
 {
-    public class CartsInMemoryRepository : ICartsRepository
+    public class CartsDbRepository : ICartsRepository
     {
-        private readonly List<Cart> carts = [];
-
+        private readonly DatabaseContext databaseContext;
+        public CartsDbRepository(DatabaseContext databaseContext)
+        {
+            this.databaseContext = databaseContext;
+        }
         public Cart TryGetByUserId(string userId)
         {
-            return carts.FirstOrDefault(c => c.UserId == userId);
+            return databaseContext.Carts.Include(x => x.Items).ThenInclude(x => x.Product).FirstOrDefault(c => c.UserId == userId);
         }
 
         public void Add(Product product, string userId)
@@ -20,20 +24,20 @@ namespace OnlineShopWebApp.Repositories
             {
                 var newCart = new Cart
                 {
-                    Id = Guid.NewGuid(),
-                    UserId = userId,
-                    Items =
-                    [
-                        new CartItem
-                        {
-                            Id = Guid.NewGuid() ,
-                            Amount = 1,
-                            Product = product
-                        }
-                    ]
+                    UserId = userId
                 };
 
-                carts.Add(newCart);
+                newCart.Items = new List<CartItem>
+                {
+                    new CartItem
+                    {
+                        Amount = 1,
+                        Product = product,
+                        Cart = newCart
+                    }
+                };
+
+                databaseContext.Carts.Add(newCart);
             }
             else
             {
@@ -47,37 +51,44 @@ namespace OnlineShopWebApp.Repositories
                 {
                     existingCart.Items.Add(new CartItem
                     {
-                        Id = Guid.NewGuid(),
                         Amount = 1,
-                        Product = product
+                        Product = product,
+                        Cart = existingCart
                     });
                 }
             }
+
+            databaseContext.SaveChanges();
         }
 
         public void DecreaseAmount(Guid productId, string userId)
         {
             var existingCart = TryGetByUserId(userId);
-                        
+
             var existingCartItem = existingCart?.Items?.FirstOrDefault(x => x.Product.Id == productId);
 
             if (existingCartItem == null)
             {
                 return;
             }
-            
+
             existingCartItem.Amount -= 1;
 
             if (existingCartItem.Amount == 0)
             {
                 existingCart.Items.Remove(existingCartItem);
             }
+
+            databaseContext.SaveChanges();
         }
 
         public void Clear(string userId)
         {
             var existingCart = TryGetByUserId(userId);
-            carts.Remove(existingCart);
+
+            databaseContext.Carts.Remove(existingCart);
+
+            databaseContext.SaveChanges();
         }
     }
 }

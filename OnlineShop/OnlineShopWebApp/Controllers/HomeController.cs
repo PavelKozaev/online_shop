@@ -1,7 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using OnlineShop.Db.Repositories.Interfaces;
+using OnlineShopWebApp.Helpers;
 using OnlineShopWebApp.Models;
-using OnlineShopWebApp.Repositories.Interfaces;
 
 namespace OnlineShopWebApp.Controllers
 {
@@ -24,8 +25,8 @@ namespace OnlineShopWebApp.Controllers
             {
                 return NotFound();
             }
-
-            return View(products);
+                        
+            return View(Mapping.ToProductViewModels(products));
         }
 
 

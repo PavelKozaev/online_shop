@@ -1,10 +1,10 @@
-﻿using OnlineShopWebApp.Models;
+﻿using OnlineShop.Db.Models;
 
-namespace OnlineShopWebApp.Repositories.Interfaces
+namespace OnlineShop.Db.Repositories.Interfaces
 {
     public interface IProductsRepository
     {
-        IEnumerable<Product> GetAll();
+        List<Product> GetAll();
         Product TryGetById(Guid id);
         void Add(Product Product);
         void Edit(Product product);

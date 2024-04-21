@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineShop.Db.Models;
+using OnlineShop.Db.Repositories.Interfaces;
+using OnlineShopWebApp.Helpers;
 using OnlineShopWebApp.Models;
-using OnlineShopWebApp.Repositories.Interfaces;
 
 namespace OnlineShopWebApp.Areas.Administrator.Controllers
 {
@@ -24,8 +26,8 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             {
                 return NotFound();
             }
-
-            return View(products);
+                        
+            return View(Mapping.ToProductViewModels(products));
         }
 
 
@@ -54,15 +56,25 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
 
 
         [HttpPost]
-        public IActionResult Create(Product product)
+        public IActionResult Create(ProductViewModel product)
         {
             if (ModelState.IsValid)
             {
-                productsRepository.Add(product);
+                var productDb = new Product
+                {
+                    Name = product.Name,
+                    Author = product.Author,
+                    Cost = product.Cost,
+                    Description = product.Description,
+                    ImagePath = product.ImagePath,
+                };
+
+                productsRepository.Add(productDb);
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
         }
+
 
         public IActionResult Edit(Guid id)
         {
@@ -76,21 +88,29 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             if (product == null)
             {
                 return NotFound();
-            }
+            }            
 
-            return View(product);
+            return View(Mapping.ToProductViewModel(product));
         }
 
 
         [HttpPost]
-        public IActionResult Edit(Product product)
+        public IActionResult Edit(ProductViewModel product)
         {     
             if (ModelState.IsValid)
             {
+                var productDb = new Product
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Author = product.Author,
+                    Cost = product.Cost,
+                    Description = product.Description,
+                    ImagePath = product.ImagePath,
+                };
 
-                productsRepository.Edit(product);
+                productsRepository.Edit(productDb);
                 return RedirectToAction(nameof(Index));
-
             }
 
             return View(product);
@@ -99,7 +119,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
 
         public IActionResult Delete(Guid id)
         {
-            if (id == null)
+            if (id == Guid.Empty)
             {
                 return NotFound();
             }
