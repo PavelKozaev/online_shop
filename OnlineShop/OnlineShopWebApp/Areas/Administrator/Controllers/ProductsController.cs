@@ -95,25 +95,15 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
 
 
         [HttpPost]
-        public IActionResult Edit(ProductViewModel product)
+        public IActionResult Edit(ProductViewModel productViewModel)
         {     
             if (ModelState.IsValid)
-            {
-                var productDb = new Product
-                {
-                    Id = product.Id,
-                    Name = product.Name,
-                    Author = product.Author,
-                    Cost = product.Cost,
-                    Description = product.Description,
-                    ImagePath = product.ImagePath,
-                };
-
-                productsRepository.Edit(productDb);
+            {    
+                productsRepository.Edit(Mapping.ToProduct(productViewModel));
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(product);
+            return View(productViewModel);
         }
         
 

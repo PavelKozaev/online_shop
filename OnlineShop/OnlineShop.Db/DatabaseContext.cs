@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineShop.Db.Models;
 
-namespace OnlineShop.Db.Repositories
+namespace OnlineShop.Db
 {
     public class DatabaseContext : DbContext
     {
@@ -12,6 +12,6 @@ namespace OnlineShop.Db.Repositories
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Cart> Carts { get; set; }
-        public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<Order> Orders { get; set; }
     }
 }

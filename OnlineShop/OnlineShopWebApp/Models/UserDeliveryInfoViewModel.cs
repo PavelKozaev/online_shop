@@ -2,7 +2,7 @@
 
 namespace OnlineShopWebApp.Models
 {
-    public class UserDeliveryInfo
+    public class UserDeliveryInfoViewModel
     {
         [Required(ErrorMessage = "Укажите полностью ваше имя, фамилию и отчество")]
         [RegularExpression(@"^[а-яА-ЯёЁ\s\-]+$", ErrorMessage = "ФИО может содержать только буквы русского алфавита, пробелы и дефисы")]

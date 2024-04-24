@@ -2,7 +2,6 @@
 using OnlineShop.Db.Repositories.Interfaces;
 using OnlineShopWebApp.Helpers;
 using OnlineShopWebApp.Models;
-using OnlineShopWebApp.Repositories.Interfaces;
 
 namespace OnlineShopWebApp.Controllers
 {
@@ -26,19 +25,19 @@ namespace OnlineShopWebApp.Controllers
 
 
         [HttpPost]
-        public IActionResult Buy(UserDeliveryInfo user)
+        public IActionResult Buy(UserDeliveryInfoViewModel user)
         {
             var existingCart = cartsRepository.TryGetByUserId(Constants.UserId);
 
             var existingCartViewModel = Mapping.ToCartViewModel(existingCart);
 
-            var order = new Order
+            var order = new OrderViewModel
             {
                 User = user,
                 Items = existingCartViewModel.Items,
             };
 
-            ordersRepository.Add(order);
+            ordersRepository.Add(Mapping.ToOrder(order));
 
             cartsRepository.Clear(Constants.UserId);
 

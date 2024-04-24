@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using OnlineShop.Db;
 using OnlineShop.Db.Repositories;
 using OnlineShop.Db.Repositories.Interfaces;
 using OnlineShopWebApp.Repositories;
@@ -22,7 +23,7 @@ builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(conn
 
 builder.Services.AddTransient<IProductsRepository, ProductsDbRepository>();
 builder.Services.AddTransient<ICartsRepository, CartsDbRepository>();
-builder.Services.AddSingleton<IOrdersRepository, OrdersInMemoryRepository>();
+builder.Services.AddTransient<IOrdersRepository, OrdersDbRepository>();
 builder.Services.AddSingleton<IRolesRepository, RolesInMemoryRepository>();
 builder.Services.AddSingleton<IUsersRepository, UsersInMemoryRepository>();
 
