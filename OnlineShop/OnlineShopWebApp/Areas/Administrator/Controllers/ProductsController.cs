@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Db.Models;
 using OnlineShop.Db.Repositories.Interfaces;
-using OnlineShopWebApp.Helpers;
 using OnlineShopWebApp.Models;
 
 namespace OnlineShopWebApp.Areas.Administrator.Controllers
@@ -10,11 +10,12 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
     public class ProductsController : Controller
     {
         private readonly IProductsRepository productsRepository;
+        private readonly IMapper mapper;
 
-
-        public ProductsController(IProductsRepository productsRepository)
+        public ProductsController(IProductsRepository productsRepository, IMapper mapper)
         {
             this.productsRepository = productsRepository;
+            this.mapper = mapper;
         }
 
 
@@ -26,8 +27,9 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             {
                 return NotFound();
             }
-                        
-            return View(Mapping.ToProductViewModels(products));
+
+            var productViewModels = mapper.Map<List<ProductViewModel>>(products); 
+            return View(productViewModels);
         }
 
 
@@ -45,7 +47,9 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
                 return NotFound();
             }
 
-            return View(product);
+            var productViewModel = mapper.Map<ProductViewModel>(product);
+
+            return View(productViewModel);
         }
 
 
@@ -56,23 +60,15 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
 
 
         [HttpPost]
-        public IActionResult Create(ProductViewModel product)
+        public IActionResult Create(ProductViewModel productViewModel)
         {
             if (ModelState.IsValid)
             {
-                var productDb = new Product
-                {
-                    Name = product.Name,
-                    Author = product.Author,
-                    Cost = product.Cost,
-                    Description = product.Description,
-                    ImagePath = product.ImagePath,
-                };
-
+                var productDb = mapper.Map<Product>(productViewModel);
                 productsRepository.Add(productDb);
                 return RedirectToAction(nameof(Index));
             }
-            return View(product);
+            return View(productViewModel);
         }
 
 
@@ -88,18 +84,28 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             if (product == null)
             {
                 return NotFound();
-            }            
+            }
 
-            return View(Mapping.ToProductViewModel(product));
+            var productViewModel = mapper.Map<ProductViewModel>(product);
+
+            return View(productViewModel);
         }
 
 
         [HttpPost]
         public IActionResult Edit(ProductViewModel productViewModel)
-        {     
+        {
             if (ModelState.IsValid)
-            {    
-                productsRepository.Edit(Mapping.ToProduct(productViewModel));
+            {
+                var productDb = productsRepository.TryGetById(productViewModel.Id);
+                if (productDb == null)
+                {
+                    return NotFound();
+                }
+
+                mapper.Map(productViewModel, productDb);
+                productsRepository.Edit(productDb);
+
                 return RedirectToAction(nameof(Index));
             }
 

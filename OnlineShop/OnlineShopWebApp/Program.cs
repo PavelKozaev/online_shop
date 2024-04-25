@@ -1,9 +1,11 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using OnlineShop.Db;
 using OnlineShop.Db.Repositories;
 using OnlineShop.Db.Repositories.Interfaces;
+using OnlineShopWebApp.Profiles;
 using OnlineShopWebApp.Repositories;
 using OnlineShopWebApp.Repositories.Interfaces;
 using Serilog;
@@ -14,6 +16,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((context, configuration) => configuration
 .ReadFrom.Configuration(context.Configuration)
 .Enrich.WithProperty("ApplicationName", "Online Shop"));
+
+var mappingConfig = new MapperConfiguration(mc =>
+{
+    mc.AddProfile(new ProductProfile());
+    // Другие профили
+});
+
+IMapper mapper = mappingConfig.CreateMapper();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -26,6 +36,7 @@ builder.Services.AddTransient<ICartsRepository, CartsDbRepository>();
 builder.Services.AddTransient<IOrdersRepository, OrdersDbRepository>();
 builder.Services.AddSingleton<IRolesRepository, RolesInMemoryRepository>();
 builder.Services.AddSingleton<IUsersRepository, UsersInMemoryRepository>();
+builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {

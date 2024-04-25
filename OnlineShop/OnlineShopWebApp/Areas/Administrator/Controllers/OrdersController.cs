@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using OnlineShop.Db.Models;
 using OnlineShop.Db.Repositories.Interfaces;
-using OnlineShopWebApp.Helpers;
 using OnlineShopWebApp.Models;
 
 namespace OnlineShopWebApp.Areas.Administrator.Controllers
@@ -9,15 +10,18 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
     public class OrdersController : Controller
     {
         private readonly IOrdersRepository ordersRepository;
+        private readonly IMapper mapper;
 
-        public OrdersController(IOrdersRepository ordersRepository)
+        public OrdersController(IOrdersRepository ordersRepository, IMapper mapper)
         {
             this.ordersRepository = ordersRepository;
+            this.mapper = mapper;
         }
         public IActionResult Index()
         {
             var orders = ordersRepository.GetAll();
-            return View(Mapping.ToOrderViewModels(orders));
+            var orderViewModels = mapper.Map<List<OrderViewModel>>(orders);
+            return View(orderViewModels);
         }        
 
         public IActionResult Details(Guid id)
@@ -37,9 +41,11 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             return View(order);
         }
 
-        public IActionResult UpdateStatus(Guid id, OrderStatusViewModel status)
+        public IActionResult UpdateStatus(Guid id, OrderStatusViewModel statusViewModel)
         {
-            ordersRepository.UpdateStatus(id, Mapping.ToOrderStatus(status));
+            var status = mapper.Map<OrderStatus>(statusViewModel);
+
+            ordersRepository.UpdateStatus(id, status);
             return RedirectToAction(nameof(Index));
         }
     }

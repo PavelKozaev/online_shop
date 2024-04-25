@@ -1,7 +1,7 @@
 using System.Diagnostics;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Db.Repositories.Interfaces;
-using OnlineShopWebApp.Helpers;
 using OnlineShopWebApp.Models;
 
 namespace OnlineShopWebApp.Controllers
@@ -9,11 +9,12 @@ namespace OnlineShopWebApp.Controllers
     public class HomeController : Controller
     {
         private readonly IProductsRepository productsRepository;
+        private readonly IMapper mapper;
 
-
-        public HomeController(IProductsRepository productsRepository)
+        public HomeController(IProductsRepository productsRepository, IMapper mapper)
         {
             this.productsRepository = productsRepository;
+            this.mapper = mapper;
         }
 
 
@@ -25,8 +26,8 @@ namespace OnlineShopWebApp.Controllers
             {
                 return NotFound();
             }
-                        
-            return View(Mapping.ToProductViewModels(products));
+            var productViewModels = mapper.Map<List<ProductViewModel>>(products); 
+            return View(productViewModels);
         }
 
 

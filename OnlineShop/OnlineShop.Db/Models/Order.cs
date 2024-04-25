@@ -8,7 +8,7 @@
         public OrderStatus Status { get; set; }
         public DateTime CreateDateTime { get; set; }
         public Order()
-        {
+        {           
             Status = OrderStatus.Created;
             CreateDateTime = DateTime.Now.ToUniversalTime();
         }

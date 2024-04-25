@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Db.Repositories.Interfaces;
 using OnlineShopWebApp.Helpers;
+using OnlineShopWebApp.Models;
 
 namespace OnlineShopWebApp.Controllers
 {
@@ -8,12 +10,14 @@ namespace OnlineShopWebApp.Controllers
     {
         private readonly IProductsRepository productsRepository;
         private readonly ICartsRepository cartsRepository;
+        private readonly IMapper mapper;
 
 
-        public CartsController(IProductsRepository productsRepository, ICartsRepository cartsRepository)
+        public CartsController(IProductsRepository productsRepository, ICartsRepository cartsRepository, IMapper mapper)
         {
             this.productsRepository = productsRepository;
             this.cartsRepository = cartsRepository;
+            this.mapper = mapper;
         }
 
 
@@ -21,7 +25,8 @@ namespace OnlineShopWebApp.Controllers
         {
             var cart = cartsRepository.TryGetByUserId(Constants.UserId);
 
-            return View(Mapping.ToCartViewModel(cart));
+            var cartViewModel = mapper.Map<CartViewModel>(cart); 
+            return View(cartViewModel);
         }
 
 
