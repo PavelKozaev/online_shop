@@ -7,23 +7,14 @@ namespace OnlineShop.Db.Repositories
     public class CartsDbRepository : ICartsRepository
     {
         private readonly DatabaseContext databaseContext;
-
-
         public CartsDbRepository(DatabaseContext databaseContext)
         {
             this.databaseContext = databaseContext;
         }
-
-
         public Cart TryGetByUserId(string userId)
         {
-            return databaseContext.Carts
-                .AsNoTracking()
-                .Include(x => x.Items)
-                    .ThenInclude(x => x.Product)
-                .FirstOrDefault(c => c.UserId == userId);
+            return databaseContext.Carts.Include(x => x.Items).ThenInclude(x => x.Product).FirstOrDefault(c => c.UserId == userId);
         }
-
 
         public void Add(Product product, string userId)
         {
@@ -40,8 +31,9 @@ namespace OnlineShop.Db.Repositories
                 {
                     new CartItem
                     {
-                        Amount = 1, 
-                        Product = product
+                        Amount = 1,
+                        Product = product,
+                        Cart = newCart
                     }
                 };
 
@@ -60,14 +52,14 @@ namespace OnlineShop.Db.Repositories
                     existingCart.Items.Add(new CartItem
                     {
                         Amount = 1,
-                        Product = product
+                        Product = product,
+                        Cart = existingCart
                     });
                 }
             }
 
             databaseContext.SaveChanges();
         }
-
 
         public void DecreaseAmount(Guid productId, string userId)
         {
@@ -90,14 +82,13 @@ namespace OnlineShop.Db.Repositories
             databaseContext.SaveChanges();
         }
 
-
         public void Clear(string userId)
         {
             var existingCart = TryGetByUserId(userId);
-                        
+
             databaseContext.Carts.Remove(existingCart);
 
-            databaseContext.SaveChanges();                     
+            databaseContext.SaveChanges();
         }
     }
 }

@@ -3,7 +3,7 @@
     public class OrderViewModel
     {
         public Guid Id { get; set; }
-        public UserDeliveryInfoViewModel UserDeliveryInfo { get; set; }
+        public UserDeliveryInfoViewModel User { get; set; }
         public List<CartItemViewModel> Items { get; set; }
         public OrderStatusViewModel Status { get; set; }
         public DateTime CreateDateTime { get; set; }

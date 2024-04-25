@@ -38,9 +38,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
                 return NotFound();
             }
 
-            var orderViewModel = mapper.Map<OrderViewModel>(order);
-
-            return View(orderViewModel);
+            return View(order);
         }
 
         public IActionResult UpdateStatus(Guid id, OrderStatusViewModel statusViewModel)

@@ -14,5 +14,9 @@
 
         public string ImagePath { get; set; }
         public List<CartItem> CartItems { get; set;}
+        public Product()
+        {
+            CartItems = new List<CartItem>();
+        }
     }
 }
