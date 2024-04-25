@@ -7,36 +7,43 @@ namespace OnlineShop.Db.Repositories
     public class OrdersDbRepository : IOrdersRepository
     {
         private readonly DatabaseContext databaseContext;
+
+
         public OrdersDbRepository(DatabaseContext databaseContext)
         {
             this.databaseContext = databaseContext;
         }
 
+
         public List<Order> GetAll() 
         {
             return databaseContext.Orders
-            .Include(x => x.User)
-            .Include(x => x.Items)
-            .ThenInclude(x => x.Product)
-            .ToList();
+                .AsNoTracking()
+                .Include(x => x.UserDeliveryInfo)
+                .Include(x => x.Items)
+                    .ThenInclude(x => x.Product)
+                .ToList();
         }
 
 
         public Order TryGetById(Guid id)
         {
             return databaseContext.Orders
-            .Include(x => x.User)
-            .Include(x => x.Items)
-            .ThenInclude(x => x.Product)
-            .FirstOrDefault(o => o.Id == id);
+                .AsNoTracking()
+                .Include(cart => cart.UserDeliveryInfo)
+                .Include(cart => cart.Items)
+                    .ThenInclude(item => item.Product)
+                .FirstOrDefault(o => o.Id == id);
         }
 
 
         public void Add(Order order)
-        {
+        {      
+            order.CreateDateTime = order.CreateDateTime.ToUniversalTime();
+            
             databaseContext.Orders.Add(order);
-            databaseContext.SaveChanges();
-        }               
+            databaseContext.SaveChanges(); 
+        }             
 
 
         public void UpdateStatus(Guid orderId, OrderStatus newStatus)

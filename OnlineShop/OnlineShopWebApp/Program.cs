@@ -17,13 +17,15 @@ builder.Host.UseSerilog((context, configuration) => configuration
 .ReadFrom.Configuration(context.Configuration)
 .Enrich.WithProperty("ApplicationName", "Online Shop"));
 
-var mappingConfig = new MapperConfiguration(mc =>
-{
-    mc.AddProfile(new ProductProfile());
-    // Другие профили
-});
+//var mappingConfig = new MapperConfiguration(mc =>
+//{
+//    mc.AddProfile(new ProductProfile());
+//    mc.AddProfile(new CartProfile());
+//    mc.AddProfile(new OrderProfile());
+//    // Другие профили
+//});
 
-IMapper mapper = mappingConfig.CreateMapper();
+//IMapper mapper = mappingConfig.CreateMapper();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

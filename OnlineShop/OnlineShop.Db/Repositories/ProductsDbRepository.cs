@@ -13,7 +13,9 @@ namespace OnlineShop.Db.Repositories
             this.databaseContext = databaseContext;
         }
 
+
         public List<Product> GetAll() => databaseContext.Products.ToList();
+
 
         public Product TryGetById(Guid id) => databaseContext.Products.FirstOrDefault(product => product.Id == id);
 
@@ -23,6 +25,7 @@ namespace OnlineShop.Db.Repositories
             databaseContext.Products.Add(product);
             databaseContext.SaveChanges();
         }
+
 
         public void Edit(Product product)
         {
@@ -41,6 +44,7 @@ namespace OnlineShop.Db.Repositories
 
             databaseContext.SaveChanges();
         }
+
 
         public void Remove(Guid id)
         {

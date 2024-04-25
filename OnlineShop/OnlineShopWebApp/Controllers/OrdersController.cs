@@ -28,7 +28,7 @@ namespace OnlineShopWebApp.Controllers
 
 
         [HttpPost]
-        public IActionResult Buy(UserDeliveryInfoViewModel user)
+        public IActionResult Buy(UserDeliveryInfoViewModel userDeliveryInfoViewModel)
         {
             var existingCart = cartsRepository.TryGetByUserId(Constants.UserId);
 
@@ -36,7 +36,7 @@ namespace OnlineShopWebApp.Controllers
 
             var orderViewModel = new OrderViewModel
             {
-                User = user,
+                UserDeliveryInfo = userDeliveryInfoViewModel,
                 Items = existingCartViewModel.Items,
             };
 
