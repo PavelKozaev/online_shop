@@ -32,21 +32,17 @@ namespace OnlineShopWebApp.Controllers
         {
             var existingCart = cartsRepository.TryGetByUserId(Constants.UserId);
 
-            var existingCartViewModel = mapper.Map<CartViewModel>(existingCart);
-
-            var orderViewModel = new OrderViewModel
+            var order = new Order
             {
-                User = user,
-                Items = existingCartViewModel.Items,
+                Items = existingCart.Items,
+                User = mapper.Map<UserDeliveryInfo>(user),
             };
-
-            var order = mapper.Map<Order>(orderViewModel);
-
             ordersRepository.Add(order);
 
             cartsRepository.Clear(Constants.UserId);
 
-            return View(orderViewModel);
+            
+            return View();
         }
     }
 }
