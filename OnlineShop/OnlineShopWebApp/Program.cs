@@ -20,7 +20,8 @@ builder.Host.UseSerilog((context, configuration) => configuration
 var mappingConfig = new MapperConfiguration(mc =>
 {
     mc.AddProfile(new ProductProfile());
-    // Другие профили
+    mc.AddProfile(new CartProfile());
+    mc.AddProfile<OrderProfile>();
 });
 
 IMapper mapper = mappingConfig.CreateMapper();

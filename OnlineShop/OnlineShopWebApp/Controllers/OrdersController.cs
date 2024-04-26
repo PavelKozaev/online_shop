@@ -37,12 +37,20 @@ namespace OnlineShopWebApp.Controllers
                 Items = existingCart.Items,
                 User = mapper.Map<UserDeliveryInfo>(user),
             };
+
             ordersRepository.Add(order);
 
-            cartsRepository.Clear(Constants.UserId);
+            cartsRepository.Clear(Constants.UserId);           
 
-            
-            return View();
+            return RedirectToAction(nameof(ThankYouPage), new { id = order.Id });
+        }
+
+        
+        public IActionResult ThankYouPage(Guid id)
+        {
+            var order = ordersRepository.TryGetById(id);
+            var orderViewModel = mapper.Map<OrderViewModel>(order);
+            return View(orderViewModel);
         }
     }
 }

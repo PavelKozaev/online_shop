@@ -38,13 +38,13 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
                 return NotFound();
             }
 
-            return View(order);
+            var orderViewModel = mapper.Map<OrderViewModel>(order);
+
+            return View(orderViewModel);
         }
 
-        public IActionResult UpdateStatus(Guid id, OrderStatusViewModel statusViewModel)
-        {
-            var status = mapper.Map<OrderStatus>(statusViewModel);
-
+        public IActionResult UpdateStatus(Guid id, OrderStatus status)
+        {          
             ordersRepository.UpdateStatus(id, status);
             return RedirectToAction(nameof(Index));
         }
