@@ -14,8 +14,25 @@
 
         public string ImagePath { get; set; }
         public List<CartItem> CartItems { get; set;}
-        public Product()
+        public Product(string Name, string Author, decimal Cost, string Description, string ImagePath)
         {
+            Id = Guid.NewGuid();
+            this.Name = Name;
+            this.Author = Author;
+            this.Cost = Cost;
+            this.Description = Description;
+            this.ImagePath = ImagePath;
+            CartItems = new List<CartItem>();
+        }
+
+        public Product(Guid Id, string Name, string Author, decimal Cost, string Description, string ImagePath)
+        {
+            this.Id = Id;
+            this.Name = Name;
+            this.Author = Author;
+            this.Cost = Cost;
+            this.Description = Description;
+            this.ImagePath = ImagePath;
             CartItems = new List<CartItem>();
         }
     }
