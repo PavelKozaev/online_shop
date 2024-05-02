@@ -44,5 +44,12 @@ namespace OnlineShopWebApp.Controllers
 
             return RedirectToAction("Index");
         }
+
+
+        public IActionResult Clear()
+        {
+            favoritesRepository.Clear(Constants.UserId);
+            return RedirectToAction("Index");
+        }
     }
 }

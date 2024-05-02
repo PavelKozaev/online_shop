@@ -33,12 +33,13 @@
                         <div class="mt-auto">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-secondary" onclick="location.href='@Url.Action("Index", "Products", new { id = product.Id })';">
-                                        Подробнее
-                                    </button>
-                                    <button type="button" class="btn btn-danger" onclick="location.href='@Url.Action("Create", "Carts", new { productId = @product.Id })';">
-                                        В корзину
-                                    </button>
+                                    <a asp-controller="Products" asp-action="Index" asp-route-id="@product.Id" class="btn btn-secondary">Подробнее</a>
+                                    <a asp-controller="Carts" asp-action="Create" asp-route-id="@product.Id" class="btn btn-danger">В корзину</a>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-lg-around align-items-center">
+                                <div class="btn-group">
+                                    <a asp-controller="Favorites" asp-action="AddToFavorites" asp-route-productId="@product.Id" class="btn btn-success">В избранное</a>
                                 </div>
                             </div>
                         </div>

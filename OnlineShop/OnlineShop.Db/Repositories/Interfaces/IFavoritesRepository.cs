@@ -6,6 +6,7 @@ namespace OnlineShop.Db.Repositories.Interfaces
     {
         Favorites TryGetByUserId(string userId);
         void Add(Product product, string userId);
-        void Remove(Product product, string userId);        
+        void Remove(Product product, string userId);   
+        void Clear(string userId);
     }
 }

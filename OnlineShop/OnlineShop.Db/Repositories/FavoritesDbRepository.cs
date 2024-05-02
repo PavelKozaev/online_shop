@@ -50,14 +50,16 @@ namespace OnlineShop.Db.Repositories
         public void Remove(Product product, string userId)
         {
             var favorites = TryGetByUserId(userId);
-
-            if (favorites is null)
-            {
-                return;
-            }          
-            
+               
             favorites.Products.Remove(product);
 
+            dbContext.SaveChanges();
+        }
+
+        public void Clear(string userId)
+        {
+            var favorites = TryGetByUserId(userId);
+            favorites.Products.Clear();
             dbContext.SaveChanges();
         }
     }

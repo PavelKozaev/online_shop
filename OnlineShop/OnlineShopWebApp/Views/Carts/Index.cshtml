@@ -25,8 +25,8 @@
                     <td>@item.Amount</td>
                     <td>@item.Cost</td>
                     <td>
-                        <a href="/Carts/DecreaseAmount?id=@item.Product.Id" class="btn btn-success" role="button">-</a>
-                        <a href="/Carts/Create?id=@item.Product.Id" class="btn btn-success" role="button">+</a>
+                        <a asp-controller="Carts" asp-action="DecreaseAmount" asp-route-id="@item.Product.Id" class="btn btn-success">-</a>
+                        <a asp-controller="Carts" asp-action="Create" asp-route-id="@item.Product.Id" class="btn btn-success">+</a>
                     </td>
                 </tr>
             }
@@ -36,18 +36,19 @@
         <h3>Общая сумма: <span class="total-sum">@Model.Cost</span> руб.</h3>
     </div>
     <div class="action">
-        <a href="/Home/Index" class="btn btn-primary role=" button"">Продолжить покупки</a>
-        <a href="/Orders/Index" class="btn btn-success" role="button">Оформить заказ</a>
-        <a href="/Carts/Clear" class="btn btn-danger" role="button">Очистить корзину</a>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Продолжить покупки</a>
+        <a asp-controller="Favorites" asp-action="Index" class="btn btn-primary">Перейти в избранное</a>
+        <a asp-controller="Orders" asp-action="Index" class="btn btn-success">Оформить заказ</a>
+        <a asp-controller="Carts" asp-action="Clear" class="btn btn-danger">Очистить корзину</a>
     </div>
 }
 
 else
 {
-<div class="alert alert-info" role="alert">
-    <h4 class="alert-heading">Ваша корзина пуста.</h4>
-    <p>Вы еще не добавили товары в корзину. Пройдите по каталогу и выберите что-нибудь по своему вкусу!</p>
-    <hr>
-    <a class="btn btn-primary" href="/Home/Index">Перейти в каталог</a>
-</div>
+    <div class="alert alert-info" role="alert">
+        <h4 class="alert-heading">Ваша корзина пуста.</h4>
+        <p>Вы еще не добавили продукты в корзину. Пройдите в каталогу и выберите что-нибудь по своему вкусу!</p>
+        <hr>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Перейти в каталог</a>
+    </div>
 }
