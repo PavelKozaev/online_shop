@@ -22,6 +22,21 @@ namespace OnlineShop.Db.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("FavoritesProduct", b =>
+                {
+                    b.Property<Guid>("FavoritesId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ProductsId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("FavoritesId", "ProductsId");
+
+                    b.HasIndex("ProductsId");
+
+                    b.ToTable("FavoritesProduct");
+                });
+
             modelBuilder.Entity("OnlineShop.Db.Models.Cart", b =>
                 {
                     b.Property<Guid>("Id")
@@ -72,16 +87,11 @@ namespace OnlineShop.Db.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("Favorites");
                 });
@@ -203,6 +213,21 @@ namespace OnlineShop.Db.Migrations
                     b.ToTable("UserDeliveryInfo");
                 });
 
+            modelBuilder.Entity("FavoritesProduct", b =>
+                {
+                    b.HasOne("OnlineShop.Db.Models.Favorites", null)
+                        .WithMany()
+                        .HasForeignKey("FavoritesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineShop.Db.Models.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("OnlineShop.Db.Models.CartItem", b =>
                 {
                     b.HasOne("OnlineShop.Db.Models.Cart", "Cart")
@@ -221,17 +246,6 @@ namespace OnlineShop.Db.Migrations
                         .IsRequired();
 
                     b.Navigation("Cart");
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("OnlineShop.Db.Models.Favorites", b =>
-                {
-                    b.HasOne("OnlineShop.Db.Models.Product", "Product")
-                        .WithMany("Favorites")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("Product");
                 });
@@ -260,8 +274,6 @@ namespace OnlineShop.Db.Migrations
             modelBuilder.Entity("OnlineShop.Db.Models.Product", b =>
                 {
                     b.Navigation("CartItems");
-
-                    b.Navigation("Favorites");
                 });
 #pragma warning restore 612, 618
         }

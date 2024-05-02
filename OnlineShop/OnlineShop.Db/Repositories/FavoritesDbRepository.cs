@@ -8,42 +8,57 @@ namespace OnlineShop.Db.Repositories
     {
         private readonly DatabaseContext dbContext;
 
+
         public FavoritesDbRepository(DatabaseContext dbContext)
         {
             this.dbContext = dbContext;
         }
 
-        public List<Favorites> GetAll(string userId)
+
+        public Favorites TryGetByUserId(string userId)
         {
-            return dbContext.Favorites.Where(f => f.UserId == userId).Include(f => f.Product).ToList();
+            return dbContext.Favorites
+                .Include(f => f.Products)
+                .FirstOrDefault(f => f.UserId == userId);
         }
 
-        public void Add(Product? product, string userId)
-        {
-            var existingFavorites = dbContext.Favorites.Where(f => f.UserId == userId).Include(f => f.Product).ToList();
 
-            if (!existingFavorites.Any(f => f.Product == product))
+        public void Add(Product product, string userId)
+        {
+            var favorites = TryGetByUserId(userId);
+
+            if (favorites is null)
             {
-                var favorites = new Favorites()
+                dbContext.Favorites.Add(new Favorites()
                 {
-                    Product = product,
-                    UserId = userId
-                };
-                dbContext.Favorites.Add(favorites);
-                dbContext.SaveChanges();
+                    UserId = userId,
+                    Products = new List<Product>()
+                    {
+                        product
+                    }
+                });
             }
-        }
-
-        public void Remove(Product? product, string userId)
-        {
-            var existingFavorites = dbContext.Favorites.Where(f => f.UserId == userId).Include(f => f.Product).ToList();
-
-            if (existingFavorites.Any(f => f.Product == product))
+            else
             {
-                var FavoritesItemToRemove = existingFavorites.FirstOrDefault(f => f.Product == product);
-                dbContext.Favorites.Remove(FavoritesItemToRemove);
-                dbContext.SaveChanges();
-            }
+                favorites.Products.Add(product);
+            }                
+                        
+            dbContext.SaveChanges();
+        }        
+
+
+        public void Remove(Product product, string userId)
+        {
+            var favorites = TryGetByUserId(userId);
+
+            if (favorites is null)
+            {
+                return;
+            }          
+            
+            favorites.Products.Remove(product);
+
+            dbContext.SaveChanges();
         }
     }
 }

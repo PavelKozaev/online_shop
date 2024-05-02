@@ -20,22 +20,28 @@ namespace OnlineShopWebApp.Controllers
 
         public IActionResult Index()
         {
-            var existingCompareProduts = favoritesRepository.GetAll(Constants.UserId);
-            var response = mapper.Map<List<FavoritesViewModel>>(existingCompareProduts);
-            return View(response);
+            var favorites = favoritesRepository.TryGetByUserId(Constants.UserId);
+
+            var favoritesViewModel = mapper.Map<FavoritesViewModel>(favorites);     
+            
+            return View(favoritesViewModel);
         }
 
         public IActionResult AddToFavorites(Guid productId)
         {
             var product = productsRepository.TryGetById(productId);
+
             favoritesRepository.Add(product, Constants.UserId);
+
             return RedirectToAction("Index");
         }
 
         public IActionResult RemoveFromFavorites(Guid productId)
         {
             var product = productsRepository.TryGetById(productId);
+
             favoritesRepository.Remove(product, Constants.UserId);
+
             return RedirectToAction("Index");
         }
     }

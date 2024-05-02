@@ -4,6 +4,6 @@
     {
         public Guid Id { get; set; }
         public string UserId { get; set; }
-        public ProductViewModel Product { get; set; }
+        public List<ProductViewModel> Products { get; set; }
     }
 }

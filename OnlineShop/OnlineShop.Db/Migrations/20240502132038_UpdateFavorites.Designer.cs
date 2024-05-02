@@ -12,8 +12,8 @@ using OnlineShop.Db;
 namespace OnlineShop.Db.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240501173424_Initialization")]
-    partial class Initialization
+    [Migration("20240502132038_UpdateFavorites")]
+    partial class UpdateFavorites
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,21 @@ namespace OnlineShop.Db.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("FavoritesProduct", b =>
+                {
+                    b.Property<Guid>("FavoritesId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ProductsId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("FavoritesId", "ProductsId");
+
+                    b.HasIndex("ProductsId");
+
+                    b.ToTable("FavoritesProduct");
+                });
 
             modelBuilder.Entity("OnlineShop.Db.Models.Cart", b =>
                 {
@@ -67,6 +82,21 @@ namespace OnlineShop.Db.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("CartItem");
+                });
+
+            modelBuilder.Entity("OnlineShop.Db.Models.Favorites", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Favorites");
                 });
 
             modelBuilder.Entity("OnlineShop.Db.Models.Order", b =>
@@ -184,6 +214,21 @@ namespace OnlineShop.Db.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserDeliveryInfo");
+                });
+
+            modelBuilder.Entity("FavoritesProduct", b =>
+                {
+                    b.HasOne("OnlineShop.Db.Models.Favorites", null)
+                        .WithMany()
+                        .HasForeignKey("FavoritesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineShop.Db.Models.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("OnlineShop.Db.Models.CartItem", b =>

@@ -25,6 +25,7 @@ namespace OnlineShopWebApp.Controllers
             var cart = cartsRepository.TryGetByUserId(Constants.UserId);
 
             var cartViewModel = mapper.Map<CartViewModel>(cart); 
+
             return View(cartViewModel);
         }
 
