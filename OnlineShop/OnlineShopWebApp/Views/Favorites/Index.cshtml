@@ -1,0 +1,35 @@
+﻿@model List<FavoritesViewModel>
+
+@if (Model.Count == 0)
+{
+    <h3>Список избранного пуст</h3>
+}
+else
+{
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Цена, руб.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Product.Name</td>
+                            <td>@item.Product.Cost</td>
+                            <td>
+                                <a asp-controller="Favorites" asp-action="RemoveFromFavorites" asp-route-productId="@item.Product.Id" class="btn btn-danger">Убрать из избранного</a>
+                                <a asp-controller="Carts" asp-action="Create" asp-route-id="@item.Product.Id" class="btn btn-primary">Добавить в корзину</a>
+                            </td>
+                        </tr>                        
+                    }
+                    <a href="/Home/Index" class="btn btn-secondary" role="button">Продолжить покупки</a>
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

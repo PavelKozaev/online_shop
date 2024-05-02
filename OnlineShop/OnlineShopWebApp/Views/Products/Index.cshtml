@@ -8,9 +8,10 @@
     <!-- Дополнительная информация о продукте -->
     <div class="action">
         <!-- Кнопка для возврата на главную страницу -->
-        <a href="/Home/Index" class="btn btn-primary" role="button">Продолжить покупки</a>
+        <a href="/Home/Index" class="btn btn-secondary" role="button">Продолжить покупки</a>
 
         <!-- Кнопка для добавления в корзину (пока без функционала) -->
         <a href="/Carts/Create?id=@Model.Id" class="btn btn-success" role="button">Добавить в корзину</a>
+        <a href="/Favorites/AddToFavorites?productId=@Model.Id" class="btn btn-primary" role="button">Добавить в избранное</a>
     </div>
 </div>

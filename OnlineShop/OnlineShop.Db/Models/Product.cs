@@ -14,6 +14,9 @@
 
         public string ImagePath { get; set; }
         public List<CartItem> CartItems { get; set;}
+
+        public List<Favorites> Favorites { get; set; }
+
         public Product(string Name, string Author, decimal Cost, string Description, string ImagePath)
         {
             Id = Guid.NewGuid();
@@ -23,6 +26,7 @@
             this.Description = Description;
             this.ImagePath = ImagePath;
             CartItems = new List<CartItem>();
+            Favorites = new List<Favorites>();
         }
 
         public Product(Guid Id, string Name, string Author, decimal Cost, string Description, string ImagePath)
@@ -34,6 +38,7 @@
             this.Description = Description;
             this.ImagePath = ImagePath;
             CartItems = new List<CartItem>();
+            Favorites = new List<Favorites>();
         }
     }
 }

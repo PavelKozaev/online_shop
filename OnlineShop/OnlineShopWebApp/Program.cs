@@ -22,6 +22,7 @@ var mappingConfig = new MapperConfiguration(mc =>
     mc.AddProfile(new ProductProfile());
     mc.AddProfile(new CartProfile());
     mc.AddProfile(new OrderProfile());
+    mc.AddProfile(new FavoritesProfile());
 });
 
 IMapper mapper = mappingConfig.CreateMapper();
@@ -35,6 +36,7 @@ builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(conn
 builder.Services.AddTransient<IProductsRepository, ProductsDbRepository>();
 builder.Services.AddTransient<ICartsRepository, CartsDbRepository>();
 builder.Services.AddTransient<IOrdersRepository, OrdersDbRepository>();
+builder.Services.AddTransient<IFavoritesRepository, FavoritesDbRepository>();
 builder.Services.AddSingleton<IRolesRepository, RolesInMemoryRepository>();
 builder.Services.AddSingleton<IUsersRepository, UsersInMemoryRepository>();
 builder.Services.AddAutoMapper(typeof(Program));

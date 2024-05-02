@@ -24,6 +24,9 @@
                         <a class="btn btn-primary" asp-area="" asp-controller="Home" asp-action="Index">Главная</a>
                     </li>
                     <li class="nav-item">
+                        <a class="btn btn-primary" asp-area="" asp-controller="Favorites" asp-action="Index">Избранное</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="btn btn-danger" asp-area="" asp-controller="Carts" asp-action="Index">Корзина @await Component.InvokeAsync("Cart")</a>
                     </li>
                     <li class="nav-item">
