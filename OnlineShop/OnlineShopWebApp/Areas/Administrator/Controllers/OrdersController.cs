@@ -26,20 +26,8 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
 
         public IActionResult Details(Guid id)
         {
-            if (id == Guid.Empty)
-            {
-                return NotFound();
-            }
-
             var order = ordersRepository.TryGetById(id);
-
-            if (order == null)
-            {
-                return NotFound();
-            }
-
             var orderViewModel = mapper.Map<OrderViewModel>(order);
-
             return View(orderViewModel);
         }
 

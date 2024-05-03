@@ -21,11 +21,6 @@ namespace OnlineShopWebApp.Controllers
         public IActionResult Index()
         {
             var products = productsRepository.GetAll();
-
-            if (products == null)
-            {
-                return NotFound();
-            }
             var productViewModels = mapper.Map<List<ProductViewModel>>(products); 
             return View(productViewModels);
         }
@@ -40,6 +35,7 @@ namespace OnlineShopWebApp.Controllers
                 var findProducts = products.Where(product => product.Name.ToLower().Contains(name.ToLower())).ToList();
                 return View(findProducts);
             }
+
             return RedirectToAction("Index", "Home");
         }
 

@@ -22,12 +22,6 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
         public IActionResult Index()
         {
             var products = productsRepository.GetAll();
-
-            if (products == null)
-            {
-                return NotFound();
-            }
-
             var productViewModels = mapper.Map<List<ProductViewModel>>(products); 
             return View(productViewModels);
         }
@@ -35,20 +29,8 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
 
         public IActionResult Details(Guid id)
         {
-            if (id == Guid.Empty)
-            {
-                return NotFound();
-            }
-
             var product = productsRepository.TryGetById(id);
-
-            if (product == null)
-            {
-                return NotFound();
-            }
-
             var productViewModel = mapper.Map<ProductViewModel>(product);
-
             return View(productViewModel);
         }
 
@@ -68,6 +50,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
                 productsRepository.Add(productDb);
                 return RedirectToAction(nameof(Index));
             }
+
             return View(productViewModel);
         }
 
@@ -87,7 +70,6 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             }
 
             var productViewModel = mapper.Map<ProductViewModel>(product);
-
             return View(productViewModel);
         }
 
@@ -105,7 +87,6 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
 
                 mapper.Map(productViewModel, productDb);
                 productsRepository.Edit(productDb);
-
                 return RedirectToAction(nameof(Index));
             }
 
@@ -115,13 +96,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
 
         public IActionResult Delete(Guid id)
         {
-            if (id == Guid.Empty)
-            {
-                return NotFound();
-            }
-
             productsRepository.Remove(id);
-
             return RedirectToAction(nameof(Index));
         }
     }

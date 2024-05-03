@@ -39,9 +39,7 @@ namespace OnlineShopWebApp.Controllers
             };
 
             ordersRepository.Add(order);
-
-            cartsRepository.Clear(Constants.UserId);           
-
+            cartsRepository.Clear(Constants.UserId);      
             return RedirectToAction(nameof(ThankYouPage), new { id = order.Id });
         }
 

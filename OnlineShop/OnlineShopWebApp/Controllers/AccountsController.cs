@@ -56,6 +56,7 @@ namespace OnlineShopWebApp.Controllers
         public IActionResult Register(Register register)
         {
             var userAccount = usersRepository.TryGetByEmail(register.Email);
+
             if (userAccount != null)
             {
                 ModelState.AddModelError("", "Пользователь с таким Email уже есть.");
@@ -74,7 +75,6 @@ namespace OnlineShopWebApp.Controllers
             }
 
             usersRepository.Add(new User(register.Email, register.Password, register.FirstName, register.LastName, register.Phone));
-
             return RedirectToAction("Index", "Home");
         }
     }
