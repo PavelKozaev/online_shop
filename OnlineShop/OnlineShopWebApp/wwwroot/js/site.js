@@ -10,8 +10,14 @@ function toggleDescription(button) {
     if (description.classList.contains('description')) {
         description.classList.replace('description', 'description-full');
         button.textContent = 'Свернуть';
+
+        // Динамически определяем полную высоту описания после его раскрытия
+        description.style.maxHeight = description.scrollHeight + "px";
     } else {
         description.classList.replace('description-full', 'description');
         button.textContent = 'Читать дальше';
+
+        // Сбрасываем max-height до начального значения
+        description.style.maxHeight = "";
     }
 }

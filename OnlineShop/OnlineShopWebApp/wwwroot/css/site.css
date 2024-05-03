@@ -1,20 +1,20 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
@@ -48,14 +48,14 @@ body {
 /* Стилизация базовых элементов страницы */
 
 .nav-item {
-    padding: 10px;    
+    padding: 10px;
 }
 
 /* Стилизация карточек */
 .container {
     background: rgba(255, 255, 255, 0); /* Белый фон с неполной прозрачностью */
     padding: 20px;
-    border-radius: 15px; /* Слегка закруглённые углы */   
+    border-radius: 15px; /* Слегка закруглённые углы */
 }
 
 .card {
@@ -64,7 +64,7 @@ body {
     border-radius: 4px;
     padding: 1rem;
     margin-bottom: 1rem;
-    border: 1px solid #dadfe1; /* Тонкая линия вокруг карточки */    
+    border: 1px solid #dadfe1; /* Тонкая линия вокруг карточки */
 }
 
 .card-title {
@@ -83,7 +83,7 @@ body {
     transform: translateY(-5px);
     /* Легкая анимация для наведения */
     transition: transform 0.5s ease-in-out;
-    transform: scale(1.03);
+    transform: scale(1.02);
 }
 
 .col-md-4 {
@@ -94,14 +94,14 @@ body {
     padding: 10px;
 }
 
-.product-details img {
-    max-width: 100%; /* максимальная ширина изображения равна ширине родительского элемента */
-    max-height: 400px; /* максимальная высота изображения, к примеру, 400 пикселей */
-    width: auto; /* ширина изображения автоматически подстроится, чтобы сохранить пропорции */
-    height: auto; /* высота изображения автоматически подстроится, чтобы сохранить пропорции */
-    display: inline; /* изображение будет отображаться как строчный элемент */
-    margin: 0 auto; /* вертикальные отступы будут автоматически, чтобы выровнять изображение по центру */
-}
+    .product-details img {
+        max-width: 100%; /* максимальная ширина изображения равна ширине родительского элемента */
+        max-height: 400px; /* максимальная высота изображения, к примеру, 400 пикселей */
+        width: auto; /* ширина изображения автоматически подстроится, чтобы сохранить пропорции */
+        height: auto; /* высота изображения автоматически подстроится, чтобы сохранить пропорции */
+        display: inline; /* изображение будет отображаться как строчный элемент */
+        margin: 0 auto; /* вертикальные отступы будут автоматически, чтобы выровнять изображение по центру */
+    }
 
 .btn-group {
     margin-top: 15px;
@@ -117,7 +117,7 @@ body {
     padding: 5px;
     margin-top: 15px; /* немного отступа от таблицы */
     margin-bottom: 15px;
-    text-align: left; /* текст суммы будет по центру */    
+    text-align: left; /* текст суммы будет по центру */
     color: #855E42;
 }
 
@@ -137,7 +137,7 @@ body {
 .table th:first-child,
 .table td:first-child {
     width: 110px; /* Ширина столбца с отступами */
-    text-align: center; /* Выравнивание по центру */    
+    text-align: center; /* Выравнивание по центру */
 }
 
 .table th, /* заголовки таблицы */
@@ -146,7 +146,7 @@ body {
     vertical-align: middle; /* также выровняем контент по вертикали */
 }
 
-.action {    
+.action {
     padding: 10px;
 }
 
@@ -154,7 +154,44 @@ body {
     font-size: 12px;
 }
 
-.pagination{
+.pagination {
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+
+.beautiful-read-more {
+    background-color: #f5f5f5; /* Светло-серый цвет фона кнопки */
+    color: #333333; /* Темно-серый цвет текста для лучшей читаемости */
+    border: 1px solid #cccccc; /* Серая рамка для определения границ кнопки */
+    border-radius: 5px; /* Скругление углов */
+    padding: 10px 20px; /* Отступы */
+    font-weight: bold; /* Жирное начертание шрифта */
+    cursor: pointer; /* Форма курсора при наведении */
+    outline: none; /* Убрать обводку при фокусе */
+    transition: background-color 0.3s ease; /* Плавное изменение цвета при наведении */
+    text-decoration: none; /* Убрано подчеркивание */
+}
+
+    .beautiful-read-more:hover {
+        background-color: #e6e6e6; /* Немного темнее цвет фона при наведении */
+    }
+
+
+table a {
+    text-decoration: none; /* убираем подчеркивание */
+}
+
+
+.description, .description-full {
+    transition: max-height 2s ease-in-out;
+    overflow: hidden;
+}
+
+.description {
+    max-height: 50px; /* или другое значение в зависимости от желаемой высоты */
+}
+
+.description-full {
+    max-height: 200px; /* или другое значение, достаточное для показа полного текста */
 }

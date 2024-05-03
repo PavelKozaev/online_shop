@@ -19,7 +19,9 @@
                             @product.Description
                         </div>
                         <!-- Кнопка для показа полного описания -->
-                        <button onclick="toggleDescription(this)" class="btn btn-link">Читать дальше</button>
+                        <button onclick="toggleDescription(this)" class="btn btn-link beautiful-read-more">
+                            Читать дальше
+                        </button>
                         <div class="mt-auto">
                             <div class="action">
                                 <a asp-controller="Products" asp-action="Index" asp-route-id="@product.Id" class="btn btn-secondary">Подробнее</a>
