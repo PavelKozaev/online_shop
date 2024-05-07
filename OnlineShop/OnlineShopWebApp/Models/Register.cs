@@ -27,5 +27,7 @@ namespace OnlineShopWebApp.Models
         [RegularExpression(@"^\d{11}$", ErrorMessage = "Номер телефона должен содержать 11 цифр")]
         [Phone(ErrorMessage = "Некорректный номер телефона")]
         public string Phone { get; set; }
+
+        public string? ReturnUrl { get; set; }
     }
 }

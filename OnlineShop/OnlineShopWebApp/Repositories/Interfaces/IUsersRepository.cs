@@ -1,15 +1,14 @@
-﻿using OnlineShopWebApp.Areas.Administrator.Models;
-using OnlineShopWebApp.Models;
+﻿using OnlineShopWebApp.Models;
 
 namespace OnlineShopWebApp.Repositories.Interfaces
 {
     public interface IUsersRepository
     {
-        IEnumerable<User> GetAll();
-        User TryGetById(Guid id);
-        User TryGetByEmail(string email);
-        void Add(User user);
-        void Edit(User user);
+        IEnumerable<UserViewModel> GetAll();
+        UserViewModel TryGetById(Guid id);
+        UserViewModel TryGetByEmail(string email);
+        void Add(UserViewModel user);
+        void Edit(UserViewModel user);
         void Remove(Guid id);
         void ChangePassword(Guid id, string password);
         void ChangeRole(Guid id, string role);

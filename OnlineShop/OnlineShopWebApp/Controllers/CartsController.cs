@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Db.Repositories.Interfaces;
 using OnlineShopWebApp.Models;
 
 namespace OnlineShopWebApp.Controllers
 {
+    [Authorize]
     public class CartsController : Controller
     {
         private readonly IProductsRepository productsRepository;
@@ -22,7 +24,7 @@ namespace OnlineShopWebApp.Controllers
 
         public IActionResult Index()
         {
-            var cart = cartsRepository.TryGetByUserId(Constants.UserId);
+            var cart = cartsRepository.TryGetByUserId(User.Identity.Name);
             var cartViewModel = mapper.Map<CartViewModel>(cart); 
             return View(cartViewModel);
         }
@@ -31,22 +33,22 @@ namespace OnlineShopWebApp.Controllers
         public IActionResult Create(Guid id)
         {        
             var product = productsRepository.TryGetById(id);
-            cartsRepository.Add(product, Constants.UserId);
-            return RedirectToAction("Index");
+            cartsRepository.Add(product, User.Identity.Name);
+            return RedirectToAction(nameof(Index));
         }
 
 
         public IActionResult DecreaseAmount(Guid id)
         {
-            cartsRepository.DecreaseAmount(id, Constants.UserId);
-            return RedirectToAction("Index");
+            cartsRepository.DecreaseAmount(id, User.Identity.Name);
+            return RedirectToAction(nameof(Index));
         }
 
 
         public IActionResult Clear() 
         {
-            cartsRepository.Clear(Constants.UserId);
-            return RedirectToAction("Index");
+            cartsRepository.Clear(User.Identity.Name);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

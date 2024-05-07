@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OnlineShop.Db;
 using OnlineShop.Db.Repositories.Interfaces;
 using OnlineShopWebApp.Models;
 
 namespace OnlineShopWebApp.Controllers
 {
+    [Authorize]
     public class FavoritesController : Controller
     {
         private readonly IFavoritesRepository favoritesRepository;
@@ -28,22 +31,22 @@ namespace OnlineShopWebApp.Controllers
         public IActionResult AddToFavorites(Guid productId)
         {
             var product = productsRepository.TryGetById(productId);
-            favoritesRepository.Add(product, Constants.UserId);
-            return RedirectToAction("Index");
+            favoritesRepository.Add(product, User.Identity.Name);
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult RemoveFromFavorites(Guid productId)
         {
             var product = productsRepository.TryGetById(productId);
-            favoritesRepository.Remove(product, Constants.UserId);
-            return RedirectToAction("Index");
+            favoritesRepository.Remove(product, User.Identity.Name);
+            return RedirectToAction(nameof(Index));
         }
 
 
         public IActionResult Clear()
         {
-            favoritesRepository.Clear(Constants.UserId);
-            return RedirectToAction("Index");
+            favoritesRepository.Clear(User.Identity.Name);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

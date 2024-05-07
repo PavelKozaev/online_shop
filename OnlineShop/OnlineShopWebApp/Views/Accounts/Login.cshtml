@@ -5,7 +5,7 @@
     <h5>Вход</h5>
 
     <div class="text-danger font-weight-bold" asp-validation-summary="ModelOnly"></div>
-
+    <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
     <div class="form-group">
         <label asp-for="Email">Логин</label>
         <input asp-for="Email" class="form-control" placeholder="Логин">
@@ -19,7 +19,7 @@
     </div>
 
     <div class="form-group form-check">
-        <input asp-for="IsRememberMe" class="form-check-input" />
+        <input asp-for="IsRememberMe" class="form-check-input" name="IsRememberMe" value="true"/>
         <label asp-for="IsRememberMe" class="form-check-label">Запомнить меня?</label>
     </div>
 

@@ -5,7 +5,7 @@
     <h5>Регистрация</h5>
 
     <div class="text-danger font-weight-bold" asp-validation-summary="ModelOnly"></div>
-
+    <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
     <div class="form-group">
         <label asp-for="FirstName">Имя</label>
         <input asp-for="FirstName" class="form-control" placeholder="Имя">
@@ -43,5 +43,5 @@
 
     <br />
 
-    <button class="btn btn-primary" type="submit" asp-controller="Accounts" asp-action="Register">Зарегистрироваться</button>
+    <button class="btn btn-primary" type="submit" asp-controller="Accounts" asp-action="Register" asp-route-ReturnUrl="@Model.ReturnUrl">Зарегистрироваться</button>
 </form>

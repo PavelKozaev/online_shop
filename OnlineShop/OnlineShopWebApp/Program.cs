@@ -1,8 +1,10 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using OnlineShop.Db;
+using OnlineShop.Db.Models;
 using OnlineShop.Db.Repositories;
 using OnlineShop.Db.Repositories.Interfaces;
 using OnlineShopWebApp.Profiles;
@@ -23,6 +25,7 @@ var mappingConfig = new MapperConfiguration(mc =>
     mc.AddProfile(new CartProfile());
     mc.AddProfile(new OrderProfile());
     mc.AddProfile(new FavoritesProfile());
+    mc.AddProfile(new UserProfile());
 });
 
 IMapper mapper = mappingConfig.CreateMapper();
@@ -32,6 +35,21 @@ builder.Services.AddControllersWithViews();
 
 string connection = builder.Configuration.GetConnectionString("online_shop");
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connection));
+builder.Services.AddDbContext<IdentityContext>(options => options.UseNpgsql(connection));
+
+builder.Services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<IdentityContext>();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.ExpireTimeSpan = TimeSpan.FromHours(24);
+    options.LoginPath = "/Accounts/Login";
+    options.LogoutPath = "/Accounts/Logout";
+    options.Cookie = new CookieBuilder
+    {
+        IsEssential = true
+    };
+});
 
 builder.Services.AddTransient<IProductsRepository, ProductsDbRepository>();
 builder.Services.AddTransient<ICartsRepository, CartsDbRepository>();
@@ -69,7 +87,16 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
+using (var serviceScope = app.Services.CreateScope())
+{
+    var services = serviceScope.ServiceProvider;
+    var userManager = services.GetRequiredService<UserManager<User>>();
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    IdentityInitializer.Initialize(userManager, roleManager);
+}
 
 var localizationOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value;
 app.UseRequestLocalization(localizationOptions);

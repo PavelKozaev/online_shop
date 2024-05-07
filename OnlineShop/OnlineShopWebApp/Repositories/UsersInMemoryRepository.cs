@@ -1,37 +1,38 @@
-﻿using OnlineShopWebApp.Repositories.Interfaces;
+﻿using OnlineShopWebApp.Models;
+using OnlineShopWebApp.Repositories.Interfaces;
 
 namespace OnlineShopWebApp.Repositories
 {
     public class UsersInMemoryRepository : IUsersRepository
     {
-        private readonly List<User> users = [
+        private readonly List<UserViewModel> users = [
 
-            new User("aaa@aaa.ru", "12345678", "Сальвадор", "Дали", "11111111111"),
+            new UserViewModel("aaa@aaa.ru", "12345678", "Сальвадор", "Дали", "11111111111"),
 
-            new User("bbb@bbb.ru", "12345678", "Мари", "Экзюпери", "11111111111")
+            new UserViewModel("bbb@bbb.ru", "12345678", "Мари", "Экзюпери", "11111111111")
             ];
 
-        public IEnumerable<User> GetAll()
+        public IEnumerable<UserViewModel> GetAll()
         {
             return users;
         }
 
-        public User TryGetById(Guid id)
+        public UserViewModel TryGetById(Guid id)
         {
             return users.FirstOrDefault(user => user.Id == id);
         }
 
-        public User TryGetByEmail(string email)
+        public UserViewModel TryGetByEmail(string email)
         {
             return users.FirstOrDefault(user => user.Email == email);
         }
 
-        public void Add(User user)
+        public void Add(UserViewModel user)
         {
             users.Add(user);
         }
 
-        public void Edit(User user)
+        public void Edit(UserViewModel user)
         {
             var index = users.FindIndex(f => f.Id == user.Id);
             users[index] = user;

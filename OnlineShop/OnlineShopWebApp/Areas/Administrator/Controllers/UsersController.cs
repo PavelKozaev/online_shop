@@ -1,51 +1,42 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using OnlineShop.Db;
+using OnlineShop.Db.Models;
 using OnlineShopWebApp.Models;
-using OnlineShopWebApp.Repositories.Interfaces;
 
 namespace OnlineShopWebApp.Areas.Administrator.Controllers
 {
-	[Area("Administrator")]
-	public class UsersController : Controller
+    [Area(Constants.AdminRoleName)]
+    [Authorize(Roles = Constants.AdminRoleName)]
+    public class UsersController : Controller
 	{
-		private readonly IUsersRepository usersRepository;
-		private readonly IRolesRepository rolesRepository;
+        private readonly UserManager<User> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
+		private readonly IMapper mapper;
 
-		public UsersController(IUsersRepository usersRepository, IRolesRepository rolesRepository)
+        public UsersController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            this.userManager = userManager;
+            this.roleManager = roleManager;
+        }
+
+
+        public IActionResult Index()
 		{
-			this.usersRepository = usersRepository;
-			this.rolesRepository = rolesRepository;
-		}
+            var users = userManager.Users.ToList();
+            var userViewModels = mapper.Map<List<UserViewModel>>(users);
+            return View(userViewModels);
+        }
 
 
-		public IActionResult Index()
+		public IActionResult Details(string name)
 		{
-			var users = usersRepository.GetAll();
-
-            if (users == null)
-            {
-                return NotFound();
-            }
-
-            return View(users);
-		}
-
-
-		public IActionResult Details(Guid id)
-		{
-			if (id == Guid.Empty)
-			{
-				return NotFound();
-			}
-
-			var user = usersRepository.TryGetById(id);
-
-			if (user == null)
-			{
-				return NotFound();
-			}
-
-			return View(user);
-		}
+            var user = userManager.FindByNameAsync(name).Result;
+            var userViewModel = mapper.Map<List<UserViewModel>>(user);
+            return View(userViewModel);
+        }
 
 		public IActionResult Create()
 		{
@@ -56,147 +47,138 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
 		[HttpPost]
 		public IActionResult Create(Register register)
 		{
-			var userAccount = usersRepository.TryGetByEmail(register.Email);
-
-			if (userAccount != null)
-			{
-				ModelState.AddModelError("", "Пользователь с таким именем уже есть.");
-				return View(register);
-			}
-
-			if (register.Email == register.Password)
-			{
-				ModelState.AddModelError("", "Имя пользователя и пароль не должны совпадать");
-				return View(register);
-			}
-
-			if (!ModelState.IsValid)
-			{
-				return View(register);
-			}
-
-			usersRepository.Add(new User(register.Email, register.Password, register.FirstName, register.LastName, register.Phone));
-
-			return RedirectToAction(nameof(Index));
-		}
-
-
-		public IActionResult Edit(Guid id)
-		{
-			if (id == Guid.Empty)
-			{
-				return NotFound();
-			}
-
-			var user = usersRepository.TryGetById(id);
-
-			if (user == null)
-			{
-				return NotFound();
-			}
-
-			return View(user);
-		}
-
-
-		[HttpPost]
-		public IActionResult Edit(User user)
-		{
-			if (ModelState.IsValid)
-			{
-				usersRepository.Edit(user);
-
-				return RedirectToAction(nameof(Index));
-			}
-
-			return RedirectToAction(nameof(Index));
-		}
-
-
-		public IActionResult Delete(Guid id)
-		{
-			usersRepository.Remove(id);
-
-			return RedirectToAction(nameof(Index));
-		}
-
-
-		public IActionResult ChangePassword(Guid id)
-		{
-			if (id == Guid.Empty)
-			{
-				return NotFound();
-			}
-
-			var user = usersRepository.TryGetById(id);
-
-			if (user == null)
-			{
-                return NotFound();
+            if (register.Email == register.Password)
+            {
+                ModelState.AddModelError("", "Имя пользователя и пароль не должны совпадать");
             }
 
-			ViewData["id"] = id;
-			ViewData["email"] = user.Email;
-
-			return View();
+            if (ModelState.IsValid)
+            {
+                User user = new User { Email = register.Email, UserName = register.FirstName, PhoneNumber = register.Phone };
+                var result = userManager.CreateAsync(user, register.Password).Result;
+                if (result.Succeeded)
+                {
+                    userManager.AddToRoleAsync(user, Constants.UserRoleName).Wait();
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+            }
+            return View(register);
 		}
 
-		[HttpPost]
-		public IActionResult ChangePassword(Guid id, string password, string confirmPassword)
+
+        public IActionResult Edit(string name)
+        {
+            var user = userManager.FindByNameAsync(name).Result;
+            var userViewModel = mapper.Map<List<UserViewModel>>(user);
+            return View(userViewModel);
+        }
+
+
+  //      [HttpPost]
+		//public IActionResult Edit(UserViewModel user)
+		//{
+		//	if (ModelState.IsValid)
+		//	{
+		//		usersRepository.Edit(user);
+
+		//		return RedirectToAction(nameof(Index));
+		//	}
+
+		//	return RedirectToAction(nameof(Index));
+		//}
+
+
+		public IActionResult Delete(string name)
 		{
-			if (password != confirmPassword)
-			{
-				ModelState.AddModelError("", "Пароли не совпадают.");
-
-				return View();
-			}
-
-			if (ModelState.IsValid)
-			{
-				usersRepository.ChangePassword(id, password);
-
-				return RedirectToAction(nameof(Index));
-			}
-
-			return View();
-		}
+            var user = userManager.FindByNameAsync(name).Result;
+            userManager.DeleteAsync(user).Wait();
+            return RedirectToAction(nameof(Index));
+        }
 
 
-		public IActionResult ChangeRole(Guid id)
-		{
-			if (id == Guid.Empty)
-			{
-				return NotFound();
-			}
+		//public IActionResult ChangePassword(Guid id)
+		//{
+		//	if (id == Guid.Empty)
+		//	{
+		//		return NotFound();
+		//	}
 
-			var user = usersRepository.TryGetById(id);
+		//	var user = usersRepository.TryGetById(id);
 
-			var roles = rolesRepository.GetAll();
+		//	if (user == null)
+		//	{
+  //              return NotFound();
+  //          }
 
-			if (user == null || roles == null)
-			{
-				return NotFound();
-			}
+		//	ViewData["id"] = id;
+		//	ViewData["email"] = user.Email;
 
-			ViewData["id"] = id;
-			ViewData["email"] = user.Email;
-			ViewData["role"] = user.Role.Name;
+		//	return View();
+		//}
 
-			return View(roles);
-		}
+		//[HttpPost]
+		//public IActionResult ChangePassword(Guid id, string password, string confirmPassword)
+		//{
+		//	if (password != confirmPassword)
+		//	{
+		//		ModelState.AddModelError("", "Пароли не совпадают.");
+
+		//		return View();
+		//	}
+
+		//	if (ModelState.IsValid)
+		//	{
+		//		usersRepository.ChangePassword(id, password);
+
+		//		return RedirectToAction(nameof(Index));
+		//	}
+
+		//	return View();
+		//}
 
 
-		[HttpPost]
-		public IActionResult ChangeRole(Guid id, string role)
-		{
-			if (id == Guid.Empty || role == null)
-			{
-				return NotFound();
-			}
+		//public IActionResult ChangeRole(Guid id)
+		//{
+		//	if (id == Guid.Empty)
+		//	{
+		//		return NotFound();
+		//	}
 
-			usersRepository.ChangeRole(id, role);
+		//	var user = usersRepository.TryGetById(id);
 
-			return RedirectToAction(nameof(Index));
-		}
+		//	var roles = rolesRepository.GetAll();
+
+		//	if (user == null || roles == null)
+		//	{
+		//		return NotFound();
+		//	}
+
+		//	ViewData["id"] = id;
+		//	ViewData["email"] = user.Email;
+		//	ViewData["role"] = user.Role.Name;
+
+		//	return View(roles);
+		//}
+
+
+		//[HttpPost]
+		//public IActionResult ChangeRole(Guid id, string role)
+		//{
+		//	if (id == Guid.Empty || role == null)
+		//	{
+		//		return NotFound();
+		//	}
+
+		//	usersRepository.ChangeRole(id, role);
+
+		//	return RedirectToAction(nameof(Index));
+		//}
 	}
 }
