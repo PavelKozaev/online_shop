@@ -9,7 +9,8 @@
 <div class="text-danger font-weight-bold" asp-validation-summary="ModelOnly"></div>
 
 <form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="UserName" />   
+
+    <input type="hidden" name="userName" value="@Model.UserName" />
     
     <div class="form-group">
         <label asp-for="Email" class="control-label">Email</label>

@@ -66,7 +66,7 @@ namespace OnlineShopWebApp.Controllers
             {
                 User user = new User { Email = register.UserName,
                                        UserName = register.UserName,
-                                       PhoneNumber = register.Phone};
+                                       PhoneNumber = register.PhoneNumber};
 
                 var result = userManager.CreateAsync(user, register.Password).Result;
 
