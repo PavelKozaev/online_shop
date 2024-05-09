@@ -50,8 +50,7 @@ namespace OnlineShopWebApp.Controllers
         public IActionResult ThankYouPage(Guid id)
         {
             var order = ordersRepository.TryGetById(id);
-            var orderViewModel = mapper.Map<OrderViewModel>(order);
-            return View(orderViewModel);
+            return View(mapper.Map<OrderViewModel>(order));
         }
     }
 }

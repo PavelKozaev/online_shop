@@ -24,8 +24,7 @@ namespace OnlineShopWebApp.Controllers
         public IActionResult Index()
         {
             var favorites = favoritesRepository.TryGetByUserId(Constants.UserId);
-            var favoritesViewModel = mapper.Map<FavoritesViewModel>(favorites);  
-            return View(favoritesViewModel);
+            return View(mapper.Map<FavoritesViewModel>(favorites));
         }
 
         public IActionResult AddToFavorites(Guid productId)

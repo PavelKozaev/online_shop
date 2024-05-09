@@ -5,17 +5,17 @@ namespace OnlineShop.Db
 {
     public class IdentityInitializer
     {
-        public static void Initialize(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public static void Initialize(UserManager<User> userManager, RoleManager<Role> roleManager)
         {
             var adminEmail = "admin@gmail.com";
             var password = "adminADMIN123$";
             if (roleManager.FindByNameAsync(Constants.AdminRoleName).Result == null)
             {
-                roleManager.CreateAsync(new IdentityRole(Constants.AdminRoleName)).Wait();
+                roleManager.CreateAsync(new Role(Constants.AdminRoleName)).Wait();
             }
             if (roleManager.FindByNameAsync(Constants.UserRoleName).Result == null)
             {
-                roleManager.CreateAsync(new IdentityRole(Constants.UserRoleName)).Wait();
+                roleManager.CreateAsync(new Role(Constants.UserRoleName)).Wait();
             }
             if (roleManager.FindByNameAsync(adminEmail).Result == null)
             {

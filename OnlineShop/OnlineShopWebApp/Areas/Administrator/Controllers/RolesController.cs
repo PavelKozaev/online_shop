@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Db;
+using OnlineShop.Db.Models;
 using OnlineShopWebApp.Areas.Administrator.Models;
-using OnlineShopWebApp.Repositories.Interfaces;
 
 namespace OnlineShopWebApp.Areas.Administrator.Controllers
 {
@@ -10,23 +12,19 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
     [Authorize(Roles = Constants.AdminRoleName)]
     public class RolesController : Controller
     {
-        private readonly IRolesRepository rolesRepository;
+        private readonly RoleManager<Role> roleManager;
+        private readonly IMapper mapper;
 
-        public RolesController(IRolesRepository rolesRepository)
+        public RolesController(RoleManager<Role> roleManager, IMapper mapper)
         {            
-            this.rolesRepository = rolesRepository;
+            this.roleManager = roleManager;
+            this.mapper = mapper;
         }
 
         public IActionResult Index()
         {
-            var roles = rolesRepository.GetAll();
-
-            if (roles == null)
-            {
-                return NotFound();
-            }
-
-            return View(roles);
+            var roles = roleManager.Roles.ToList();
+            return View(mapper.Map<List<RoleViewModel>>(roles));
         }
 
 
@@ -37,17 +35,20 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
 
 
         [HttpPost]
-        public IActionResult Create(Role role)
+        public IActionResult Create(RoleViewModel role)
         {
-            if (rolesRepository.TryGetByName(role.Name) != null)
-            {
-                ModelState.AddModelError("", "Такая роль уже существует!");
-            }
+            var result = roleManager.CreateAsync(new Role(role.Name)).Result;
 
-            if (ModelState.IsValid)
+            if (result.Succeeded)
             {
-                rolesRepository.Add(role);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                foreach(var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
             }
 
             return View(role);
@@ -55,12 +56,11 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
 
         public IActionResult Delete(string roleName)
         {
-            if (roleName == null)
+            var role = roleManager.FindByNameAsync(roleName).Result;
+            if (role != null)
             {
-                return NotFound();
+                roleManager.DeleteAsync(role).Wait();
             }
-
-            rolesRepository.Remove(roleName);
 
             return RedirectToAction(nameof(Index));
         }

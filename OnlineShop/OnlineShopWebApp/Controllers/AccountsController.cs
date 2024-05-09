@@ -29,7 +29,10 @@ namespace OnlineShopWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = signInManager.PasswordSignInAsync(login.Email, login.Password, login.IsRememberMe, false).Result;
+                var result = signInManager.PasswordSignInAsync(login.UserName, 
+                                                               login.Password, 
+                                                               login.IsRememberMe, 
+                                                               false).Result;
                 if (result.Succeeded)
                 {
                     return Redirect(login.ReturnUrl ?? "/Home");
@@ -53,7 +56,7 @@ namespace OnlineShopWebApp.Controllers
         [HttpPost]
         public IActionResult Register(Register register)
         {
-            if (register.Email == register.Password)
+            if (register.UserName == register.Password)
             {
                 ModelState.AddModelError("", "Логин и пароль не должны совпадать");
                 return View(register);
@@ -61,8 +64,9 @@ namespace OnlineShopWebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                User user = new User { Email = register.Email,
-                                       UserName = register.FirstName };
+                User user = new User { Email = register.UserName,
+                                       UserName = register.UserName,
+                                       PhoneNumber = register.Phone};
 
                 var result = userManager.CreateAsync(user, register.Password).Result;
 

@@ -2,13 +2,13 @@
 
 namespace OnlineShopWebApp.Areas.Administrator.Models
 {
-    public class Role
+    public class RoleViewModel
     {
         [Required(ErrorMessage = "Название роли обязательно к заполнению")]
         public string Name { get; set; }
-        public Role() { }
+        public RoleViewModel() { }
 
-        public Role(string name)
+        public RoleViewModel(string name)
         {
             Name = name;
         }

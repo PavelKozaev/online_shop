@@ -13,48 +13,36 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
     public class UsersController : Controller
 	{
         private readonly UserManager<User> userManager;
-        private readonly RoleManager<IdentityRole> roleManager;
 		private readonly IMapper mapper;
 
-        public UsersController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public UsersController(UserManager<User> userManager, IMapper mapper)
         {
             this.userManager = userManager;
-            this.roleManager = roleManager;
+            this.mapper = mapper;
         }
 
 
         public IActionResult Index()
 		{
             var users = userManager.Users.ToList();
-            var userViewModels = mapper.Map<List<UserViewModel>>(users);
-            return View(userViewModels);
+            return View(mapper.Map<List<UserViewModel>>(users));
         }
 
-
-		public IActionResult Details(string name)
-		{
-            var user = userManager.FindByNameAsync(name).Result;
-            var userViewModel = mapper.Map<List<UserViewModel>>(user);
-            return View(userViewModel);
+        public IActionResult Create()
+        {
+            return View();
         }
 
-		public IActionResult Create()
-		{
-			return View();
-		}
-
-
-		[HttpPost]
-		public IActionResult Create(Register register)
-		{
-            if (register.Email == register.Password)
+        [HttpPost]
+        public IActionResult Create(Register register)
+        {
+            if (register.UserName == register.Password)
             {
                 ModelState.AddModelError("", "Имя пользователя и пароль не должны совпадать");
             }
-
             if (ModelState.IsValid)
             {
-                User user = new User { Email = register.Email, UserName = register.FirstName, PhoneNumber = register.Phone };
+                User user = new User { Email = register.UserName, UserName = register.UserName, PhoneNumber = register.Phone };
                 var result = userManager.CreateAsync(user, register.Password).Result;
                 if (result.Succeeded)
                 {
@@ -70,29 +58,35 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
                 }
             }
             return View(register);
-		}
+        }
 
 
         public IActionResult Edit(string name)
         {
             var user = userManager.FindByNameAsync(name).Result;
-            var userViewModel = mapper.Map<List<UserViewModel>>(user);
+            return View(mapper.Map<UserViewModel>(user));
+        }
+
+        [HttpPost]
+        public IActionResult Edit(UserViewModel userViewModel, string name)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = userManager.FindByNameAsync(name).Result;
+                user.PhoneNumber = userViewModel.PhoneNumber;
+                user.UserName = userViewModel.UserName;
+                userManager.UpdateAsync(user).Wait();
+                return RedirectToAction(nameof(Index));
+            }
             return View(userViewModel);
         }
 
 
-  //      [HttpPost]
-		//public IActionResult Edit(UserViewModel user)
-		//{
-		//	if (ModelState.IsValid)
-		//	{
-		//		usersRepository.Edit(user);
-
-		//		return RedirectToAction(nameof(Index));
-		//	}
-
-		//	return RedirectToAction(nameof(Index));
-		//}
+        public IActionResult Details(string name)
+		{
+            var user = userManager.FindByNameAsync(name).Result;
+            return View(mapper.Map<UserViewModel>(user));
+        }
 
 
 		public IActionResult Delete(string name)
@@ -103,82 +97,33 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
         }
 
 
-		//public IActionResult ChangePassword(Guid id)
-		//{
-		//	if (id == Guid.Empty)
-		//	{
-		//		return NotFound();
-		//	}
+		public IActionResult ChangePassword(string name)
+		{
+            var changePassword = new ChangePassword()
+            {
+                UserName = name
+            };
+            return View(changePassword);
+        }
 
-		//	var user = usersRepository.TryGetById(id);
+        [HttpPost]
+        public IActionResult ChangePassword(ChangePassword changePassword)
+        {
+            if (changePassword.UserName == changePassword.Password)
+            {
+                ModelState.AddModelError("", "Логин и пароль не должны совпадать.");
+            }
 
-		//	if (user == null)
-		//	{
-  //              return NotFound();
-  //          }
+            if (ModelState.IsValid)
+            {
+                var user = userManager.FindByEmailAsync(changePassword.UserName).Result;
+                var newHashPassword = userManager.PasswordHasher.HashPassword(user, changePassword.Password);
+                user.PasswordHash = newHashPassword;
+                userManager.UpdateAsync(user).Wait();
+                return RedirectToAction(nameof(Index));
+            }
 
-		//	ViewData["id"] = id;
-		//	ViewData["email"] = user.Email;
-
-		//	return View();
-		//}
-
-		//[HttpPost]
-		//public IActionResult ChangePassword(Guid id, string password, string confirmPassword)
-		//{
-		//	if (password != confirmPassword)
-		//	{
-		//		ModelState.AddModelError("", "Пароли не совпадают.");
-
-		//		return View();
-		//	}
-
-		//	if (ModelState.IsValid)
-		//	{
-		//		usersRepository.ChangePassword(id, password);
-
-		//		return RedirectToAction(nameof(Index));
-		//	}
-
-		//	return View();
-		//}
-
-
-		//public IActionResult ChangeRole(Guid id)
-		//{
-		//	if (id == Guid.Empty)
-		//	{
-		//		return NotFound();
-		//	}
-
-		//	var user = usersRepository.TryGetById(id);
-
-		//	var roles = rolesRepository.GetAll();
-
-		//	if (user == null || roles == null)
-		//	{
-		//		return NotFound();
-		//	}
-
-		//	ViewData["id"] = id;
-		//	ViewData["email"] = user.Email;
-		//	ViewData["role"] = user.Role.Name;
-
-		//	return View(roles);
-		//}
-
-
-		//[HttpPost]
-		//public IActionResult ChangeRole(Guid id, string role)
-		//{
-		//	if (id == Guid.Empty || role == null)
-		//	{
-		//		return NotFound();
-		//	}
-
-		//	usersRepository.ChangeRole(id, role);
-
-		//	return RedirectToAction(nameof(Index));
-		//}
-	}
+            return RedirectToAction(nameof(ChangePassword));
+        }
+    }
 }

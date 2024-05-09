@@ -23,15 +23,13 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
         public IActionResult Index()
         {
             var orders = ordersRepository.GetAll();
-            var orderViewModels = mapper.Map<List<OrderViewModel>>(orders);
-            return View(orderViewModels);
+            return View(mapper.Map<List<OrderViewModel>>(orders));
         }        
 
         public IActionResult Details(Guid id)
         {
             var order = ordersRepository.TryGetById(id);
-            var orderViewModel = mapper.Map<OrderViewModel>(order);
-            return View(orderViewModel);
+            return View(mapper.Map<OrderViewModel>(order));
         }
 
         public IActionResult UpdateStatus(Guid id, OrderStatus status)

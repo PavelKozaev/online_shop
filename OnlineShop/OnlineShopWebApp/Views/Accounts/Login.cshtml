@@ -7,9 +7,9 @@
     <div class="text-danger font-weight-bold" asp-validation-summary="ModelOnly"></div>
     <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
     <div class="form-group">
-        <label asp-for="Email">Логин</label>
-        <input asp-for="Email" class="form-control" placeholder="Логин">
-        <span asp-validation-for="Email" class="text-danger"></span>
+        <label asp-for="UserName">Логин</label>
+        <input asp-for="UserName" class="form-control" placeholder="Логин">
+        <span asp-validation-for="UserName" class="text-danger"></span>
     </div>
 
     <div class="form-group">
@@ -26,5 +26,5 @@
     <br />
 
     <button class="btn btn-success" type="submit" asp-controller="Accounts" asp-action="Login">Войти</button>    
-    <a class="btn btn-primary" role="button" asp-controller="Accounts" asp-action="Register">Регистрация нового пользователя</a>
+    <a class="btn btn-primary" role="button" asp-controller="Accounts" asp-action="Register" asp-route-ReturnUrl="@Model.ReturnUrl">Регистрация нового пользователя</a>
 </form>

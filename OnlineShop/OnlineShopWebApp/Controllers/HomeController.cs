@@ -21,8 +21,7 @@ namespace OnlineShopWebApp.Controllers
         public IActionResult Index()
         {
             var products = productsRepository.GetAll();
-            var productViewModels = mapper.Map<List<ProductViewModel>>(products); 
-            return View(productViewModels);
+            return View(mapper.Map<List<ProductViewModel>>(products));
         }
 
 

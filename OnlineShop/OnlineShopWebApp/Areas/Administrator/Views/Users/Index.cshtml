@@ -16,11 +16,8 @@
                     <thead>
                         <tr>
                             <th>№</th>
-                            <th>Email</th>
                             <th>Имя</th>
-                            <th>Фамилия</th>
                             <th>Телефон</th>
-                            <th>Роль</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -28,11 +25,8 @@
                         {
                             <tr>
                                 <td> @i </td>
-                                <td class="col-3"><a asp-area="Administrator" asp-controller="Users" asp-action="Details" asp-route-id="@user.Id"><p>@user.Email</p></a></td>
-                                <td class="col-3"><p>@user.FirstName</p></td>
-                                <td class="col-3"><p>@user.LastName</p></td>
-                                <td class="col-3"><p>@user.Phone</p></td>
-                                <td class="col-3"><p>@user.Role.Name</p></td>
+                                <td class="col-3"><a asp-area="Administrator" asp-controller="Users" asp-action="Details" asp-route-name="@user.UserName"><p>@user.UserName</p></a></td>
+                                <td class="col-3"><p>@user.PhoneNumber</p></td>
                             </tr>
                             i += 1;
                         }

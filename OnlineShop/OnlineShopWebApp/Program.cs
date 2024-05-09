@@ -8,8 +8,6 @@ using OnlineShop.Db.Models;
 using OnlineShop.Db.Repositories;
 using OnlineShop.Db.Repositories.Interfaces;
 using OnlineShopWebApp.Profiles;
-using OnlineShopWebApp.Repositories;
-using OnlineShopWebApp.Repositories.Interfaces;
 using Serilog;
 using System.Globalization;
 
@@ -26,6 +24,7 @@ var mappingConfig = new MapperConfiguration(mc =>
     mc.AddProfile(new OrderProfile());
     mc.AddProfile(new FavoritesProfile());
     mc.AddProfile(new UserProfile());
+    mc.AddProfile(new RoleProfile());
 });
 
 IMapper mapper = mappingConfig.CreateMapper();
@@ -37,7 +36,7 @@ string connection = builder.Configuration.GetConnectionString("online_shop");
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connection));
 builder.Services.AddDbContext<IdentityContext>(options => options.UseNpgsql(connection));
 
-builder.Services.AddIdentity<User, IdentityRole>()
+builder.Services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<IdentityContext>();
 
 builder.Services.ConfigureApplicationCookie(options =>
@@ -55,8 +54,6 @@ builder.Services.AddTransient<IProductsRepository, ProductsDbRepository>();
 builder.Services.AddTransient<ICartsRepository, CartsDbRepository>();
 builder.Services.AddTransient<IOrdersRepository, OrdersDbRepository>();
 builder.Services.AddTransient<IFavoritesRepository, FavoritesDbRepository>();
-builder.Services.AddSingleton<IRolesRepository, RolesInMemoryRepository>();
-builder.Services.AddSingleton<IUsersRepository, UsersInMemoryRepository>();
 builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
@@ -94,7 +91,7 @@ using (var serviceScope = app.Services.CreateScope())
 {
     var services = serviceScope.ServiceProvider;
     var userManager = services.GetRequiredService<UserManager<User>>();
-    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    var roleManager = services.GetRequiredService<RoleManager<Role>>();
     IdentityInitializer.Initialize(userManager, roleManager);
 }
 

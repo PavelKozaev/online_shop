@@ -25,16 +25,14 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
         public IActionResult Index()
         {
             var products = productsRepository.GetAll();
-            var productViewModels = mapper.Map<List<ProductViewModel>>(products); 
-            return View(productViewModels);
+            return View(mapper.Map<List<ProductViewModel>>(products));
         }
 
 
         public IActionResult Details(Guid id)
         {
             var product = productsRepository.TryGetById(id);
-            var productViewModel = mapper.Map<ProductViewModel>(product);
-            return View(productViewModel);
+            return View(mapper.Map<ProductViewModel>(product));
         }
 
 
@@ -49,8 +47,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
         {
             if (ModelState.IsValid)
             {
-                var productDb = mapper.Map<Product>(productViewModel);
-                productsRepository.Add(productDb);
+                productsRepository.Add(mapper.Map<Product>(productViewModel));
                 return RedirectToAction(nameof(Index));
             }
 
@@ -72,8 +69,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
                 return NotFound();
             }
 
-            var productViewModel = mapper.Map<ProductViewModel>(product);
-            return View(productViewModel);
+            return View(mapper.Map<ProductViewModel>(product));
         }
 
 

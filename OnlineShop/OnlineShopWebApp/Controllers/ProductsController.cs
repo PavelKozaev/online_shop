@@ -21,8 +21,7 @@ namespace OnlineShopWebApp.Controllers
         public IActionResult Index(Guid id)
         {
             var product = productsRepository.TryGetById(id);
-            var productViewModel = mapper.Map<ProductViewModel>(product);
-            return View(productViewModel);
+            return View(mapper.Map<ProductViewModel>(product));
         }
     }
 }
