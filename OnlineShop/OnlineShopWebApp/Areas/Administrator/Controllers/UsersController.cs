@@ -67,11 +67,11 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(UserViewModel userViewModel, string userName)
+        public IActionResult Edit(UserViewModel userViewModel, string name)
         {
             if (ModelState.IsValid)
             {
-                var user = userManager.FindByNameAsync(userName).Result;
+                var user = userManager.FindByNameAsync(name).Result;
                 user.Email = userViewModel.Email;   
                 user.PhoneNumber = userViewModel.PhoneNumber;
                 user.UserName = userViewModel.UserName;
