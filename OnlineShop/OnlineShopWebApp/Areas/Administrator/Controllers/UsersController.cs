@@ -116,7 +116,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = userManager.FindByEmailAsync(changePassword.UserName).Result;
+                var user = userManager.FindByNameAsync(changePassword.UserName).Result;
                 var newHashPassword = userManager.PasswordHasher.HashPassword(user, changePassword.Password);
                 user.PasswordHash = newHashPassword;
                 userManager.UpdateAsync(user).Wait();

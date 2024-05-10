@@ -35,7 +35,10 @@ builder.Services.AddControllersWithViews();
 string connection = builder.Configuration.GetConnectionString("online_shop");
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connection));
 
-builder.Services.AddIdentity<User, Role>()
+builder.Services.AddIdentity<User, Role>(options => {
+    // Настройки, влияющие на процесс аутентификации, например:
+    options.User.RequireUniqueEmail = true;
+})
                 .AddEntityFrameworkStores<DatabaseContext>();
 
 builder.Services.ConfigureApplicationCookie(options =>

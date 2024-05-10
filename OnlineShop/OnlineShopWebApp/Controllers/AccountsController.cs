@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using OnlineShop.Db;
 using OnlineShop.Db.Models;
 using OnlineShopWebApp.Models;
 
@@ -29,7 +28,7 @@ namespace OnlineShopWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = signInManager.PasswordSignInAsync(login.UserName, 
+                var result = signInManager.PasswordSignInAsync(login.Email, 
                                                                login.Password, 
                                                                login.IsRememberMe, 
                                                                false).Result;
@@ -56,7 +55,7 @@ namespace OnlineShopWebApp.Controllers
         [HttpPost]
         public IActionResult Register(Register register)
         {
-            if (register.UserName == register.Password)
+            if (register.Email == register.Password)
             {
                 ModelState.AddModelError("", "Логин и пароль не должны совпадать");
                 return View(register);
@@ -64,7 +63,7 @@ namespace OnlineShopWebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                User user = new User { Email = register.UserName,
+                User user = new User { Email = register.Email,
                                        UserName = register.UserName,
                                        PhoneNumber = register.PhoneNumber};
 
