@@ -32,10 +32,10 @@ namespace OnlineShopWebApp.Controllers
             {
                 var products = productsRepository.GetAll();
                 var findProducts = products.Where(product => product.Name.ToLower().Contains(name.ToLower())).ToList();
-                return View(findProducts);
+                return View(mapper.Map<List<ProductViewModel>>(findProducts));
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(Index));
         }
 
 
