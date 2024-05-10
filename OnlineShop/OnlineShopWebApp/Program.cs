@@ -34,10 +34,9 @@ builder.Services.AddControllersWithViews();
 
 string connection = builder.Configuration.GetConnectionString("online_shop");
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connection));
-builder.Services.AddDbContext<IdentityContext>(options => options.UseNpgsql(connection));
 
 builder.Services.AddIdentity<User, Role>()
-                .AddEntityFrameworkStores<IdentityContext>();
+                .AddEntityFrameworkStores<DatabaseContext>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {

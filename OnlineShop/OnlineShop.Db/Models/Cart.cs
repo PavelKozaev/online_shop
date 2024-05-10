@@ -3,7 +3,7 @@
     public class Cart
     {
         public Guid Id { get; set; }
-        public string UserName { get; set; }
+        public User User { get; set; }
         public List<CartItem> Items { get; set;}
         public Cart()
         {

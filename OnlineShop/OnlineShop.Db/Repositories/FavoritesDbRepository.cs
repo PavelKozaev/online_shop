@@ -7,31 +7,29 @@ namespace OnlineShop.Db.Repositories
     public class FavoritesDbRepository : IFavoritesRepository
     {
         private readonly DatabaseContext dbContext;
-        private readonly IdentityContext identityContext;
 
 
-        public FavoritesDbRepository(DatabaseContext dbContext, IdentityContext identityContext)
+        public FavoritesDbRepository(DatabaseContext dbContext)
         {
             this.dbContext = dbContext;
-            this.identityContext = identityContext;
         }
 
 
         public Favorites TryGetByUserName(string userName)
         {
-            return dbContext.Favorites
-                .Include(f => f.Products)
-                .Include(u => u.User)
-                .FirstOrDefault(f => f.User.UserName == userName);
+            return dbContext.Favorites.Include(f => f.Products)
+                                      .Include(u => u.User)
+                                      .FirstOrDefault(f => f.User.UserName == userName);
         }
 
 
         public void Add(Product product, string userName)
         {
-            var user = identityContext.Users.FirstOrDefault(u => u.UserName == userName);
+            var user = dbContext.Users.FirstOrDefault(u => u.UserName == userName);
 
             var favorites = dbContext.Favorites.Include(f => f.User)
-                                               .FirstOrDefault(f => f.User.Id == user.Id);
+                                               .Include(f => f.Products)
+                                               .FirstOrDefault(f => f.User.UserName == userName);
 
             if (favorites is null)
             {
@@ -47,10 +45,10 @@ namespace OnlineShop.Db.Repositories
             else
             {
                 favorites.Products.Add(product);
-            }                
-                        
+            }
+
             dbContext.SaveChanges();
-        }        
+        }
 
 
         public void Remove(Product product, string userName)

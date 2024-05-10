@@ -7,24 +7,30 @@ namespace OnlineShop.Db.Repositories
     public class CartsDbRepository : ICartsRepository
     {
         private readonly DatabaseContext databaseContext;
+
         public CartsDbRepository(DatabaseContext databaseContext)
         {
             this.databaseContext = databaseContext;
         }
         public Cart TryGetByUserName(string userName)
         {
-            return databaseContext.Carts.Include(x => x.Items).ThenInclude(x => x.Product).FirstOrDefault(c => c.UserName == userName);
+            return databaseContext.Carts.Include(x => x.Items)
+                                        .ThenInclude(x => x.Product)
+                                        .Include(x => x.User)
+                                        .FirstOrDefault(c => c.User.UserName == userName);
         }
 
         public void Add(Product product, string userName)
         {
+            var user = databaseContext.Users.FirstOrDefault(u => u.UserName == userName);
+
             var existingCart = TryGetByUserName(userName);
 
-            if (existingCart == null)
+            if (existingCart is null)
             {
                 var newCart = new Cart
                 {
-                    UserName = userName
+                    User = user
                 };
 
                 newCart.Items = new List<CartItem>
