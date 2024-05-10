@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OnlineShop.Db;
 using OnlineShop.Db.Models;
 using OnlineShop.Db.Repositories.Interfaces;
 using OnlineShopWebApp.Models;
@@ -33,7 +32,7 @@ namespace OnlineShopWebApp.Controllers
         [HttpPost]
         public IActionResult Buy(UserDeliveryInfoViewModel user)
         {
-            var existingCart = cartsRepository.TryGetByUserId(Constants.UserId);
+            var existingCart = cartsRepository.TryGetByUserId(User.Identity.Name);
 
             var order = new Order
             {
@@ -42,7 +41,7 @@ namespace OnlineShopWebApp.Controllers
             };
 
             ordersRepository.Add(order);
-            cartsRepository.Clear(Constants.UserId);      
+            cartsRepository.Clear(User.Identity.Name);      
             return RedirectToAction(nameof(ThankYouPage), new { id = order.Id });
         }
 

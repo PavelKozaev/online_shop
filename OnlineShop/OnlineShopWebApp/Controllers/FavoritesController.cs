@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OnlineShop.Db;
 using OnlineShop.Db.Repositories.Interfaces;
 using OnlineShopWebApp.Models;
 
@@ -23,7 +22,7 @@ namespace OnlineShopWebApp.Controllers
 
         public IActionResult Index()
         {
-            var favorites = favoritesRepository.TryGetByUserId(Constants.UserId);
+            var favorites = favoritesRepository.TryGetByUserName(User.Identity.Name);
             return View(mapper.Map<FavoritesViewModel>(favorites));
         }
 

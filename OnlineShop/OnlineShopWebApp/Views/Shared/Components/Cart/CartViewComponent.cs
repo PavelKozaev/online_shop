@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using OnlineShop.Db;
 using OnlineShop.Db.Repositories.Interfaces;
 using OnlineShopWebApp.Models;
 
@@ -17,7 +16,7 @@ namespace OnlineShopWebApp.Views.Shared.Components.Cart
         }
         public IViewComponentResult Invoke()
         {
-            var cart = cartRepository.TryGetByUserId(Constants.UserId);
+            var cart = cartRepository.TryGetByUserId(User.Identity.Name);
 
             var cartViewModel = mapper.Map<CartViewModel>(cart);
 

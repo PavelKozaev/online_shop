@@ -15,23 +15,23 @@ namespace OnlineShop.Db.Repositories
         }
 
 
-        public Favorites TryGetByUserId(string userId)
+        public Favorites TryGetByUserName(string userName)
         {
             return dbContext.Favorites
                 .Include(f => f.Products)
-                .FirstOrDefault(f => f.UserId == userId);
+                .FirstOrDefault(f => f.UserName == userName);
         }
 
 
-        public void Add(Product product, string userId)
+        public void Add(Product product, string userName)
         {
-            var favorites = TryGetByUserId(userId);
+            var favorites = TryGetByUserName(userName);
 
             if (favorites is null)
             {
                 dbContext.Favorites.Add(new Favorites()
                 {
-                    UserId = userId,
+                    UserName = userName,
                     Products = new List<Product>()
                     {
                         product
@@ -47,18 +47,18 @@ namespace OnlineShop.Db.Repositories
         }        
 
 
-        public void Remove(Product product, string userId)
+        public void Remove(Product product, string userName)
         {
-            var favorites = TryGetByUserId(userId);
+            var favorites = TryGetByUserName(userName);
                
             favorites.Products.Remove(product);
 
             dbContext.SaveChanges();
         }
 
-        public void Clear(string userId)
+        public void Clear(string userName)
         {
-            var favorites = TryGetByUserId(userId);
+            var favorites = TryGetByUserName(userName);
             favorites.Products.Clear();
             dbContext.SaveChanges();
         }

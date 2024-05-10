@@ -11,20 +11,20 @@ namespace OnlineShop.Db.Repositories
         {
             this.databaseContext = databaseContext;
         }
-        public Cart TryGetByUserId(string userId)
+        public Cart TryGetByUserId(string userName)
         {
-            return databaseContext.Carts.Include(x => x.Items).ThenInclude(x => x.Product).FirstOrDefault(c => c.UserId == userId);
+            return databaseContext.Carts.Include(x => x.Items).ThenInclude(x => x.Product).FirstOrDefault(c => c.UserName == userName);
         }
 
-        public void Add(Product product, string userId)
+        public void Add(Product product, string userName)
         {
-            var existingCart = TryGetByUserId(userId);
+            var existingCart = TryGetByUserId(userName);
 
             if (existingCart == null)
             {
                 var newCart = new Cart
                 {
-                    UserId = userId
+                    UserName = userName
                 };
 
                 newCart.Items = new List<CartItem>
@@ -61,9 +61,9 @@ namespace OnlineShop.Db.Repositories
             databaseContext.SaveChanges();
         }
 
-        public void DecreaseAmount(Guid productId, string userId)
+        public void DecreaseAmount(Guid productId, string userName)
         {
-            var existingCart = TryGetByUserId(userId);
+            var existingCart = TryGetByUserId(userName);
 
             var existingCartItem = existingCart?.Items?.FirstOrDefault(x => x.Product.Id == productId);
 
@@ -82,9 +82,9 @@ namespace OnlineShop.Db.Repositories
             databaseContext.SaveChanges();
         }
 
-        public void Clear(string userId)
+        public void Clear(string userName)
         {
-            var existingCart = TryGetByUserId(userId);
+            var existingCart = TryGetByUserId(userName);
 
             databaseContext.Carts.Remove(existingCart);
 
