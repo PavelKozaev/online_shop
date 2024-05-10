@@ -46,7 +46,6 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
                 var result = userManager.CreateAsync(user, register.Password).Result;
                 if (result.Succeeded)
                 {
-                    userManager.AddToRoleAsync(user, Constants.UserRoleName).Wait();
                     return RedirectToAction(nameof(Index));
                 }
                 else

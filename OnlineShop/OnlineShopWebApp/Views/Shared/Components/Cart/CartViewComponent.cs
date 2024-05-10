@@ -16,7 +16,7 @@ namespace OnlineShopWebApp.Views.Shared.Components.Cart
         }
         public IViewComponentResult Invoke()
         {
-            var cart = cartRepository.TryGetByUserId(User.Identity.Name);
+            var cart = cartRepository.TryGetByUserName(User.Identity.Name);
 
             var cartViewModel = mapper.Map<CartViewModel>(cart);
 

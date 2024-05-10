@@ -12,11 +12,7 @@ namespace OnlineShop.Db
             if (roleManager.FindByNameAsync(Constants.AdminRoleName).Result == null)
             {
                 roleManager.CreateAsync(new Role(Constants.AdminRoleName)).Wait();
-            }
-            if (roleManager.FindByNameAsync(Constants.UserRoleName).Result == null)
-            {
-                roleManager.CreateAsync(new Role(Constants.UserRoleName)).Wait();
-            }
+            }            
             if (roleManager.FindByNameAsync(adminEmail).Result == null)
             {
                 var admin = new User { Email = adminEmail, UserName = adminEmail };

@@ -73,7 +73,6 @@ namespace OnlineShopWebApp.Controllers
                 if (result.Succeeded)
                 {
                     signInManager.SignInAsync(user, false).Wait();
-                    userManager.AddToRoleAsync(user, Constants.UserRoleName).Wait();
                     return Redirect(register.ReturnUrl ?? "/Home");
                 }
                 else

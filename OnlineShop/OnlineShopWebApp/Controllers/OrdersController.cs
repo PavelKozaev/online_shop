@@ -32,7 +32,7 @@ namespace OnlineShopWebApp.Controllers
         [HttpPost]
         public IActionResult Buy(UserDeliveryInfoViewModel user)
         {
-            var existingCart = cartsRepository.TryGetByUserId(User.Identity.Name);
+            var existingCart = cartsRepository.TryGetByUserName(User.Identity.Name);
 
             var order = new Order
             {

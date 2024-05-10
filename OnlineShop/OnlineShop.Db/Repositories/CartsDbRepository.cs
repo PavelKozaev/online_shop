@@ -11,14 +11,14 @@ namespace OnlineShop.Db.Repositories
         {
             this.databaseContext = databaseContext;
         }
-        public Cart TryGetByUserId(string userName)
+        public Cart TryGetByUserName(string userName)
         {
             return databaseContext.Carts.Include(x => x.Items).ThenInclude(x => x.Product).FirstOrDefault(c => c.UserName == userName);
         }
 
         public void Add(Product product, string userName)
         {
-            var existingCart = TryGetByUserId(userName);
+            var existingCart = TryGetByUserName(userName);
 
             if (existingCart == null)
             {
@@ -63,7 +63,7 @@ namespace OnlineShop.Db.Repositories
 
         public void DecreaseAmount(Guid productId, string userName)
         {
-            var existingCart = TryGetByUserId(userName);
+            var existingCart = TryGetByUserName(userName);
 
             var existingCartItem = existingCart?.Items?.FirstOrDefault(x => x.Product.Id == productId);
 
@@ -84,7 +84,7 @@ namespace OnlineShop.Db.Repositories
 
         public void Clear(string userName)
         {
-            var existingCart = TryGetByUserId(userName);
+            var existingCart = TryGetByUserName(userName);
 
             databaseContext.Carts.Remove(existingCart);
 
