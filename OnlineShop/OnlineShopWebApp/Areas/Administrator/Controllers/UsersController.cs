@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Db;
 using OnlineShop.Db.Models;
+using OnlineShopWebApp.Areas.Administrator.Models;
 using OnlineShopWebApp.Models;
+using System.Xml.Linq;
 
 namespace OnlineShopWebApp.Areas.Administrator.Controllers
 {
@@ -13,14 +15,16 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
     public class UsersController : Controller
 	{
         private readonly UserManager<User> userManager;
-		private readonly IMapper mapper;
+        private readonly RoleManager<Role> roleManager;
+        private readonly IMapper mapper;
         private readonly ILogger logger;
 
-        public UsersController(UserManager<User> userManager, IMapper mapper, ILogger<UsersController> logger)
+        public UsersController(UserManager<User> userManager, IMapper mapper, ILogger<UsersController> logger, RoleManager<Role> roleManager)
         {
             this.userManager = userManager;
             this.mapper = mapper;
             this.logger = logger;
+            this.roleManager = roleManager;
         }
 
 
@@ -117,7 +121,33 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
         }
 
 
-		public IActionResult ChangePassword(string name)
+        public IActionResult EditRights(string name)
+        {
+            var user = userManager.FindByNameAsync(name).Result;
+            var userRoles = userManager.GetRolesAsync(user).Result;
+            var roles = roleManager.Roles.ToList();
+            var model = new EditRightsViewModel
+            {
+                UserName = user.UserName,
+                UserRoles = userRoles.Select(x => new RoleViewModel { Name = x }).ToList(),
+                AllRoles = roles.Select(x => new RoleViewModel { Name = x.Name }).ToList()
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult EditRights(string name, Dictionary<string, string> userRolesViewModel)
+        {
+            var userSelectedRoles = userRolesViewModel.Select(x => x.Key);
+            var user = userManager.FindByNameAsync(name).Result;
+            var userRoles = userManager.GetRolesAsync(user).Result;
+            userManager.RemoveFromRolesAsync(user, userRoles).Wait();
+            userManager.AddToRolesAsync(user, userSelectedRoles).Wait();
+            return Redirect($"Details?name={name}");
+        }
+
+
+        public IActionResult ChangePassword(string name)
 		{
             var changePassword = new ChangePassword()
             {

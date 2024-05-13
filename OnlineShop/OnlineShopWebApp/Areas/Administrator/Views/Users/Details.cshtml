@@ -27,7 +27,7 @@
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" asp-area="Administrator" asp-controller="Users" asp-action="ChangePassword" asp-route-name="@Model.UserName">Смена пароля</a></li>
                 <li><a class="dropdown-item" asp-area="Administrator" asp-controller="Users" asp-action="Edit" asp-route-name="@Model.UserName">Редактирование данных</a></li>
-                <li><a class="dropdown-item" asp-area="Administrator" asp-controller="Users" asp-action="ChangeRole" asp-route-name="@Model.UserName">Права доступа</a></li>
+                <li><a class="dropdown-item" asp-area="Administrator" asp-controller="Users" asp-action="EditRights" asp-route-name="@Model.UserName">Права доступа</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <!-- Кнопка-триггер модального окна -->
                 <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#user">Удалить пользователя</button></li>

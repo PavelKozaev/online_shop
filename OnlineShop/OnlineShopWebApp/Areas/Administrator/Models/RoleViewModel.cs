@@ -12,6 +12,12 @@ namespace OnlineShopWebApp.Areas.Administrator.Models
         {
             Name = name;
         }
+
+        public override bool Equals(object? obj)
+        {
+            var role = (RoleViewModel)obj;
+            return Name == role.Name;
+        }
     }
     
 }
