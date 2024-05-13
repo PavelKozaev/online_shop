@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using OnlineShop.Db;
 using OnlineShop.Db.Models;
 using OnlineShopWebApp.Models;
 
@@ -9,11 +10,13 @@ namespace OnlineShopWebApp.Controllers
     {
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
+        private readonly ILogger logger;
 
-        public AccountsController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountsController(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AccountsController> logger)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.logger = logger;
         }
 
 
@@ -72,6 +75,9 @@ namespace OnlineShopWebApp.Controllers
                 if (result.Succeeded)
                 {
                     signInManager.SignInAsync(user, false).Wait();
+
+                    TryAssignUserRole(user);
+
                     return Redirect(register.ReturnUrl ?? "/Home");
                 }
                 else
@@ -85,6 +91,18 @@ namespace OnlineShopWebApp.Controllers
             }
 
             return View(register);
+        }
+
+        public void TryAssignUserRole(User user)
+        {
+            try
+            {
+                userManager.AddToRoleAsync(user, Constants.UserRoleName).Wait();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Ошибка при попытке добавления роли для пользователя.");
+            }
         }
 
         public IActionResult Logout()

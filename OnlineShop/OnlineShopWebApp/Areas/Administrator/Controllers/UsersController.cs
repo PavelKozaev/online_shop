@@ -14,11 +14,13 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
 	{
         private readonly UserManager<User> userManager;
 		private readonly IMapper mapper;
+        private readonly ILogger logger;
 
-        public UsersController(UserManager<User> userManager, IMapper mapper)
+        public UsersController(UserManager<User> userManager, IMapper mapper, ILogger<UsersController> logger)
         {
             this.userManager = userManager;
             this.mapper = mapper;
+            this.logger = logger;
         }
 
 
@@ -42,10 +44,15 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             }
             if (ModelState.IsValid)
             {
-                User user = new User { Email = register.Email, UserName = register.UserName, PhoneNumber = register.PhoneNumber };
+                User user = new User { Email = register.Email, 
+                                       UserName = register.UserName, 
+                                       PhoneNumber = register.PhoneNumber };
+
                 var result = userManager.CreateAsync(user, register.Password).Result;
+
                 if (result.Succeeded)
                 {
+                    TryAssignUserRole(user);
                     return RedirectToAction(nameof(Index));
                 }
                 else
@@ -57,6 +64,19 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
                 }
             }
             return View(register);
+        }
+
+
+        public void TryAssignUserRole(User user)
+        {
+            try
+            {
+                userManager.AddToRoleAsync(user, Constants.UserRoleName).Wait();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Ошибка при попытке добавления роли для пользователя.");
+            }
         }
 
 
