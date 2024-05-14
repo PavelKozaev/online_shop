@@ -149,7 +149,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
 
         public IActionResult ChangePassword(string name)
 		{
-            var changePassword = new ChangePassword()
+            var changePassword = new ChangePasswordViewModel()
             {
                 UserName = name
             };
@@ -157,7 +157,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
         }
 
         [HttpPost]
-        public IActionResult ChangePassword(ChangePassword changePassword)
+        public IActionResult ChangePassword(ChangePasswordViewModel changePassword)
         {
             if (changePassword.UserName == changePassword.Password)
             {
