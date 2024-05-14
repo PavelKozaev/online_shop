@@ -20,6 +20,28 @@ namespace OnlineShopWebApp.Controllers
         }
 
 
+        public async Task<IActionResult> Profile()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await userManager.GetUserAsync(User);
+                if (user != null)
+                {
+                    var model = new UserViewModel
+                    {
+                        Email = user.Email,
+                        UserName = user.UserName,
+                        PhoneNumber = user.PhoneNumber
+                    };
+
+                    return View(model);
+                }
+                return RedirectToAction("Login");
+            }
+            return RedirectToAction("Login");
+        }
+
+
         public IActionResult Login(string returnUrl)
         {
             return View(new Login() { ReturnUrl = returnUrl });
