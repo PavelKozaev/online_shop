@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Db;
 using OnlineShop.Db.Models;
@@ -11,35 +12,15 @@ namespace OnlineShopWebApp.Controllers
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly ILogger logger;
+        private readonly IMapper mapper;
 
-        public AccountsController(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AccountsController> logger)
+        public AccountsController(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AccountsController> logger, IMapper mapper)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.logger = logger;
-        }
-
-
-        public async Task<IActionResult> Profile()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                var user = await userManager.GetUserAsync(User);
-                if (user != null)
-                {
-                    var model = new UserViewModel
-                    {
-                        Email = user.Email,
-                        UserName = user.UserName,
-                        PhoneNumber = user.PhoneNumber
-                    };
-
-                    return View(model);
-                }
-                return RedirectToAction("Login");
-            }
-            return RedirectToAction("Login");
-        }
+            this.mapper = mapper;
+        }        
 
 
         public IActionResult Login(string returnUrl)
@@ -131,6 +112,50 @@ namespace OnlineShopWebApp.Controllers
         {
             signInManager.SignOutAsync().Wait();
             return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+
+
+        public async Task<IActionResult> Profile()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await userManager.GetUserAsync(User);
+                if (user != null)
+                {
+                    var model = new UserViewModel
+                    {
+                        Email = user.Email,
+                        UserName = user.UserName,
+                        PhoneNumber = user.PhoneNumber
+                    };
+
+                    return View(model);
+                }
+                return RedirectToAction("Login");
+            }
+            return RedirectToAction("Login");
+        }
+
+
+        public IActionResult EditProfile(string name)
+        {
+            var user = userManager.FindByNameAsync(name).Result;
+            return View(mapper.Map<UserViewModel>(user));
+        }
+
+        [HttpPost]
+        public IActionResult EditProfile(UserViewModel userViewModel, string name)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = userManager.FindByNameAsync(name).Result;
+                user.Email = userViewModel.Email;
+                user.PhoneNumber = userViewModel.PhoneNumber;
+                user.UserName = userViewModel.UserName;
+                userManager.UpdateAsync(user).Wait();
+                return RedirectToAction(nameof(Profile));
+            }
+            return View(userViewModel);
         }
     }
 }

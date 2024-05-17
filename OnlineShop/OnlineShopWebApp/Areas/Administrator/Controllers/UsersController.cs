@@ -6,7 +6,6 @@ using OnlineShop.Db;
 using OnlineShop.Db.Models;
 using OnlineShopWebApp.Areas.Administrator.Models;
 using OnlineShopWebApp.Models;
-using System.Xml.Linq;
 
 namespace OnlineShopWebApp.Areas.Administrator.Controllers
 {
