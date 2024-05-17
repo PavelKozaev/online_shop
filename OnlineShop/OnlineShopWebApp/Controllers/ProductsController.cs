@@ -1,27 +1,23 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Db.Repositories.Interfaces;
-using OnlineShopWebApp.Models;
+using OnlineShopWebApp.Helpers;
 
 namespace OnlineShopWebApp.Controllers
 {
     public class ProductsController : Controller
     {
         private readonly IProductsRepository productsRepository;
-        private readonly IMapper mapper;
 
-
-        public ProductsController(IProductsRepository productRepository, IMapper mapper)
+        public ProductsController(IProductsRepository productRepository)
         {
             this.productsRepository = productRepository;
-            this.mapper = mapper;
         }
-
 
         public IActionResult Index(Guid id)
         {
             var product = productsRepository.TryGetById(id);
-            return View(mapper.Map<ProductViewModel>(product));
+            return View(product.ToProductViewModel());
         }
     }
 }

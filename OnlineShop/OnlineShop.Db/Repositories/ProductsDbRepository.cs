@@ -1,4 +1,5 @@
-﻿using OnlineShop.Db.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using OnlineShop.Db.Models;
 using OnlineShop.Db.Repositories.Interfaces;
 
 namespace OnlineShop.Db.Repositories
@@ -13,9 +14,9 @@ namespace OnlineShop.Db.Repositories
             this.databaseContext = databaseContext;
         }
 
-        public List<Product> GetAll() => databaseContext.Products.ToList();
+        public List<Product> GetAll() => databaseContext.Products.Include(x => x.Images).ToList();
 
-        public Product TryGetById(Guid id) => databaseContext.Products.FirstOrDefault(product => product.Id == id);
+        public Product TryGetById(Guid id) => databaseContext.Products.Include(x => x.Images).FirstOrDefault(product => product.Id == id);
 
 
         public void Add(Product product)
@@ -26,7 +27,7 @@ namespace OnlineShop.Db.Repositories
 
         public void Edit(Product product)
         {
-            var existingProduct = databaseContext.Products.FirstOrDefault(x => x.Id == product.Id);
+            var existingProduct = databaseContext.Products.Include(x => x.Images).FirstOrDefault(x => x.Id == product.Id);
 
             if (existingProduct == null)
             {
@@ -37,8 +38,14 @@ namespace OnlineShop.Db.Repositories
             existingProduct.Author = product.Author;
             existingProduct.Cost = product.Cost;
             existingProduct.Description = product.Description;
-            existingProduct.ImagePath = product.ImagePath;
 
+            foreach (var image in product.Images)
+            {
+
+                image.ProductId = product.Id;
+                databaseContext.Images.Add(image);
+
+            }
             databaseContext.SaveChanges();
         }
 

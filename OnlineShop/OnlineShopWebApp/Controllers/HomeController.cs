@@ -2,6 +2,7 @@ using System.Diagnostics;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Db.Repositories.Interfaces;
+using OnlineShopWebApp.Helpers;
 using OnlineShopWebApp.Models;
 
 namespace OnlineShopWebApp.Controllers
@@ -21,7 +22,7 @@ namespace OnlineShopWebApp.Controllers
         public IActionResult Index()
         {
             var products = productsRepository.GetAll();
-            return View(mapper.Map<List<ProductViewModel>>(products));
+            return View(products.ToProductViewModels());
         }
 
 

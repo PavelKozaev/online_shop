@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Db;
 using OnlineShop.Db.Models;
 using OnlineShop.Db.Repositories.Interfaces;
+using OnlineShopWebApp.Areas.Administrator.Models;
+using OnlineShopWebApp.Helpers;
 using OnlineShopWebApp.Models;
 
 namespace OnlineShopWebApp.Areas.Administrator.Controllers
@@ -14,25 +16,27 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
     {
         private readonly IProductsRepository productsRepository;
         private readonly IMapper mapper;
+        private readonly ImagesProvider imagesProvider;
 
-        public ProductsController(IProductsRepository productsRepository, IMapper mapper)
+        public ProductsController(IProductsRepository productsRepository, IMapper mapper, ImagesProvider imagesProvider)
         {
             this.productsRepository = productsRepository;
             this.mapper = mapper;
+            this.imagesProvider = imagesProvider;
         }
 
 
         public IActionResult Index()
         {
             var products = productsRepository.GetAll();
-            return View(mapper.Map<List<ProductViewModel>>(products));
+            return View(products.ToProductViewModels());
         }
 
 
         public IActionResult Details(Guid id)
         {
             var product = productsRepository.TryGetById(id);
-            return View(mapper.Map<ProductViewModel>(product));
+            return View(product.ToProductViewModel());
         }
 
 
@@ -43,11 +47,12 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
 
 
         [HttpPost]
-        public IActionResult Create(ProductViewModel productViewModel)
+        public IActionResult Create(AddProductViewModel productViewModel)
         {
             if (ModelState.IsValid)
             {
-                productsRepository.Add(mapper.Map<Product>(productViewModel));
+                var imagesPaths = imagesProvider.SaveFiles(productViewModel.UploadedFiles, ImageFolders.Products);
+                productsRepository.Add(productViewModel.ToProduct(imagesPaths));
                 return RedirectToAction(nameof(Index));
             }
 
@@ -57,35 +62,19 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
 
         public IActionResult Edit(Guid id)
         {
-            if (id == Guid.Empty)
-            {
-                return NotFound();
-            }
-
             var product = productsRepository.TryGetById(id);
-
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return View(mapper.Map<ProductViewModel>(product));
+            return View(product.ToEditProductViewModel());
         }
 
 
         [HttpPost]
-        public IActionResult Edit(ProductViewModel productViewModel)
+        public IActionResult Edit(EditProductViewModel productViewModel)
         {
             if (ModelState.IsValid)
             {
-                var productDb = productsRepository.TryGetById(productViewModel.Id);
-                if (productDb == null)
-                {
-                    return NotFound();
-                }
-
-                mapper.Map(productViewModel, productDb);
-                productsRepository.Edit(productDb);
+                var addedImagesPaths = imagesProvider.SaveFiles(productViewModel.UploadedFiles, ImageFolders.Products);
+                productViewModel.ImagesPaths = addedImagesPaths;  
+                productsRepository.Edit(productViewModel.ToProduct());
                 return RedirectToAction(nameof(Index));
             }
 

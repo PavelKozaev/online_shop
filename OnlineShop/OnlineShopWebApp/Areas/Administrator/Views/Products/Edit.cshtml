@@ -1,4 +1,4 @@
-﻿@model OnlineShopWebApp.Models.ProductViewModel
+﻿@model EditProductViewModel
 
 @{
     ViewData["Title"] = "Редактирование продукта";
@@ -8,7 +8,7 @@
 
 <div class="text-danger font-weight-bold" asp-validation-summary="ModelOnly"></div>
 
-<form asp-action="Edit" method="post">
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
     <input type="hidden" asp-for="Id" />
     <div class="form-group">
         <label asp-for="Name" class="control-label"></label>
@@ -31,10 +31,23 @@
         <span asp-validation-for="Description" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="ImagePath" class="control-label"></label>
-        <input asp-for="ImagePath" class="form-control" />
-        <span asp-validation-for="ImagePath" class="text-danger"></span>
+        <input type="hidden" asp-for="@Model.ImagesPaths" value="@Model.ImagesPaths" />
+        <label>Изображения</label><br />
+        <div class="d-flex align-items-center">
+            @foreach (var imagePath in Model.ImagesPaths)
+            {
+                <div style="margin-right: 20px;">
+                    <img src="@imagePath" width="264" height="400" />
+                </div>
+            }
+        </div>
     </div>
+
+    <div class="form-group">
+        <label>Загрузить новые изображения</label>
+        <input type="file" name="UploadedFiles" multiple accept="image/*" class="form-control" /> 
+    </div>
+
     <div class="form-group">
         <button class="btn btn-success btn-group" type="submit" asp-area="Administrator" asp-controller="Products" asp-action="Edit">Сохранить изменения</button>
     </div>

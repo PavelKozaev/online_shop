@@ -1,4 +1,4 @@
-﻿@model OnlineShopWebApp.Models.ProductViewModel
+﻿@model AddProductViewModel
 
 @{
     ViewData["Title"] = "Создание продукта";
@@ -6,9 +6,9 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<div class="text-danger font-weight-bold" asp-validation-summary="ModelOnly"></div>
+<div class="text-danger font-weight-bold" asp-validation-summary="All"></div>
 
-<form asp-action="Create" method="post">
+<form asp-action="Create" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label asp-for="Name" class="control-label"></label>
         <input asp-for="Name" class="form-control" />
@@ -30,11 +30,12 @@
         <span asp-validation-for="Description" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="ImagePath" class="control-label"></label>
-        <input asp-for="ImagePath" class="form-control" />
-        <span asp-validation-for="ImagePath" class="text-danger"></span>
+        <label asp-for="UploadedFiles">Загрузить изображения</label>
+        <input type="file" name="UploadedFiles" multiple accept="image/*" class="form-control" />
+        <span asp-validation-for="UploadedFiles" class="text-danger"></span>
     </div>
     <div class="form-group">
         <button class="btn btn-success btn-group" type="submit" asp-area="Administrator" asp-controller="Products" asp-action="Create">Добавить</button>
+        <a class="btn btn-danger btn-group" asp-area="Administrator" asp-controller="Products" asp-action="Index">Отмена</a>
     </div>
 </form>

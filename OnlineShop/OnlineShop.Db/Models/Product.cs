@@ -12,31 +12,25 @@
 
         public string Description { get; set; }
 
-        public string ImagePath { get; set; }
+        public List<Image> Images { get; set; }
+
         public List<CartItem> CartItems { get; set;}
 
         public List<Favorites> Favorites { get; set; }
+               
 
-        public Product(string Name, string Author, decimal Cost, string Description, string ImagePath)
+        public Product(Guid id, string name, string author, decimal cost, string description) : this()
         {
-            Id = Guid.NewGuid();
-            this.Name = Name;
-            this.Author = Author;
-            this.Cost = Cost;
-            this.Description = Description;
-            this.ImagePath = ImagePath;
-            CartItems = new List<CartItem>();
-            Favorites = new List<Favorites>();
+            Id = id;
+            Name = name;
+            Author = author;
+            Cost = cost;
+            Description = description;            
         }
 
-        public Product(Guid Id, string Name, string Author, decimal Cost, string Description, string ImagePath)
+        public Product() 
         {
-            this.Id = Id;
-            this.Name = Name;
-            this.Author = Author;
-            this.Cost = Cost;
-            this.Description = Description;
-            this.ImagePath = ImagePath;
+            Images = new List<Image>();
             CartItems = new List<CartItem>();
             Favorites = new List<Favorites>();
         }

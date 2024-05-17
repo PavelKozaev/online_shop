@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace OnlineShopWebApp.Models
+namespace OnlineShopWebApp.Areas.Administrator.Models
 {
-    public class ProductViewModel
+    public class EditProductViewModel
     {
         public Guid Id { get; set; }
+
         [Required(ErrorMessage = "Название продукта обязательно к заполнению")]
         [MinLength(2, ErrorMessage = "Название продукта слишком короткое")]
         [MaxLength(100, ErrorMessage = "Название продукта слишком длинное")]
@@ -29,8 +30,7 @@ namespace OnlineShopWebApp.Models
         [StringLength(1000, ErrorMessage = "Описание продукта слишком длинное")]
         [Display(Name = "Описание")]
         public string Description { get; set; }
-        
-        public string[] ImagesPaths { get; set; }
-        public string ImagePath => ImagesPaths.Length == 0 ? "/images/Products/SD father.jpg" : ImagesPaths[0];
+        public List<string> ImagesPaths { get; set; }
+        public IFormFile[] UploadedFiles { get; set; }
     }
 }

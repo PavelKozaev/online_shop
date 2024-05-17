@@ -7,6 +7,7 @@ using OnlineShop.Db;
 using OnlineShop.Db.Models;
 using OnlineShop.Db.Repositories;
 using OnlineShop.Db.Repositories.Interfaces;
+using OnlineShopWebApp.Helpers;
 using OnlineShopWebApp.Profiles;
 using Serilog;
 using System.Globalization;
@@ -57,6 +58,7 @@ builder.Services.AddTransient<ICartsRepository, CartsDbRepository>();
 builder.Services.AddTransient<IOrdersRepository, OrdersDbRepository>();
 builder.Services.AddTransient<IFavoritesRepository, FavoritesDbRepository>();
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddTransient<ImagesProvider>();
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
