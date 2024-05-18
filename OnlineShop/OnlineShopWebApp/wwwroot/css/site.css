@@ -22,6 +22,7 @@ body {
     font-family: 'Merriweather', serif;
     color: #333;
     background-color: #ffffff;
+    padding-top: 50px;
 }
 
 /* Стили для описания книг */
@@ -37,6 +38,12 @@ body {
 }
 
 
+.sticky-nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1030; 
+}
 
 
 /* Подключение шрифта через Google Fonts */
@@ -184,7 +191,7 @@ table a {
 
 
 .description, .description-full {
-    transition: max-height 2s ease-in-out;
+    transition: max-height 3s ease-in-out;
     overflow: hidden;
 }
 
@@ -234,3 +241,59 @@ table a {
         font-size: 16px;
         margin-bottom: 8px;
     }
+
+
+
+
+
+
+
+
+header .navbar {
+    padding: 0.5rem 1rem;
+}
+
+header .navbar-brand img {
+    max-height: 50px;
+}
+
+header .nav-link {
+    transition: color 0.3s ease;
+}
+
+    header .nav-link:hover {
+        color: #0056b3;
+    }
+
+.fa {
+    margin-right: 5px;
+}
+
+.fas {
+    margin-right: 5px;
+}
+
+.fa-home {
+    color: #F44336; /* красный цвет для домика (Главная) */
+}
+
+.fa-star {
+    color: #FFEB3B; /* желтый цвет для звезды (Избранное) */
+}
+
+.fa-shopping-cart {
+    color: #03A9F4; /* голубой цвет для корзины (Корзина) */
+}
+
+.fa-user, .fas.fa-sign-in-alt, .fas.fa-user-shield {
+    color: #4CAF50; /* зеленый цвет для пользовательских иконок */
+}
+
+/* Добавление цвета названиям в навигационной панели для большего контраста */
+.header .nav-link {
+    color: #333333; /* темно-серый цвет для текста навигационных ссылок */
+}
+
+.nav-link {
+    font-size:large;
+}
