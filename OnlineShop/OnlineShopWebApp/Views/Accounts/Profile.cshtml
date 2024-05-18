@@ -1,18 +1,21 @@
 ﻿@model OnlineShopWebApp.Models.UserViewModel
 
-<div class="container">
+<div class="container py-4">
     <div class="row">
         <!-- Левая часть (меню) -->
-        <div class="col-md-3 profile-menu">
+        <div class="col-md-4 col-lg-3 profile-menu">
             @await Html.PartialAsync("MenuUser")
         </div>
         <!-- Правая часть (информация о пользователе) -->
-        <div class="col-md-9 profile-info">
-            <div class="profile-content">
-                <h1>Профиль</h1>
-                <p><strong>Email:</strong> @Model.Email</p>
-                <p><strong>Имя:</strong> @Model.UserName</p>
-                <p><strong>Номер телефона:</strong> @Model.PhoneNumber</p>
+        <div class="col-md-8 col-lg-9 profile-info">
+            <div class="profile-card p-4 bg-white border rounded shadow-sm">
+                <h1 class="h3 mb-3 font-weight-normal text-center text-uppercase">Профиль пользователя</h1>
+
+                <div class="profile-details mb-3">
+                    <p><i class="fas fa-envelope mr-2"></i><strong>Email:</strong> @Model.Email</p>
+                    <p><i class="fas fa-user mr-2"></i><strong>Имя:</strong> @Model.UserName</p>
+                    <p><i class="fas fa-phone mr-2"></i><strong>Номер телефона:</strong> @Model.PhoneNumber</p>
+                </div>                
             </div>
         </div>
     </div>
