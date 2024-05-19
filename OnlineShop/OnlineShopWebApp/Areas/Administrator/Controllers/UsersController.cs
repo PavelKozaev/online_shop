@@ -6,6 +6,7 @@ using OnlineShop.Db;
 using OnlineShop.Db.Models;
 using OnlineShopWebApp.Areas.Administrator.Models;
 using OnlineShopWebApp.Models;
+using ChangePasswordViewModel = OnlineShopWebApp.Areas.Administrator.Models.ChangePasswordViewModel;
 
 namespace OnlineShopWebApp.Areas.Administrator.Controllers
 {

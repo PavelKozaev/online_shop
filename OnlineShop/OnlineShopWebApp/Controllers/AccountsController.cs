@@ -170,5 +170,35 @@ namespace OnlineShopWebApp.Controllers
             var orders = ordersRepository.GetOrdersByUserName(userName);                        
             return View(mapper.Map<List<OrderViewModel>>(orders));
         }
+
+
+        public IActionResult ChangeUserPassword()
+        {
+            var changePassword = new ChangeUserPasswordViewModel()
+            {
+                UserName = User.Identity.Name
+            };
+            return View(changePassword);
+        }
+
+        [HttpPost]
+        public IActionResult ChangeUserPassword(ChangeUserPasswordViewModel changePassword)
+        {
+            if (changePassword.UserName == changePassword.Password)
+            {
+                ModelState.AddModelError("", "Логин и пароль не должны совпадать.");
+            }
+
+            if (ModelState.IsValid)
+            {
+                var user = userManager.FindByNameAsync(changePassword.UserName).Result;
+                var newHashPassword = userManager.PasswordHasher.HashPassword(user, changePassword.Password);
+                user.PasswordHash = newHashPassword;
+                userManager.UpdateAsync(user).Wait();
+                return RedirectToAction(nameof(Profile));
+            }
+
+            return RedirectToAction(nameof(ChangeUserPassword));
+        }
     }
 }
