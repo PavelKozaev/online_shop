@@ -11,13 +11,6 @@
             <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="navbar-nav me-auto my-2 my-lg-0">
                     <li class="nav-item">
-                        <form asp-controller="Home" asp-action="Search" method="get" class="d-flex my-2 my-lg-0">
-                            <input class="form-control me-2" type="search" placeholder="Поиск..." aria-label="Search" name="name">
-                            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Поиск</button>
-                        </form>
-                    </li>
-                    <!-- Использование иконок с FontAwesome или другой библиотеки -->
-                    <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
                             <i class="fa fa-home"></i> Главная
                         </a>
@@ -27,14 +20,19 @@
                             <i class="fa fa-star"></i> Избранное
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" style="margin-right: 100px;">
                         <a class="nav-link" asp-area="" asp-controller="Carts" asp-action="Index">
                             <i class="fa fa-shopping-cart"></i> Корзина @await Component.InvokeAsync("Cart")
                         </a>
                     </li>
-                    <!-- Оставшийся код -->
+                    <li class="nav-item">
+                        <form asp-controller="Home" asp-action="Search" method="get" class="d-flex my-2 my-lg-0">
+                            <input class="form-control me-2" type="search" placeholder="Поиск..." aria-label="Search" name="name">
+                            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Поиск</button>
+                        </form>
+                    </li>
                 </ul>
-                <!-- Оставшаяся часть навбара с учетом авторизации и ролей пользователя -->
+
                 <div class="navbar-nav">
                     @if (User.Identity.IsAuthenticated)
                     {
