@@ -50,5 +50,15 @@ namespace OnlineShop.Db.Repositories
 
             databaseContext.SaveChanges();
         }
+
+        public List<Order> GetOrdersByUserName(string userName)
+        {
+            return databaseContext.Orders
+            .Include(x => x.User)
+            .Include(x => x.Items)
+            .ThenInclude(x => x.Product)
+            .Where(x => x.User.Name == userName)
+            .ToList();
+        }
     }
 }

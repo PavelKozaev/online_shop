@@ -1,0 +1,50 @@
+﻿@model List<OrderViewModel>
+@{
+    int i = 1;
+}
+
+<div class="row">
+    <div class="col-md-4 col-lg-3 profile-menu">
+        @await Html.PartialAsync("MenuUser")
+    </div>
+    <div class="col-9">
+        <h3 class="text-center">Список заказов</h3>
+        <br />
+        <div class="row">
+            <div class="col">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Товары</th>
+                            <th>Сумма</th>
+                            <th>Статус</th>
+                            <th>Дата</th>
+                            <th>Время</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model)
+                        {
+                            <tr>
+                                <td rowspan="@order.Items.Count()">@i</td>
+                                <td>@order.Items[0].Product.Name - @order.Items[0].Amount шт.</td>
+                                <td rowspan="@order.Items.Count()">@order.Cost руб.</td>
+                                <td rowspan="@order.Items.Count()">@EnumHelper.GetDisplayName(order.Status)</td>
+                                <td rowspan="@order.Items.Count()">@order.CreateDateTime.ToString("d")</td>
+                                <td rowspan="@order.Items.Count()">@order.CreateDateTime.ToString("t")</td>
+                            </tr>
+                            for (int j = 1; j < order.Items.Count; j++)
+                            {
+                                <tr>
+                                    <td>@order.Items[j].Product.Name - @order.Items[j].Amount шт.</td>
+                                </tr>
+                            }
+                            i += 1;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

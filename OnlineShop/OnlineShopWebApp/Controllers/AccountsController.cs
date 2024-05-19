@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Db;
 using OnlineShop.Db.Models;
+using OnlineShop.Db.Repositories.Interfaces;
 using OnlineShopWebApp.Models;
 
 namespace OnlineShopWebApp.Controllers
@@ -13,13 +14,15 @@ namespace OnlineShopWebApp.Controllers
         private readonly SignInManager<User> signInManager;
         private readonly ILogger logger;
         private readonly IMapper mapper;
+        private readonly IOrdersRepository ordersRepository;
 
-        public AccountsController(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AccountsController> logger, IMapper mapper)
+        public AccountsController(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AccountsController> logger, IMapper mapper, IOrdersRepository ordersRepository)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.logger = logger;
             this.mapper = mapper;
+            this.ordersRepository = ordersRepository;
         }        
 
 
@@ -137,18 +140,20 @@ namespace OnlineShopWebApp.Controllers
         }
 
 
-        public IActionResult EditProfile(string name)
+        public IActionResult EditProfile()
         {
-            var user = userManager.FindByNameAsync(name).Result;
+            var userName = User.Identity.Name;
+            var user = userManager.FindByNameAsync(userName).Result;
             return View(mapper.Map<UserViewModel>(user));
         }
 
         [HttpPost]
-        public IActionResult EditProfile(UserViewModel userViewModel, string name)
+        public IActionResult EditProfile(UserViewModel userViewModel)
         {
+            var userName = User.Identity.Name;
             if (ModelState.IsValid)
             {
-                var user = userManager.FindByNameAsync(name).Result;
+                var user = userManager.FindByNameAsync(userName).Result;
                 user.Email = userViewModel.Email;
                 user.PhoneNumber = userViewModel.PhoneNumber;
                 user.UserName = userViewModel.UserName;
@@ -156,6 +161,14 @@ namespace OnlineShopWebApp.Controllers
                 return RedirectToAction(nameof(Profile));
             }
             return View(userViewModel);
+        }
+
+
+        public IActionResult UserOrders()
+        {
+            var userName = User.Identity.Name; 
+            var orders = ordersRepository.GetOrdersByUserName(userName);                        
+            return View(mapper.Map<List<OrderViewModel>>(orders));
         }
     }
 }

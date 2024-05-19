@@ -7,6 +7,7 @@ namespace OnlineShop.Db.Repositories.Interfaces
         void Add(Order order);
         List<Order> GetAll();
         Order TryGetById(Guid id);
+        List<Order> GetOrdersByUserName(string userName);
         void UpdateStatus(Guid orderId, OrderStatus newStatus);
     }
 }
