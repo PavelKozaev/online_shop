@@ -184,21 +184,51 @@ namespace OnlineShopWebApp.Controllers
         [HttpPost]
         public IActionResult ChangeUserPassword(ChangeUserPasswordViewModel changePassword)
         {
-            if (changePassword.UserName == changePassword.Password)
+            if (changePassword.UserName.Equals(changePassword.Password, StringComparison.OrdinalIgnoreCase))
             {
                 ModelState.AddModelError("", "Логин и пароль не должны совпадать.");
             }
 
-            if (ModelState.IsValid)
-            {
-                var user = userManager.FindByNameAsync(changePassword.UserName).Result;
-                var newHashPassword = userManager.PasswordHasher.HashPassword(user, changePassword.Password);
-                user.PasswordHash = newHashPassword;
-                userManager.UpdateAsync(user).Wait();
-                return RedirectToAction(nameof(Profile));
+            if (!ModelState.IsValid)
+            {                
+                return View(changePassword);
             }
 
-            return RedirectToAction(nameof(ChangeUserPassword));
+            var user = userManager.FindByNameAsync(changePassword.UserName).Result;
+
+            if (user != null)
+            {
+                var verificationResult = userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, changePassword.Password);
+                if (verificationResult == PasswordVerificationResult.Failed)
+                {
+                    var newHashPassword = userManager.PasswordHasher.HashPassword(user, changePassword.Password);
+                    user.PasswordHash = newHashPassword;
+                    var result = userManager.UpdateAsync(user).Result;
+
+                    if (result.Succeeded)
+                    {
+                        
+                        return RedirectToAction(nameof(Profile));
+                    }
+                    else
+                    {                        
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Новый пароль не должен быть таким же, как старый.");
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Пользователь не найден.");
+            }
+
+            return View(changePassword);
         }
     }
 }
