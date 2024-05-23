@@ -30,8 +30,8 @@ namespace OnlineShopWebApp.Models
         [Display(Name = "Описание")]
         public string Description { get; set; }
 
-        public string[] ImagesPaths { get; set; }
-        public string ImagePath => ImagesPaths == null || ImagesPaths.Length == 0
+        public string[]? ImagesPaths { get; set; }
+        public string? ImagePath => ImagesPaths == null || ImagesPaths.Length == 0
                            ? "/images/Products/SD father.jpg"
                            : ImagesPaths[0];
     }

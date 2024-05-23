@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Db;
 using OnlineShop.Db.Models;
 using OnlineShop.Db.Repositories.Interfaces;
+using OnlineShopWebApp.Helpers;
 using OnlineShopWebApp.Models;
 
 namespace OnlineShopWebApp.Controllers
@@ -15,14 +16,16 @@ namespace OnlineShopWebApp.Controllers
         private readonly ILogger logger;
         private readonly IMapper mapper;
         private readonly IOrdersRepository ordersRepository;
+        private readonly ImagesProvider imagesProvider;
 
-        public AccountsController(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AccountsController> logger, IMapper mapper, IOrdersRepository ordersRepository)
+        public AccountsController(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AccountsController> logger, IMapper mapper, IOrdersRepository ordersRepository, ImagesProvider imagesProvider)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.logger = logger;
             this.mapper = mapper;
             this.ordersRepository = ordersRepository;
+            this.imagesProvider = imagesProvider;
         }        
 
 
@@ -129,7 +132,8 @@ namespace OnlineShopWebApp.Controllers
                     {
                         Email = user.Email,
                         UserName = user.UserName,
-                        PhoneNumber = user.PhoneNumber
+                        PhoneNumber = user.PhoneNumber,
+                        Avatar = user.Avatar,
                     };
 
                     return View(model);
@@ -157,6 +161,14 @@ namespace OnlineShopWebApp.Controllers
                 user.Email = userViewModel.Email;
                 user.PhoneNumber = userViewModel.PhoneNumber;
                 user.UserName = userViewModel.UserName;
+
+                if (userViewModel.UploadedFile != null)
+                {
+                    // Если файл был загружен, сохраняем его и обновляем ссылку на аватар в профиле
+                    var avatarPath = imagesProvider.SaveFile(userViewModel.UploadedFile, ImageFolders.Profiles);
+                    user.Avatar = avatarPath;
+                }
+
                 userManager.UpdateAsync(user).Wait();
                 return RedirectToAction(nameof(Profile));
             }

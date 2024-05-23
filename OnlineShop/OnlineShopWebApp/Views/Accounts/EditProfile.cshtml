@@ -8,7 +8,7 @@
 
 <div class="text-danger font-weight-bold" asp-validation-summary="ModelOnly"></div>
 
-<form asp-action="Edit" method="post">
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
 
     <input type="hidden" name="name" value="@Model.UserName" />
 
@@ -26,6 +26,17 @@
         <label asp-for="PhoneNumber" class="control-label">Телефон</label>
         <input asp-for="PhoneNumber" class="form-control" />
         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="hidden" asp-for="@Model.Avatar" value="@Model.Avatar" />
+        <label>Аватарка</label><br />
+        <div><img src="@Model.Avatar" width="180px" height="250px" /></div>
+    </div>
+
+    <div class="form-group">
+        <label>Загрузить аватарку</label>
+        <input type="file" name="UploadedFile" multiple accept="image/*" class="form-control" />
     </div>
 
     <div class="form-group">

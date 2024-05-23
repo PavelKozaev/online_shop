@@ -30,7 +30,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Models
         [StringLength(1000, ErrorMessage = "Описание продукта слишком длинное")]
         [Display(Name = "Описание")]
         public string Description { get; set; }
-        public List<string> ImagesPaths { get; set; }
-        public IFormFile[] UploadedFiles { get; set; }
+        public List<string>? ImagesPaths { get; set; }
+        public IFormFile[]? UploadedFiles { get; set; }
     }
 }
