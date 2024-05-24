@@ -265,3 +265,9 @@ header .nav-link {
 .nav-link {
     font-size:large;
 }
+
+.navbar-nav {
+    display: flex;
+    justify-content: space-between; /* Разместить элементы на равном расстоянии между собой */
+    align-items: center; /* Центрировать элементы по вертикали */
+}

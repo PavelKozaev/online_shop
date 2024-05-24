@@ -1,4 +1,11 @@
-﻿@using OnlineShop.Db
+﻿@using Microsoft.AspNetCore.Identity
+@using OnlineShop.Db
+@using OnlineShop.Db.Models
+@inject UserManager<User> UserManager
+
+@{
+    var avatarPath = User.Identity.IsAuthenticated ? (await UserManager.FindByNameAsync(User.Identity.Name))?.Avatar : null;
+}
 <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-3 sticky-nav">
         <div class="container-fluid">
@@ -34,12 +41,23 @@
                 </ul>
 
                 <div class="navbar-nav">
+                    @if (User.IsInRole(Constants.AdminRoleName))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Administrator" asp-controller="Orders" asp-action="Index">
+                                <i class="fas fa-user-shield"></i> Администратор
+                            </a>
+                        </li>
+                    }
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                            <a class="nav-link bi-link" href="#" id="userDropdown" role="button"
                                data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-user"></i> @User.Identity.Name
+                                @if (avatarPath != null)
+                                {
+                                    <img src="@avatarPath" style="width: 45px; height: 45px; border-radius: 15px">
+                                }
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Accounts" asp-action="Profile">Профиль</a></li>
@@ -54,16 +72,7 @@
                                 <i class="fas fa-sign-in-alt"></i> Авторизоваться
                             </a>
                         </li>
-                    }
-
-                    @if (User.IsInRole(Constants.AdminRoleName))
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Administrator" asp-controller="Orders" asp-action="Index">
-                                <i class="fas fa-user-shield"></i> Администратор
-                            </a>
-                        </li>
-                    }
+                    }                    
                 </div>
             </div>
         </div>
