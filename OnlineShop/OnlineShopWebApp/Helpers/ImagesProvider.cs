@@ -8,13 +8,16 @@
             this.appEnvironment = appEnvironment;
         }
 
-        public List<string> SaveFiles(IFormFile[] files, ImageFolders folder)
+        public List<string> SaveFiles(IFormFile[]? files, ImageFolders folder)
         {
             var imagesPaths = new List<string>();
-            foreach (var file in files)
+            if (files != null)
             {
-                var imagePath = SaveFile(file, folder);
-                imagesPaths.Add(imagePath);
+                foreach (var file in files)
+                {
+                    var imagePath = SaveFile(file, folder);
+                    imagesPaths.Add(imagePath);
+                }
             }
             return imagesPaths;
         }
