@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using OnlineShopWebApp.ApiModels;
 
 namespace OnlineShopWebApp.Models
 {
@@ -34,5 +35,8 @@ namespace OnlineShopWebApp.Models
         public string? ImagePath => ImagesPaths == null || ImagesPaths.Length == 0
                            ? "/images/Products/SD father.jpg"
                            : ImagesPaths[0];
+
+        public List<ReviewApiModel>? Reviews { get; set; } = new List<ReviewApiModel>();
+        public RatingApiModel? Rating { get; set; }
     }
 }

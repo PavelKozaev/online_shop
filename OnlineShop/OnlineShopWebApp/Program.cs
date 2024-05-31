@@ -7,6 +7,7 @@ using OnlineShop.Db;
 using OnlineShop.Db.Models;
 using OnlineShop.Db.Repositories;
 using OnlineShop.Db.Repositories.Interfaces;
+using OnlineShopWebApp.ApiClients;
 using OnlineShopWebApp.Helpers;
 using OnlineShopWebApp.Profiles;
 using Serilog;
@@ -52,13 +53,14 @@ builder.Services.ConfigureApplicationCookie(options =>
         IsEssential = true
     };
 });
-
+builder.Services.AddHttpClient();
 builder.Services.AddTransient<IProductsRepository, ProductsDbRepository>();
 builder.Services.AddTransient<ICartsRepository, CartsDbRepository>();
 builder.Services.AddTransient<IOrdersRepository, OrdersDbRepository>();
 builder.Services.AddTransient<IFavoritesRepository, FavoritesDbRepository>();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddTransient<ImagesProvider>();
+builder.Services.AddHttpClient<ReviewsApiClient>();
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {

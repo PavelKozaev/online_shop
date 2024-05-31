@@ -12,7 +12,24 @@
                         <div class="card-header">
                             <h5 class="card-title">@product.Name</h5>
                             <p class="card-author">@product.Author</p>
-                            <p class="cost">@product.Cost руб.</p>
+                            <p class="cost">@product.Cost руб.</p>                            
+                        </div>
+                        <!-- Добавление рейтинга и отзывов здесь -->
+                        <div class="product-rating-and-reviews">
+                            @if (product.Rating != null && product.Rating.AverageGrade > 0)
+                            {
+                                <div class="rating-stars">
+                                    @for (int i = 0; i < 5; i++)
+                                    {
+                                        <span class="star @(i < product.Rating.AverageGrade ? "filled" : "")">★</span>
+                                    }
+                                </div>
+                                <p class="reviews-count">@product.Rating.ReviewsCount отзыв(ов)</p>
+                            }
+                            else
+                            {
+                                <p class="reviews-count">Нет отзывов</p>
+                            }
                         </div>
                         <!-- Элемент с описанием -->
                         <div class="card-text description">
@@ -45,17 +62,4 @@
             <li class="page-item"><a class="page-link" href="?page=3">3</a></li>
         </ul>
     </nav>
-
-
-    <!-- Карточка с отзывами пользователей -->
-    <div class="card reviews">
-        <div class="card-body">
-            <h3 class="card-title">Отзывы читателей</h3>
-            <!-- Здесь будут отзывы -->
-        </div>
-        <div class="card-footer">
-            <!-- Форма добавления отзыва -->
-        </div>
-    </div>
-
 </div>

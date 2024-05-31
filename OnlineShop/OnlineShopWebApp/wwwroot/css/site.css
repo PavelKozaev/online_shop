@@ -271,3 +271,74 @@ header .nav-link {
     justify-content: space-between; /* Разместить элементы на равном расстоянии между собой */
     align-items: center; /* Центрировать элементы по вертикали */
 }
+
+
+
+
+.review-container {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.rating-stars {
+    color: #ddd;
+}
+
+    .rating-stars .filled {
+        color: #ffd700;
+    }
+
+
+
+    .rating-stars .filled {
+        color: #ffd700;
+    }
+
+.rating-stars, .product-rating h4, .product-reviews h3 {
+    text-align: center; /* Выравнивание по центру */
+}
+
+    .rating-stars span {
+        font-size: 48px; /* Увеличиваем размер звезд */
+        line-height: 1; /* Убираем лишнее пространство по вертикали */
+    }
+
+    .rating-stars .filled {
+        color: #ffd700; /* Цвет заполненных звезд */
+    }
+
+.product-rating h4, .product-reviews h3 {
+    margin: 10px 0; /* Добавляем отступы сверху и снизу */
+}
+
+
+.rating-stars-small span {
+    font-size: 10px;
+    line-height: 1; 
+}
+.rating-stars-small .filled {
+    color: #ffd700; 
+}
+
+.rating-stars-small {
+    text-align: center; /* Выравнивание по центру */
+}
+
+.reviews-count {
+    font-size: 16px;
+    text-align: center;
+}
+
+
+.rating-stars-small-custom span {
+    font-size: 16px;
+    line-height: 1;
+    text-align: left;
+}
+
+.rating-stars-small-custom .filled {
+    color: #ffd700;
+}
