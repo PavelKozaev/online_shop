@@ -28,6 +28,12 @@
                             }
                             else
                             {
+                                <div class="rating-stars">
+                                    @for (int i = 0; i < 5; i++)
+                                    {
+                                        <span class="star @(i < product.Rating.AverageGrade ? "filled" : "")">★</span>
+                                    }
+                                </div>
                                 <p class="reviews-count">Нет отзывов</p>
                             }
                         </div>

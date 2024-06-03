@@ -29,13 +29,11 @@ namespace OnlineShopWebApp.Controllers
             var productViewModels = new List<ProductViewModel>();
 
             foreach (var product in products)
-            {
-                var reviews = await reviewsApiClient.GetByProductIdAsync(product.Id);
+            {                
                 var rating = await reviewsApiClient.GetRatingByProductIdAsync(product.Id);
 
                 var productViewModel = product.ToProductViewModel();
-
-                productViewModel.Reviews = reviews; // Добавляем отзывы
+               
                 productViewModel.Rating = rating; // Добавляем рейтинг
 
                 productViewModels.Add(productViewModel);
