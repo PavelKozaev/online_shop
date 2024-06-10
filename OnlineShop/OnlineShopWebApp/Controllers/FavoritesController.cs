@@ -20,30 +20,29 @@ namespace OnlineShopWebApp.Controllers
             this.mapper = mapper;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var favorites = favoritesRepository.TryGetByUserName(User.Identity.Name);
+            var favorites = await favoritesRepository.TryGetByUserNameAsync(User.Identity.Name);
             return View(mapper.Map<FavoritesViewModel>(favorites));
         }
 
-        public IActionResult AddToFavorites(Guid productId)
+        public async Task<IActionResult> AddToFavorites(Guid productId)
         {
-            var product = productsRepository.TryGetById(productId);
-            favoritesRepository.Add(product, User.Identity.Name);
+            var product = await productsRepository.TryGetByIdAsync(productId);
+            await favoritesRepository.AddAsync(product, User.Identity.Name);
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult RemoveFromFavorites(Guid productId)
+        public async Task<IActionResult> RemoveFromFavorites(Guid productId)
         {
-            var product = productsRepository.TryGetById(productId);
-            favoritesRepository.Remove(product, User.Identity.Name);
+            var product = await productsRepository.TryGetByIdAsync(productId);
+            await favoritesRepository.RemoveAsync(product, User.Identity.Name);
             return RedirectToAction(nameof(Index));
         }
 
-
-        public IActionResult Clear()
+        public async Task<IActionResult> Clear()
         {
-            favoritesRepository.Clear(User.Identity.Name);
+            await favoritesRepository.ClearAsync(User.Identity.Name);
             return RedirectToAction(nameof(Index));
         }
     }

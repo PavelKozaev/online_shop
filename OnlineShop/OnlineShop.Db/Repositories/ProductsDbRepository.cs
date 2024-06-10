@@ -8,26 +8,30 @@ namespace OnlineShop.Db.Repositories
     {
         private readonly DatabaseContext databaseContext;
 
-
         public ProductsDbRepository(DatabaseContext databaseContext)
         {
             this.databaseContext = databaseContext;
         }
 
-        public List<Product> GetAll() => databaseContext.Products.Include(x => x.Images).ToList();
-
-        public Product TryGetById(Guid id) => databaseContext.Products.Include(x => x.Images).FirstOrDefault(product => product.Id == id);
-
-
-        public void Add(Product product)
+        public async Task<List<Product>> GetAllAsync()
         {
-            databaseContext.Products.Add(product);
-            databaseContext.SaveChanges();
+            return await databaseContext.Products.Include(x => x.Images).ToListAsync();
         }
 
-        public void Edit(Product product)
+        public async Task<Product> TryGetByIdAsync(Guid id)
         {
-            var existingProduct = databaseContext.Products.Include(x => x.Images).FirstOrDefault(x => x.Id == product.Id);
+            return await databaseContext.Products.Include(x => x.Images).FirstOrDefaultAsync(product => product.Id == id);
+        }
+
+        public async Task AddAsync(Product product)
+        {
+            await databaseContext.Products.AddAsync(product);
+            await databaseContext.SaveChangesAsync();
+        }
+
+        public async Task EditAsync(Product product)
+        {
+            var existingProduct = await databaseContext.Products.Include(x => x.Images).FirstOrDefaultAsync(x => x.Id == product.Id);
 
             if (existingProduct == null)
             {
@@ -41,21 +45,19 @@ namespace OnlineShop.Db.Repositories
 
             foreach (var image in product.Images)
             {
-
                 image.ProductId = product.Id;
-                databaseContext.Images.Add(image);
-
+                await databaseContext.Images.AddAsync(image);
             }
-            databaseContext.SaveChanges();
+
+            await databaseContext.SaveChangesAsync();
         }
 
-        public void Remove(Guid id)
+        public async Task RemoveAsync(Guid id)
         {
-            var product = TryGetById(id);
+            var product = await TryGetByIdAsync(id);
 
             databaseContext.Products.Remove(product);
-
-            databaseContext.SaveChanges();
+            await databaseContext.SaveChangesAsync();
         }
     }
 }

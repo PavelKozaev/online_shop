@@ -8,38 +8,34 @@ namespace OnlineShop.Db.Repositories
     {
         private readonly DatabaseContext dbContext;
 
-
         public FavoritesDbRepository(DatabaseContext dbContext)
         {
             this.dbContext = dbContext;
         }
 
-
-        public Favorites TryGetByUserName(string userName)
+        public async Task<Favorites> TryGetByUserNameAsync(string userName)
         {
-            return dbContext.Favorites.Include(f => f.Products)
-                                      .Include(u => u.User)
-                                      .FirstOrDefault(f => f.User.UserName == userName);
+            return await dbContext.Favorites
+                .Include(f => f.Products)
+                .Include(u => u.User)
+                .FirstOrDefaultAsync(f => f.User.UserName == userName);
         }
 
-
-        public void Add(Product product, string userName)
+        public async Task AddAsync(Product product, string userName)
         {
-            var user = dbContext.Users.FirstOrDefault(u => u.UserName == userName);
+            var user = await dbContext.Users.FirstOrDefaultAsync(u => u.UserName == userName);
 
-            var favorites = dbContext.Favorites.Include(f => f.User)
-                                               .Include(f => f.Products)
-                                               .FirstOrDefault(f => f.User.UserName == userName);
+            var favorites = await dbContext.Favorites
+                .Include(f => f.User)
+                .Include(f => f.Products)
+                .FirstOrDefaultAsync(f => f.User.UserName == userName);
 
             if (favorites is null)
             {
-                dbContext.Favorites.Add(new Favorites()
+                await dbContext.Favorites.AddAsync(new Favorites
                 {
                     User = user,
-                    Products = new List<Product>()
-                    {
-                        product
-                    }
+                    Products = new List<Product> { product }
                 });
             }
             else
@@ -47,24 +43,23 @@ namespace OnlineShop.Db.Repositories
                 favorites.Products.Add(product);
             }
 
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
         }
 
-
-        public void Remove(Product product, string userName)
+        public async Task RemoveAsync(Product product, string userName)
         {
-            var favorites = TryGetByUserName(userName);
-               
+            var favorites = await TryGetByUserNameAsync(userName);
+
             favorites.Products.Remove(product);
 
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
         }
 
-        public void Clear(string userName)
+        public async Task ClearAsync(string userName)
         {
-            var favorites = TryGetByUserName(userName);
+            var favorites = await TryGetByUserNameAsync(userName);
             favorites.Products.Clear();
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
         }
     }
 }

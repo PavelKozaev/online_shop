@@ -13,7 +13,6 @@ namespace OnlineShopWebApp.Controllers
         private readonly ICartsRepository cartsRepository;
         private readonly IMapper mapper;
 
-
         public CartsController(IProductsRepository productsRepository, ICartsRepository cartsRepository, IMapper mapper)
         {
             this.productsRepository = productsRepository;
@@ -21,32 +20,28 @@ namespace OnlineShopWebApp.Controllers
             this.mapper = mapper;
         }
 
-
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var cart = cartsRepository.TryGetByUserName(User.Identity.Name);
+            var cart = await cartsRepository.TryGetByUserNameAsync(User.Identity.Name);
             return View(mapper.Map<CartViewModel>(cart));
         }
 
-
-        public IActionResult Create(Guid id)
-        {        
-            var product = productsRepository.TryGetById(id);
-            cartsRepository.Add(product, User.Identity.Name);
+        public async Task<IActionResult> Create(Guid id)
+        {
+            var product = await productsRepository.TryGetByIdAsync(id);
+            await cartsRepository.AddAsync(product, User.Identity.Name);
             return RedirectToAction(nameof(Index));
         }
 
-
-        public IActionResult DecreaseAmount(Guid id)
+        public async Task<IActionResult> DecreaseAmount(Guid id)
         {
-            cartsRepository.DecreaseAmount(id, User.Identity.Name);
+            await cartsRepository.DecreaseAmountAsync(id, User.Identity.Name);
             return RedirectToAction(nameof(Index));
         }
 
-
-        public IActionResult Clear() 
+        public async Task<IActionResult> Clear()
         {
-            cartsRepository.Clear(User.Identity.Name);
+            await cartsRepository.ClearAsync(User.Identity.Name);
             return RedirectToAction(nameof(Index));
         }
     }

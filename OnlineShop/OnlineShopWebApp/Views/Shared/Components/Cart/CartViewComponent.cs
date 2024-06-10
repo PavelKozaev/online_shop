@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Db.Repositories.Interfaces;
 using OnlineShopWebApp.Models;
+using System.Threading.Tasks;
 
 namespace OnlineShopWebApp.Views.Shared.Components.Cart
 {
@@ -14,15 +15,15 @@ namespace OnlineShopWebApp.Views.Shared.Components.Cart
             this.cartRepository = cartRepository;
             this.mapper = mapper;
         }
-        public IViewComponentResult Invoke()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
-            var cart = cartRepository.TryGetByUserName(User.Identity.Name);
+            var cart = await cartRepository.TryGetByUserNameAsync(User.Identity.Name);
 
             var cartViewModel = mapper.Map<CartViewModel>(cart);
 
             var productCounts = cartViewModel?.Amount ?? 0;
 
             return View("Cart", productCounts);
-        }        
+        }
     }
 }

@@ -4,9 +4,9 @@ namespace OnlineShop.Db.Repositories.Interfaces
 {
     public interface ICartsRepository
     {
-        void Add(Product product, string userName);
-        void Clear(string userId);
-        void DecreaseAmount(Guid productId, string userName);
-        Cart TryGetByUserName(string userName);
+        Task AddAsync(Product product, string userName);
+        Task ClearAsync(string userId);
+        Task DecreaseAmountAsync(Guid productId, string userName);
+        Task<Cart> TryGetByUserNameAsync(string userName);
     }
 }

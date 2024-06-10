@@ -12,19 +12,20 @@ namespace OnlineShop.Db.Repositories
         {
             this.databaseContext = databaseContext;
         }
-        public Cart TryGetByUserName(string userName)
+
+        public async Task<Cart> TryGetByUserNameAsync(string userName)
         {
-            return databaseContext.Carts.Include(x => x.Items)
-                                        .ThenInclude(x => x.Product)
-                                        .Include(x => x.User)
-                                        .FirstOrDefault(c => c.User.UserName == userName);
+            return await databaseContext.Carts
+                .Include(x => x.Items)
+                .ThenInclude(x => x.Product)
+                .Include(x => x.User)
+                .FirstOrDefaultAsync(c => c.User.UserName == userName);
         }
 
-        public void Add(Product product, string userName)
+        public async Task AddAsync(Product product, string userName)
         {
-            var user = databaseContext.Users.FirstOrDefault(u => u.UserName == userName);
-
-            var existingCart = TryGetByUserName(userName);
+            var user = await databaseContext.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+            var existingCart = await TryGetByUserNameAsync(userName);
 
             if (existingCart is null)
             {
@@ -43,7 +44,7 @@ namespace OnlineShop.Db.Repositories
                     }
                 };
 
-                databaseContext.Carts.Add(newCart);
+                await databaseContext.Carts.AddAsync(newCart);
             }
             else
             {
@@ -64,13 +65,12 @@ namespace OnlineShop.Db.Repositories
                 }
             }
 
-            databaseContext.SaveChanges();
+            await databaseContext.SaveChangesAsync();
         }
 
-        public void DecreaseAmount(Guid productId, string userName)
+        public async Task DecreaseAmountAsync(Guid productId, string userName)
         {
-            var existingCart = TryGetByUserName(userName);
-
+            var existingCart = await TryGetByUserNameAsync(userName);
             var existingCartItem = existingCart?.Items?.FirstOrDefault(x => x.Product.Id == productId);
 
             if (existingCartItem == null)
@@ -85,16 +85,14 @@ namespace OnlineShop.Db.Repositories
                 existingCart.Items.Remove(existingCartItem);
             }
 
-            databaseContext.SaveChanges();
+            await databaseContext.SaveChangesAsync();
         }
 
-        public void Clear(string userName)
+        public async Task ClearAsync(string userName)
         {
-            var existingCart = TryGetByUserName(userName);
-
+            var existingCart = await TryGetByUserNameAsync(userName);
             databaseContext.Carts.Remove(existingCart);
-
-            databaseContext.SaveChanges();
+            await databaseContext.SaveChangesAsync();
         }
     }
 }

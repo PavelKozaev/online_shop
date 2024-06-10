@@ -4,10 +4,10 @@ namespace OnlineShop.Db.Repositories.Interfaces
 {
     public interface IOrdersRepository
     {
-        void Add(Order order);
-        List<Order> GetAll();
-        Order TryGetById(Guid id);
-        List<Order> GetOrdersByUserName(string userName);
-        void UpdateStatus(Guid orderId, OrderStatus newStatus);
+        Task AddAsync(Order order);
+        Task<List<Order>> GetAllAsync();
+        Task<Order> TryGetByIdAsync(Guid id);
+        Task<List<Order>> GetOrdersByUserNameAsync(string userName);
+        Task UpdateStatusAsync(Guid orderId, OrderStatus newStatus);
     }
 }

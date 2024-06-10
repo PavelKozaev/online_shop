@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OnlineShop.Db;
 using OnlineShop.Db.Models;
 using OnlineShopWebApp.Areas.Administrator.Models;
@@ -28,9 +29,9 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
         }
 
 
-        public IActionResult Index()
-		{
-            var users = userManager.Users.ToList();
+        public async Task<IActionResult> Index()
+        {
+            var users = await userManager.Users.ToListAsync();
             return View(mapper.Map<List<UserViewModel>>(users));
         }
 
@@ -40,19 +41,23 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Register register)
+        public async Task<IActionResult> Create(Register register)
         {
             if (register.UserName == register.Password)
             {
                 ModelState.AddModelError("", "Имя пользователя и пароль не должны совпадать");
             }
+
             if (ModelState.IsValid)
             {
-                User user = new User { Email = register.Email, 
-                                       UserName = register.UserName, 
-                                       PhoneNumber = register.PhoneNumber };
+                var user = new User
+                {
+                    Email = register.Email,
+                    UserName = register.UserName,
+                    PhoneNumber = register.PhoneNumber
+                };
 
-                var result = userManager.CreateAsync(user, register.Password).Result;
+                var result = await userManager.CreateAsync(user, register.Password);
 
                 if (result.Succeeded)
                 {
@@ -70,12 +75,11 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             return View(register);
         }
 
-
-        public void TryAssignUserRole(User user)
+        public async Task TryAssignUserRole(User user)
         {
             try
             {
-                userManager.AddToRoleAsync(user, Constants.UserRoleName).Wait();
+                await userManager.AddToRoleAsync(user, Constants.UserRoleName);
             }
             catch (Exception ex)
             {
@@ -83,40 +87,37 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             }
         }
 
-
-        public IActionResult Edit(string name)
+        public async Task<IActionResult> Edit(string name)
         {
-            var user = userManager.FindByNameAsync(name).Result;
+            var user = await userManager.FindByNameAsync(name);
             return View(mapper.Map<UserViewModel>(user));
         }
 
         [HttpPost]
-        public IActionResult Edit(UserViewModel userViewModel, string name)
+        public async Task<IActionResult> Edit(UserViewModel userViewModel, string name)
         {
             if (ModelState.IsValid)
             {
-                var user = userManager.FindByNameAsync(name).Result;
-                user.Email = userViewModel.Email;   
+                var user = await userManager.FindByNameAsync(name);
+                user.Email = userViewModel.Email;
                 user.PhoneNumber = userViewModel.PhoneNumber;
                 user.UserName = userViewModel.UserName;
-                userManager.UpdateAsync(user).Wait();
+                await userManager.UpdateAsync(user);
                 return RedirectToAction(nameof(Index));
             }
             return View(userViewModel);
         }
 
-
-        public IActionResult Details(string name)
-		{
-            var user = userManager.FindByNameAsync(name).Result;
+        public async Task<IActionResult> Details(string name)
+        {
+            var user = await userManager.FindByNameAsync(name);
             return View(mapper.Map<UserViewModel>(user));
         }
 
-
-		public IActionResult Delete(string name)
-		{
-            var user = userManager.FindByNameAsync(name).Result;
-            userManager.DeleteAsync(user).Wait();
+        public async Task<IActionResult> Delete(string name)
+        {
+            var user = await userManager.FindByNameAsync(name);
+            await userManager.DeleteAsync(user);
             return RedirectToAction(nameof(Index));
         }
 
@@ -136,7 +137,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditRights(string name, Dictionary<string, string> userRolesViewModel)
+        public async Task<IActionResult> EditRights(string name, Dictionary<string, string> userRolesViewModel)
         {
             var userSelectedRoles = userRolesViewModel.Select(x => x.Key);
             var user = userManager.FindByNameAsync(name).Result;
@@ -158,7 +159,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
 
         
         [HttpPost]
-        public IActionResult ChangePassword(ChangePasswordViewModel changePassword)
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel changePassword)
         {
             if (changePassword.UserName.Equals(changePassword.Password, StringComparison.OrdinalIgnoreCase))
             {

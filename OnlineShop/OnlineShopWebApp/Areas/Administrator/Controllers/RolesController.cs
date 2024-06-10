@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OnlineShop.Db;
 using OnlineShop.Db.Models;
 using OnlineShopWebApp.Areas.Administrator.Models;
@@ -16,14 +17,14 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
         private readonly IMapper mapper;
 
         public RolesController(RoleManager<Role> roleManager, IMapper mapper)
-        {            
+        {
             this.roleManager = roleManager;
             this.mapper = mapper;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var roles = roleManager.Roles.ToList();
+            var roles = await roleManager.Roles.ToListAsync();
             return View(mapper.Map<List<RoleViewModel>>(roles));
         }
 
@@ -35,9 +36,9 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
 
 
         [HttpPost]
-        public IActionResult Create(RoleViewModel role)
+        public async Task<IActionResult> Create(RoleViewModel role)
         {
-            var result = roleManager.CreateAsync(new Role(role.Name)).Result;
+            var result = await roleManager.CreateAsync(new Role(role.Name));
 
             if (result.Succeeded)
             {
@@ -45,7 +46,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             }
             else
             {
-                foreach(var error in result.Errors)
+                foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
@@ -54,12 +55,12 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             return View(role);
         }
 
-        public IActionResult Delete(string roleName)
+        public async Task<IActionResult> Delete(string roleName)
         {
-            var role = roleManager.FindByNameAsync(roleName).Result;
+            var role = await roleManager.FindByNameAsync(roleName);
             if (role != null)
             {
-                roleManager.DeleteAsync(role).Wait();
+                await roleManager.DeleteAsync(role);
             }
 
             return RedirectToAction(nameof(Index));

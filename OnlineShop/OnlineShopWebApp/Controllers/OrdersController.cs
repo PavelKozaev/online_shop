@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Db.Models;
 using OnlineShop.Db.Repositories.Interfaces;
 using OnlineShopWebApp.Models;
+using System.Threading.Tasks;
 
 namespace OnlineShopWebApp.Controllers
 {
@@ -14,7 +15,6 @@ namespace OnlineShopWebApp.Controllers
         private readonly IOrdersRepository ordersRepository;
         private readonly IMapper mapper;
 
-
         public OrdersController(ICartsRepository cartsRepository, IOrdersRepository ordersRepository, IMapper mapper)
         {
             this.cartsRepository = cartsRepository;
@@ -22,17 +22,15 @@ namespace OnlineShopWebApp.Controllers
             this.mapper = mapper;
         }
 
-
         public IActionResult Index()
         {
             return View();
         }
 
-
         [HttpPost]
-        public IActionResult Buy(UserDeliveryInfoViewModel user)
+        public async Task<IActionResult> Buy(UserDeliveryInfoViewModel user)
         {
-            var existingCart = cartsRepository.TryGetByUserName(User.Identity.Name);
+            var existingCart = await cartsRepository.TryGetByUserNameAsync(User.Identity.Name);
 
             var order = new Order
             {
@@ -40,15 +38,14 @@ namespace OnlineShopWebApp.Controllers
                 User = mapper.Map<UserDeliveryInfo>(user),
             };
 
-            ordersRepository.Add(order);
-            cartsRepository.Clear(User.Identity.Name);      
+            await ordersRepository.AddAsync(order);
+            await cartsRepository.ClearAsync(User.Identity.Name);
             return RedirectToAction(nameof(ThankYouPage), new { id = order.Id });
         }
 
-        
-        public IActionResult ThankYouPage(Guid id)
+        public async Task<IActionResult> ThankYouPage(Guid id)
         {
-            var order = ordersRepository.TryGetById(id);
+            var order = await ordersRepository.TryGetByIdAsync(id);
             return View(mapper.Map<OrderViewModel>(order));
         }
     }

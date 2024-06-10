@@ -36,14 +36,14 @@ namespace OnlineShopWebApp.Controllers
 
 
         [HttpPost]
-        public IActionResult Login(Login login) 
+        public async Task<IActionResult> Login(Login login) 
         {
             if (ModelState.IsValid)
             {
-                var result = signInManager.PasswordSignInAsync(login.Email, 
+                var result = await signInManager.PasswordSignInAsync(login.Email, 
                                                                login.Password, 
                                                                login.IsRememberMe, 
-                                                               false).Result;
+                                                               false);
                 if (result.Succeeded)
                 {
                     return Redirect(login.ReturnUrl ?? "/Home");
@@ -65,7 +65,7 @@ namespace OnlineShopWebApp.Controllers
 
 
         [HttpPost]
-        public IActionResult Register(Register register)
+        public async Task<IActionResult> Register(Register register)
         {
             if (register.Email == register.Password)
             {
@@ -75,18 +75,18 @@ namespace OnlineShopWebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                User user = new User { Email = register.Email,
-                                       UserName = register.UserName,
-                                       PhoneNumber = register.PhoneNumber};
+                var user = new User 
+                {   Email = register.Email,
+                    UserName = register.UserName,
+                    PhoneNumber = register.PhoneNumber
+                };
 
-                var result = userManager.CreateAsync(user, register.Password).Result;
+                var result = await userManager.CreateAsync(user, register.Password);
 
                 if (result.Succeeded)
                 {
-                    signInManager.SignInAsync(user, false).Wait();
-
-                    TryAssignUserRole(user);
-
+                    await signInManager.SignInAsync(user, false);
+                    await TryAssignUserRoleAsync(user);
                     return Redirect(register.ReturnUrl ?? "/Home");
                 }
                 else
@@ -102,11 +102,11 @@ namespace OnlineShopWebApp.Controllers
             return View(register);
         }
 
-        public void TryAssignUserRole(User user)
+        private async Task TryAssignUserRoleAsync(User user)
         {
             try
             {
-                userManager.AddToRoleAsync(user, Constants.UserRoleName).Wait();
+                await userManager.AddToRoleAsync(user, Constants.UserRoleName);
             }
             catch (Exception ex)
             {
@@ -114,9 +114,9 @@ namespace OnlineShopWebApp.Controllers
             }
         }
 
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-            signInManager.SignOutAsync().Wait();
+            await signInManager.SignOutAsync();
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
@@ -144,20 +144,20 @@ namespace OnlineShopWebApp.Controllers
         }
 
 
-        public IActionResult EditProfile()
+        public async Task<IActionResult> EditProfile()
         {
             var userName = User.Identity.Name;
-            var user = userManager.FindByNameAsync(userName).Result;
+            var user = await userManager.FindByNameAsync(userName);
             return View(mapper.Map<UserViewModel>(user));
         }
 
         [HttpPost]
-        public IActionResult EditProfile(UserViewModel userViewModel)
+        public async Task<IActionResult> EditProfile(UserViewModel userViewModel)
         {
             var userName = User.Identity.Name;
             if (ModelState.IsValid)
             {
-                var user = userManager.FindByNameAsync(userName).Result;
+                var user = await userManager.FindByNameAsync(userName);
                 user.Email = userViewModel.Email;
                 user.PhoneNumber = userViewModel.PhoneNumber;
                 user.UserName = userViewModel.UserName;
@@ -169,17 +169,17 @@ namespace OnlineShopWebApp.Controllers
                     user.Avatar = avatarPath;
                 }
 
-                userManager.UpdateAsync(user).Wait();
+                await userManager.UpdateAsync(user);
                 return RedirectToAction(nameof(Profile));
             }
             return View(userViewModel);
         }
 
 
-        public IActionResult UserOrders()
+        public async Task<IActionResult> UserOrders()
         {
-            var userName = User.Identity.Name; 
-            var orders = ordersRepository.GetOrdersByUserName(userName);                        
+            var userName = User.Identity.Name;
+            var orders = await ordersRepository.GetOrdersByUserNameAsync(userName);
             return View(mapper.Map<List<OrderViewModel>>(orders));
         }
 
@@ -194,7 +194,7 @@ namespace OnlineShopWebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult ChangeUserPassword(ChangeUserPasswordViewModel changePassword)
+        public async Task<IActionResult> ChangeUserPassword(ChangeUserPasswordViewModel changePassword)
         {
             if (changePassword.UserName.Equals(changePassword.Password, StringComparison.OrdinalIgnoreCase))
             {
@@ -206,7 +206,7 @@ namespace OnlineShopWebApp.Controllers
                 return View(changePassword);
             }
 
-            var user = userManager.FindByNameAsync(changePassword.UserName).Result;
+            var user = await userManager.FindByNameAsync(changePassword.UserName);
 
             if (user != null)
             {
@@ -215,7 +215,7 @@ namespace OnlineShopWebApp.Controllers
                 {
                     var newHashPassword = userManager.PasswordHasher.HashPassword(user, changePassword.Password);
                     user.PasswordHash = newHashPassword;
-                    var result = userManager.UpdateAsync(user).Result;
+                    var result = await userManager.UpdateAsync(user);
 
                     if (result.Succeeded)
                     {
