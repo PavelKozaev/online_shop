@@ -1,10 +1,12 @@
 using System.Diagnostics;
+using System.Text.Json;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Db.Repositories.Interfaces;
 using OnlineShopWebApp.ApiClients;
 using OnlineShopWebApp.Helpers;
 using OnlineShopWebApp.Models;
+using OnlineShopWebApp.Redis;
 
 namespace OnlineShopWebApp.Controllers
 {
@@ -13,25 +15,42 @@ namespace OnlineShopWebApp.Controllers
         private readonly IProductsRepository productsRepository;
         private readonly ReviewsApiClient reviewsApiClient;
         private readonly IMapper mapper;
+        private readonly RedisCacheService redisCacheService;
 
-        public HomeController(IProductsRepository productsRepository, IMapper mapper, ReviewsApiClient reviewsApiClient)
+        public HomeController(IProductsRepository productsRepository, IMapper mapper, ReviewsApiClient reviewsApiClient, RedisCacheService redisCacheService)
         {
             this.productsRepository = productsRepository;
             this.mapper = mapper;
             this.reviewsApiClient = reviewsApiClient;
+            this.redisCacheService = redisCacheService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var products = await productsRepository.GetAllAsync();
-            var productViewModels = new List<ProductViewModel>();
+            string cacheKey = "products_list";
+            var cachedProducts = await redisCacheService.GetAsync(cacheKey);
 
-            foreach (var product in products)
+            List<ProductViewModel> productViewModels;
+
+            if (!string.IsNullOrEmpty(cachedProducts))
             {
-                var rating = await reviewsApiClient.GetRatingByProductIdAsync(product.Id);
-                var productViewModel = product.ToProductViewModel();
-                productViewModel.Rating = rating;
-                productViewModels.Add(productViewModel);
+                productViewModels = JsonSerializer.Deserialize<List<ProductViewModel>>(cachedProducts);
+            }
+            else
+            {
+                var products = await productsRepository.GetAllAsync();
+                productViewModels = new List<ProductViewModel>();
+
+                foreach (var product in products) 
+                {
+                    var rating = await reviewsApiClient.GetRatingByProductIdAsync(product.Id);
+                    var productViewModel = product.ToProductViewModel();
+                    productViewModel.Rating = rating;
+                    productViewModels.Add(productViewModel);
+                }
+
+                var productsJson = JsonSerializer.Serialize(productViewModels);
+                await redisCacheService.SetAsync(cacheKey, productsJson);
             }
 
             return View(productViewModels);

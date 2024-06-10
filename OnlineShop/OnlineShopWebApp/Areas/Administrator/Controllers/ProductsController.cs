@@ -2,11 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Db;
-using OnlineShop.Db.Models;
 using OnlineShop.Db.Repositories.Interfaces;
 using OnlineShopWebApp.Areas.Administrator.Models;
 using OnlineShopWebApp.Helpers;
-using OnlineShopWebApp.Models;
+using OnlineShopWebApp.Redis;
 
 namespace OnlineShopWebApp.Areas.Administrator.Controllers
 {
@@ -17,12 +16,14 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
         private readonly IProductsRepository productsRepository;
         private readonly IMapper mapper;
         private readonly ImagesProvider imagesProvider;
+        private readonly RedisCacheService redisCacheService;
 
-        public ProductsController(IProductsRepository productsRepository, IMapper mapper, ImagesProvider imagesProvider)
+        public ProductsController(IProductsRepository productsRepository, IMapper mapper, ImagesProvider imagesProvider, RedisCacheService redisCacheService)
         {
             this.productsRepository = productsRepository;
             this.mapper = mapper;
             this.imagesProvider = imagesProvider;
+            this.redisCacheService = redisCacheService;
         }
 
 
@@ -53,6 +54,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             {
                 var imagesPaths = imagesProvider.SaveFiles(productViewModel.UploadedFiles, ImageFolders.Products);
                 await productsRepository.AddAsync(productViewModel.ToProduct(imagesPaths));
+                await redisCacheService.RemoveAsync("products_list");
                 return RedirectToAction(nameof(Index));
             }
 
@@ -75,6 +77,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
                 var addedImagesPaths = imagesProvider.SaveFiles(productViewModel.UploadedFiles, ImageFolders.Products);
                 productViewModel.ImagesPaths = addedImagesPaths;
                 await productsRepository.EditAsync(productViewModel.ToProduct());
+                await redisCacheService.RemoveAsync("products_list");
                 return RedirectToAction(nameof(Index));
             }
 
@@ -85,6 +88,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             await productsRepository.RemoveAsync(id);
+            await redisCacheService.RemoveAsync("products_list");
             return RedirectToAction(nameof(Index));
         }
     }

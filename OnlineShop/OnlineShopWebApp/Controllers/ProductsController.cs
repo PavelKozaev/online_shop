@@ -5,7 +5,6 @@ using OnlineShop.Db.Models;
 using OnlineShop.Db.Repositories.Interfaces;
 using OnlineShopWebApp.ApiClients;
 using OnlineShopWebApp.Helpers;
-using System.Threading.Tasks;
 
 namespace OnlineShopWebApp.Controllers
 {

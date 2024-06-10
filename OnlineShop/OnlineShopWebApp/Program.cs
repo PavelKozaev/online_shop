@@ -10,7 +10,9 @@ using OnlineShop.Db.Repositories.Interfaces;
 using OnlineShopWebApp.ApiClients;
 using OnlineShopWebApp.Helpers;
 using OnlineShopWebApp.Profiles;
+using OnlineShopWebApp.Redis;
 using Serilog;
+using StackExchange.Redis;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +32,10 @@ var mappingConfig = new MapperConfiguration(mc =>
 });
 
 IMapper mapper = mappingConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
+
+builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(builder.Configuration.GetSection("Redis:ConnectionString").Value));
+builder.Services.AddSingleton<RedisCacheService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -37,7 +43,7 @@ builder.Services.AddControllersWithViews();
 string connection = builder.Configuration.GetConnectionString("online_shop");
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connection));
 
-builder.Services.AddIdentity<User, Role>(options => {
+builder.Services.AddIdentity<User, OnlineShop.Db.Models.Role>(options => {
     // Настройки, влияющие на процесс аутентификации, например:
     options.User.RequireUniqueEmail = true;
 })
@@ -97,7 +103,7 @@ using (var serviceScope = app.Services.CreateScope())
 {
     var services = serviceScope.ServiceProvider;
     var userManager = services.GetRequiredService<UserManager<User>>();
-    var roleManager = services.GetRequiredService<RoleManager<Role>>();
+    var roleManager = services.GetRequiredService<RoleManager<OnlineShop.Db.Models.Role>>();
     IdentityInitializer.Initialize(userManager, roleManager);
 }
 
