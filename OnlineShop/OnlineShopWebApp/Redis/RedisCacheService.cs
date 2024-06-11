@@ -1,4 +1,5 @@
-﻿using StackExchange.Redis;
+﻿using Serilog;
+using StackExchange.Redis;
 
 namespace OnlineShopWebApp.Redis
 {
@@ -22,7 +23,7 @@ namespace OnlineShopWebApp.Redis
             }
             catch (RedisConnectionException ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error(ex, "Ошибка установки значения в Redis для ключа {key}", key);
             }
             finally
             {
@@ -31,7 +32,7 @@ namespace OnlineShopWebApp.Redis
            
         }
 
-        public async Task<string> GetAsync(string key)
+        public async Task<string> TryGetAsync(string key)
         {
             try
             {
@@ -40,23 +41,10 @@ namespace OnlineShopWebApp.Redis
             }
             catch (RedisConnectionException ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error(ex, "Ошибка получения значения из Redis для ключа {key}", key);
                 return null;
             }
             
-        }
-
-        public async Task RemoveAsync(string key)
-        {
-            try
-            {
-                var db = redis.GetDatabase();
-                await db.KeyDeleteAsync(key);
-            }
-            catch (RedisConnectionException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }            
         }
     }
 }

@@ -5,6 +5,7 @@ using OnlineShop.Db.Repositories.Interfaces;
 using OnlineShopWebApp.Areas.Administrator.Models;
 using OnlineShopWebApp.Helpers;
 using OnlineShopWebApp.Redis;
+using Serilog;
 using System.Text.Json;
 
 namespace OnlineShopWebApp.Areas.Administrator.Controllers
@@ -102,8 +103,8 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
                 await redisCacheService.SetAsync(OnlineShop.Db.Constants.RedisCacheKey, productsJson);
             }
             catch (Exception ex)
-            {                
-                Console.WriteLine(ex.Message);
+            {
+                Log.Error(ex, "Ошибка обновления кеша Redis");
             }
         }
     }
