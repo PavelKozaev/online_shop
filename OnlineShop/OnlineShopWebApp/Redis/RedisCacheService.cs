@@ -5,6 +5,7 @@ namespace OnlineShopWebApp.Redis
     public class RedisCacheService
     {
         private readonly IConnectionMultiplexer redis;
+        private readonly SemaphoreSlim mutex = new SemaphoreSlim(1, 1);
 
         public RedisCacheService(IConnectionMultiplexer redis)
         {
@@ -13,6 +14,7 @@ namespace OnlineShopWebApp.Redis
 
         public async Task SetAsync(string key, string value)
         {
+            await mutex.WaitAsync();
             try
             {
                 var db = redis.GetDatabase();
@@ -21,6 +23,10 @@ namespace OnlineShopWebApp.Redis
             catch (RedisConnectionException ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                mutex.Release();
             }
            
         }
