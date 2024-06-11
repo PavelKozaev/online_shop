@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OnlineShop.Db;
 using OnlineShop.Db.Repositories.Interfaces;
 using OnlineShopWebApp.Areas.Administrator.Models;
 using OnlineShopWebApp.Helpers;
@@ -9,8 +8,8 @@ using OnlineShopWebApp.Redis;
 
 namespace OnlineShopWebApp.Areas.Administrator.Controllers
 {
-    [Area(Constants.AdminRoleName)]
-    [Authorize(Roles = Constants.AdminRoleName)]
+    [Area(OnlineShop.Db.Constants.AdminRoleName)]
+    [Authorize(Roles = (OnlineShop.Db.Constants.AdminRoleName))]
     public class ProductsController : Controller
     {
         private readonly IProductsRepository productsRepository;
@@ -54,7 +53,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             {
                 var imagesPaths = imagesProvider.SaveFiles(productViewModel.UploadedFiles, ImageFolders.Products);
                 await productsRepository.AddAsync(productViewModel.ToProduct(imagesPaths));
-                await redisCacheService.RemoveAsync("products_list");
+                await redisCacheService.RemoveAsync(Constants.redisCacheKey);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -77,7 +76,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
                 var addedImagesPaths = imagesProvider.SaveFiles(productViewModel.UploadedFiles, ImageFolders.Products);
                 productViewModel.ImagesPaths = addedImagesPaths;
                 await productsRepository.EditAsync(productViewModel.ToProduct());
-                await redisCacheService.RemoveAsync("products_list");
+                await redisCacheService.RemoveAsync(Constants.redisCacheKey);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -88,7 +87,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             await productsRepository.RemoveAsync(id);
-            await redisCacheService.RemoveAsync("products_list");
+            await redisCacheService.RemoveAsync(Constants.redisCacheKey);
             return RedirectToAction(nameof(Index));
         }
     }

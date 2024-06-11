@@ -28,7 +28,7 @@ namespace OnlineShopWebApp.Controllers
         public async Task<IActionResult> Index()
         {
             string cacheKey = "products_list";
-            var cachedProducts = await redisCacheService.GetAsync(cacheKey);
+            var cachedProducts = await redisCacheService.GetAsync(Constants.redisCacheKey);
 
             List<ProductViewModel> productViewModels;
 
@@ -50,7 +50,7 @@ namespace OnlineShopWebApp.Controllers
                 }
 
                 var productsJson = JsonSerializer.Serialize(productViewModels);
-                await redisCacheService.SetAsync(cacheKey, productsJson);
+                await redisCacheService.SetAsync(Constants.redisCacheKey, productsJson);
             }
 
             return View(productViewModels);
