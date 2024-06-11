@@ -26,8 +26,7 @@ namespace OnlineShopWebApp.Controllers
         }
 
         public async Task<IActionResult> Index()
-        {
-            string cacheKey = "products_list";
+        {            
             var cachedProducts = await redisCacheService.GetAsync(Constants.redisCacheKey);
 
             List<ProductViewModel> productViewModels;

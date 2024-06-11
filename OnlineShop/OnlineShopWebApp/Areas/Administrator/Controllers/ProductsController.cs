@@ -5,6 +5,7 @@ using OnlineShop.Db.Repositories.Interfaces;
 using OnlineShopWebApp.Areas.Administrator.Models;
 using OnlineShopWebApp.Helpers;
 using OnlineShopWebApp.Redis;
+using System.Text.Json;
 
 namespace OnlineShopWebApp.Areas.Administrator.Controllers
 {
@@ -53,7 +54,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             {
                 var imagesPaths = imagesProvider.SaveFiles(productViewModel.UploadedFiles, ImageFolders.Products);
                 await productsRepository.AddAsync(productViewModel.ToProduct(imagesPaths));
-                await redisCacheService.RemoveAsync(Constants.redisCacheKey);
+                await UpdateCacheAsync();
                 return RedirectToAction(nameof(Index));
             }
 
@@ -76,7 +77,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
                 var addedImagesPaths = imagesProvider.SaveFiles(productViewModel.UploadedFiles, ImageFolders.Products);
                 productViewModel.ImagesPaths = addedImagesPaths;
                 await productsRepository.EditAsync(productViewModel.ToProduct());
-                await redisCacheService.RemoveAsync(Constants.redisCacheKey);
+                await UpdateCacheAsync();
                 return RedirectToAction(nameof(Index));
             }
 
@@ -87,8 +88,16 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             await productsRepository.RemoveAsync(id);
-            await redisCacheService.RemoveAsync(Constants.redisCacheKey);
+            await UpdateCacheAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private async Task UpdateCacheAsync()
+        {
+            var products = await productsRepository.GetAllAsync();
+            var productViewModels = products.ToProductViewModels();
+            var productsJson = JsonSerializer.Serialize(productViewModels);
+            await redisCacheService.SetAsync(Constants.redisCacheKey, productsJson);
         }
     }
 }
