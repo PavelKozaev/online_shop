@@ -97,7 +97,7 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
             var products = await productsRepository.GetAllAsync();
             var productViewModels = products.ToProductViewModels();
             var productsJson = JsonSerializer.Serialize(productViewModels);
-            await redisCacheService.SetAsync(Constants.redisCacheKey, productsJson);
+            await redisCacheService.SetAsync(OnlineShop.Db.Constants.RedisCacheKey, productsJson);
         }
     }
 }
