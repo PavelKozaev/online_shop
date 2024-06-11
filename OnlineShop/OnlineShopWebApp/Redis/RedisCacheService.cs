@@ -13,20 +13,44 @@ namespace OnlineShopWebApp.Redis
 
         public async Task SetAsync(string key, string value)
         {
-            var db = redis.GetDatabase();
-            await db.StringSetAsync(key, value);
+            try
+            {
+                var db = redis.GetDatabase();
+                await db.StringSetAsync(key, value);
+            }
+            catch (RedisConnectionException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+           
         }
 
         public async Task<string> GetAsync(string key)
         {
-            var db = redis.GetDatabase();
-            return await db.StringGetAsync(key);
+            try
+            {
+                var db = redis.GetDatabase();
+                return await db.StringGetAsync(key);
+            }
+            catch (RedisConnectionException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+            
         }
 
         public async Task RemoveAsync(string key)
         {
-            var db = redis.GetDatabase();
-            await db.KeyDeleteAsync(key);
+            try
+            {
+                var db = redis.GetDatabase();
+                await db.KeyDeleteAsync(key);
+            }
+            catch (RedisConnectionException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }            
         }
     }
 }

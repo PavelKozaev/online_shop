@@ -94,10 +94,17 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
 
         private async Task UpdateCacheAsync()
         {
-            var products = await productsRepository.GetAllAsync();
-            var productViewModels = products.ToProductViewModels();
-            var productsJson = JsonSerializer.Serialize(productViewModels);
-            await redisCacheService.SetAsync(OnlineShop.Db.Constants.RedisCacheKey, productsJson);
+            try
+            {
+                var products = await productsRepository.GetAllAsync();
+                var productViewModels = products.ToProductViewModels();
+                var productsJson = JsonSerializer.Serialize(productViewModels);
+                await redisCacheService.SetAsync(OnlineShop.Db.Constants.RedisCacheKey, productsJson);
+            }
+            catch (Exception ex)
+            {                
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }
