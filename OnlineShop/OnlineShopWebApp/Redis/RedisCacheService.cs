@@ -29,7 +29,7 @@ namespace OnlineShopWebApp.Redis
             {
                 mutex.Release();
             }
-           
+
         }
 
         public async Task<string> TryGetAsync(string key)
@@ -44,7 +44,20 @@ namespace OnlineShopWebApp.Redis
                 Log.Error(ex, "Ошибка получения значения из Redis для ключа {key}", key);
                 return null;
             }
-            
+
+        }
+
+        public async Task RemoveAsync(string key)
+        {
+            try
+            {
+                var db = redis.GetDatabase();
+                await db.KeyDeleteAsync(key);
+            }
+            catch (RedisConnectionException ex)
+            {
+                Log.Error(ex, "Ошибка удаления значения из Redis для ключа {key}", key);
+            }
         }
     }
 }

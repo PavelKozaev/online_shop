@@ -35,9 +35,16 @@ IMapper mapper = mappingConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
 var redisConfiguration = ConfigurationOptions.Parse(builder.Configuration.GetSection("Redis:ConnectionString").Value);
-redisConfiguration.AbortOnConnectFail = false;
+redisConfiguration.AbortOnConnectFail = false; 
+redisConfiguration.ConnectTimeout = 10000; 
+redisConfiguration.SyncTimeout = 10000;
+redisConfiguration.ReconnectRetryPolicy = new LinearRetry(10000);
 
-builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConfiguration));
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+{
+    return ConnectionMultiplexer.Connect(redisConfiguration);
+});
+
 builder.Services.AddSingleton<RedisCacheService>();
 
 // Add services to the container.

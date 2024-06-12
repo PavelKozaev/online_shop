@@ -7,12 +7,14 @@
             <!-- Колонка для карточки книги -->
             <div class="col-md-3">
                 <div class="card h-100">
-                    <a asp-controller="Products" asp-action="Index" asp-route-id="@product.Id"><img class="card-img-top" src="@product.ImagePath" alt="@product.Name" /></a>
+                    <a asp-controller="Products" asp-action="Index" asp-route-id="@product.Id">
+                        <img class="card-img-top" src="@product.ImagePath" alt="@product.Name" />
+                    </a>
                     <div class="card-body d-flex flex-column">
                         <div class="card-header">
                             <h5 class="card-title">@product.Name</h5>
                             <p class="card-author">@product.Author</p>
-                            <p class="cost">@product.Cost руб.</p>                            
+                            <p class="cost">@product.Cost руб.</p>
                         </div>
                         <!-- Добавление рейтинга и отзывов здесь -->
                         <div class="product-rating-and-reviews">
@@ -26,12 +28,22 @@
                                 </div>
                                 <p class="reviews-count">@product.Rating.ReviewsCount отзыв(ов)</p>
                             }
-                            else
+                            else if (product.Rating != null)
                             {
                                 <div class="rating-stars">
                                     @for (int i = 0; i < 5; i++)
                                     {
                                         <span class="star @(i < product.Rating.AverageGrade ? "filled" : "")">★</span>
+                                    }
+                                </div>
+                                <p class="reviews-count">Нет отзывов</p>
+                            }
+                            else
+                            {
+                                <div class="rating-stars">
+                                    @for (int i = 0; i < 5; i++)
+                                    {
+                                        <span class="star">★</span>
                                     }
                                 </div>
                                 <p class="reviews-count">Нет отзывов</p>
@@ -59,7 +71,6 @@
             </div>
         }
     </div>
-
 
     <nav aria-label="Page navigation">
         <ul class="pagination">
