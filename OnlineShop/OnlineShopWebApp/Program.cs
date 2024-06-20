@@ -36,9 +36,9 @@ builder.Services.AddSingleton(mapper);
 
 var redisConfiguration = ConfigurationOptions.Parse(builder.Configuration.GetSection("Redis:ConnectionString").Value);
 redisConfiguration.AbortOnConnectFail = false; 
-redisConfiguration.ConnectTimeout = 10000; 
-redisConfiguration.SyncTimeout = 10000;
-redisConfiguration.ReconnectRetryPolicy = new LinearRetry(10000);
+redisConfiguration.ConnectTimeout = 50; 
+redisConfiguration.SyncTimeout = 50;
+redisConfiguration.ReconnectRetryPolicy = new LinearRetry(50);
 
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
 {
