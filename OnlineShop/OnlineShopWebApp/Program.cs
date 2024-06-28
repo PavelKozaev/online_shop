@@ -14,6 +14,7 @@ using OnlineShopWebApp.Redis;
 using Serilog;
 using StackExchange.Redis;
 using System.Globalization;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -121,6 +122,9 @@ var localizationOptions = app.Services.GetRequiredService<IOptions<RequestLocali
 app.UseRequestLocalization(localizationOptions);
 
 app.UseSerilogRequestLogging();
+
+app.UseMetricServer();
+app.UseHttpMetrics();
 
 app.MapControllerRoute(
     name: "MyArea",
