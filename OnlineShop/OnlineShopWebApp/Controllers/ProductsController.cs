@@ -11,10 +11,10 @@ namespace OnlineShopWebApp.Controllers
     public class ProductsController : Controller
     {
         private readonly IProductsRepository productsRepository;
-        private readonly ReviewsApiClient reviewsApiClient;
+        private readonly IReviewsApiClient reviewsApiClient;
         private readonly UserManager<User> userManager;
 
-        public ProductsController(IProductsRepository productsRepository, ReviewsApiClient reviewsApiClient, UserManager<User> userManager)
+        public ProductsController(IProductsRepository productsRepository, IReviewsApiClient reviewsApiClient, UserManager<User> userManager)
         {
             this.productsRepository = productsRepository;
             this.reviewsApiClient = reviewsApiClient;

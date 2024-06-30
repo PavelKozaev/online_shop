@@ -19,10 +19,10 @@ namespace OnlineShopWebApp.Areas.Administrator.Controllers
         private readonly IProductsRepository productsRepository;
         private readonly IMapper mapper;
         private readonly ImagesProvider imagesProvider;
-        private readonly RedisCacheService redisCacheService;
-        private readonly ReviewsApiClient reviewsApiClient;
+        private readonly IRedisCacheService redisCacheService;
+        private readonly IReviewsApiClient reviewsApiClient;
 
-        public ProductsController(IProductsRepository productsRepository, IMapper mapper, ImagesProvider imagesProvider, RedisCacheService redisCacheService, ReviewsApiClient reviewsApiClient)
+        public ProductsController(IProductsRepository productsRepository, IMapper mapper, ImagesProvider imagesProvider, IRedisCacheService redisCacheService, IReviewsApiClient reviewsApiClient)
         {
             this.productsRepository = productsRepository;
             this.mapper = mapper;

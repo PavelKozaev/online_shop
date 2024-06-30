@@ -46,7 +46,7 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
     return ConnectionMultiplexer.Connect(redisConfiguration);
 });
 
-builder.Services.AddSingleton<RedisCacheService>();
+builder.Services.AddSingleton<IRedisCacheService, RedisCacheService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -77,7 +77,7 @@ builder.Services.AddTransient<IOrdersRepository, OrdersDbRepository>();
 builder.Services.AddTransient<IFavoritesRepository, FavoritesDbRepository>();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddTransient<ImagesProvider>();
-builder.Services.AddHttpClient<ReviewsApiClient>();
+builder.Services.AddHttpClient<IReviewsApiClient, ReviewsApiClient>();
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {

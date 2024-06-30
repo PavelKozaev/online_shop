@@ -13,11 +13,11 @@ namespace OnlineShopWebApp.Controllers
     public class HomeController : Controller
     {
         private readonly IProductsRepository productsRepository;
-        private readonly ReviewsApiClient reviewsApiClient;
+        private readonly IReviewsApiClient reviewsApiClient;
         private readonly IMapper mapper;
-        private readonly RedisCacheService redisCacheService;
+        private readonly IRedisCacheService redisCacheService;
 
-        public HomeController(IProductsRepository productsRepository, IMapper mapper, ReviewsApiClient reviewsApiClient, RedisCacheService redisCacheService)
+        public HomeController(IProductsRepository productsRepository, IMapper mapper, IReviewsApiClient reviewsApiClient, IRedisCacheService redisCacheService)
         {
             this.productsRepository = productsRepository;
             this.mapper = mapper;
