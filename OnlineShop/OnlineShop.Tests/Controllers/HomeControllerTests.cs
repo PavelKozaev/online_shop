@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using OnlineShop.Db.Models;
 using OnlineShop.Db.Repositories.Interfaces;
-using OnlineShopWebApp.ApiClients;
 using OnlineShopWebApp.ApiModels;
 using OnlineShopWebApp.Controllers;
 using OnlineShopWebApp.Models;
 using OnlineShopWebApp.Redis;
+using OnlineShopWebApp.ReviewMicroservice.ApiClients;
 
 namespace OnlineShop.Tests.Controllers
 {

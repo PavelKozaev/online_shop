@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Db.Repositories.Interfaces;
-using OnlineShopWebApp.ApiClients;
 using OnlineShopWebApp.Areas.Administrator.Models;
 using OnlineShopWebApp.Helpers;
 using OnlineShopWebApp.Models;
 using OnlineShopWebApp.Redis;
+using OnlineShopWebApp.ReviewMicroservice.ApiClients;
 using Serilog;
 using System.Text.Json;
 

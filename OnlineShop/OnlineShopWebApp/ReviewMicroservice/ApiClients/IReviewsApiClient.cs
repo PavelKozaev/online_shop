@@ -1,6 +1,6 @@
-﻿using OnlineShopWebApp.ApiModels;
+﻿using OnlineShopWebApp.ReviewMicroservice.ApiModels;
 
-namespace OnlineShopWebApp.ApiClients
+namespace OnlineShopWebApp.ReviewMicroservice.ApiClients
 {
     public interface IReviewsApiClient
     {

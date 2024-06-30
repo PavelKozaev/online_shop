@@ -1,6 +1,6 @@
-﻿using OnlineShopWebApp.ApiModels;
+﻿using OnlineShopWebApp.ReviewMicroservice.ApiModels;
 
-namespace OnlineShopWebApp.ApiClients
+namespace OnlineShopWebApp.ReviewMicroservice.ApiClients
 {
     public class ReviewsApiClient : IReviewsApiClient
     {
@@ -44,14 +44,14 @@ namespace OnlineShopWebApp.ApiClients
                 userId,
                 text,
                 grade
-            };     
-            
+            };
+
             var response = await httpClient.PostAsJsonAsync("reviews", newReview);
 
             if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
             {
                 string content = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(content);                
+                Console.WriteLine(content);
             }
 
             response.EnsureSuccessStatusCode();

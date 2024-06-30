@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using OnlineShopWebApp.ApiModels;
+using OnlineShopWebApp.ReviewMicroservice.ApiModels;
 
 namespace OnlineShopWebApp.Models
 {

@@ -1,4 +1,4 @@
-﻿namespace OnlineShopWebApp.ApiModels
+﻿namespace OnlineShopWebApp.ReviewMicroservice.ApiModels
 {
     public class RatingApiModel
     {

@@ -7,7 +7,6 @@ using OnlineShop.Db;
 using OnlineShop.Db.Models;
 using OnlineShop.Db.Repositories;
 using OnlineShop.Db.Repositories.Interfaces;
-using OnlineShopWebApp.ApiClients;
 using OnlineShopWebApp.Helpers;
 using OnlineShopWebApp.Profiles;
 using OnlineShopWebApp.Redis;
@@ -15,6 +14,7 @@ using Serilog;
 using StackExchange.Redis;
 using System.Globalization;
 using Prometheus;
+using OnlineShopWebApp.ReviewMicroservice.ApiClients;
 
 var builder = WebApplication.CreateBuilder(args);
 
