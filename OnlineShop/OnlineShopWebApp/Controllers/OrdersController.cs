@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Db.Models;
 using OnlineShop.Db.Repositories.Interfaces;
 using OnlineShopWebApp.Models;
-using System.Threading.Tasks;
 
 namespace OnlineShopWebApp.Controllers
 {
