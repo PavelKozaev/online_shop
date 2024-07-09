@@ -66,6 +66,7 @@
 ## Использованные технологии
 
 - ASP.NET Core MVC
+- Entity Framework Core
 - PostgreSQL
 - Redis
 - Serilog
