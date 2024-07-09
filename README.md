@@ -8,10 +8,6 @@
 
 [Онлайн демо](https://a28291-ca91.u.d-f.pw/)
 
-## Репозиторий
-
-[Ссылка на репозиторий](https://github.com/PavelKozaev/online_shop)
-
 ## Функциональные возможности
 
 ### Основное приложение (монолит)
@@ -28,20 +24,13 @@
   - Отображение списка всех заказов.
 - **База данных**: PostgreSQL.
 
-### Микросервис отзывов
-
-- Разработан на ASP.NET Core Web API.
-- Взаимодействие с основным приложением для управления отзывами.
-
 ### Кеширование
 
 - Использование Redis для кеширования данных каталога, что улучшает производительность и уменьшает нагрузку на базу данных.
 
-## Тестирование и мониторинг
+## Тестирование
 
 - **Unit-тесты** для покрытия контроллеров.
-- **Prometheus** для сбора метрик и мониторинга состояния системы.
-- **Grafana** для визуализации метрик и создания дашбордов.
 
 ## Установка и запуск
 
@@ -50,7 +39,6 @@
 - [.NET Core SDK](https://dotnet.microsoft.com/download)
 - [PostgreSQL](https://www.postgresql.org/download/)
 - [Redis](https://redis.io/download)
-- [Docker](https://www.docker.com/get-started) (для Prometheus и Grafana)
 
 ### Шаги установки
 
@@ -75,27 +63,14 @@
     dotnet run
     ```
 
-### Запуск Prometheus и Grafana с помощью Docker
-
-1. Запустите Prometheus и Grafana:
-
-    ```bash
-    docker-compose up -d
-    ```
-
-2. Откройте Grafana в браузере по адресу `http://localhost:3000` и настройте дашборды для мониторинга метрик.
-
 ## Использованные технологии
 
 - ASP.NET Core MVC
-- ASP.NET Core Web API
 - PostgreSQL
-- MSSQL
 - Redis
 - Serilog
 - AutoMapper
-- Prometheus
-- Grafana
+- ASP.NET Core Identity
 
 ## Контрибьютинг
 
@@ -103,7 +78,7 @@
 
 ## Лицензия
 
-Этот проект лицензирован под MIT License.
+Данный проект не лицензирован.
 
 ## Автор
 
